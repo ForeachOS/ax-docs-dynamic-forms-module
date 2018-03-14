@@ -1,0 +1,57 @@
+= DynamicFormsModule
+Steven Gentens
+0.0.1-SNAPSHOT
+:toc: left
+:sectanchors:
+:module-version: 0.0.1-SNAPSHOT
+:module-name: DynamicFormsModule
+:module-artifact: dynamic-forms-module
+:module-url: https://across.foreach.be/modules/DynamicFormsModule
+:module-javadoc-url: https://across-docs.foreach.be/across-standard-modules/DynamicsFormsModule/0.0.1-SNAPSHOT/javadoc
+
+[copyright,verbatim]
+--
+Copyright (C) 2014-2017 +
+[small]#Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.#
+--
+
+:numbered:
+== General information
+
+=== Artifact
+[source,xml,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+	<dependencies>
+		<dependency>
+			<groupId>com.foreach.across.modules</groupId>
+			<artifactId>{module-artifact}</artifactId>
+			<version>{module-version}</version>
+		</dependency>
+	</dependencies>
+----
+
+=== Module dependencies
+
+.Module dependencies
+|===
+|Module |Type |Description
+
+|`EntityModule`
+|required
+|Enables the ability to define and render custom forms.
+
+|===
+
+//=== Module settings
+//This module has no specific settings.
+//
+//== What's new in this version?
+//:numbered!:
+//
+//=== 0.0.1-SNAPSHOT
+//*
+
+:numbered:
+== About the DynamicFormsModule
+The `DynamicFormsModule` enables users to manage custom forms as well as persist the corresponding data.
