@@ -15,8 +15,12 @@ Copyright (C) 2014-2017 +
 [small]#Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.#
 --
 
-:numbered:
+:!sectnums:
+
 == General information
+
+:sectnums:
+:chapter-number: 0
 
 === Artifact
 [source,xml,indent=0]
@@ -41,6 +45,10 @@ Copyright (C) 2014-2017 +
 |required
 |Enables the ability to define and render custom forms.
 
+|`AcrossHibernateJpaModule`
+|required
+|Required for the JPA domain model.
+
 |===
 
 //=== Module settings
@@ -52,6 +60,107 @@ Copyright (C) 2014-2017 +
 //=== 0.0.1-SNAPSHOT
 //*
 
-:numbered:
+:!sectnums:
+
 == About the DynamicFormsModule
-The `DynamicFormsModule` enables users to manage custom forms as well as persist the corresponding data.
+The `DynamicFormsModule` enables users to manage custom documents, which can be used to create a custom form, or add additional fields to an existing form.
+
+== Documents
+Documents are the base building blocks to create manageable groups of fields.
+Documents are split up in various parts, being the <<type-definition,types>> that can be used in a document, a <<document-definition,template>> for a document and filled in <<document-data,data>> for a document.
+A document definition is a template defining the fields and sets of fields that the document represents.
+The document data holds the content for the various field for the document.
+
+:sectnums:
+:chapter-number: 0
+
+[#document-definition]
+=== Document definition
+Document definitions represent a group of fields belonging to a data set.
+Each definition is defined as a `RawDocumentDefinition`, which is the base representation of a document template in a `json`/`yaml` format.
+A `RawDocumentDefinition` can be converted to a `DynamicDocumentDefinition`, which represents a fully usable document.
+Conversion is done through the `DynamicDocumentDefinitionBuilder`, which creates property descriptors with the correct type and validation for the various fields defined in the document definition.
+Aside of creating the `DynamicDocumentDefinition`, it will also ensure that document definitions have a correct configuration.
+
+//TODO
+.Example document definition
+[source,yaml,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+
+----
+
+
+[#type-definition]
+=== Type definition
+Type definitions enable documents to use typed fields, as well as provide the necessary configuration for a specific field.
+The default type definitions are the building blocks to create new custom types and have a java representation.
+
+The following types are supported by default:
+
+|===
+
+|Type |Backing java type |Description
+
+|*string*
+|`String.class`
+|Represents a field containing a single line of text.
+
+|*text*
+|`String.class`
+|text represents a field containing multiple lines of text.
+
+|*boolean*
+|`Boolean.class`
+|Represents true or false
+
+|*date*
+|`LocalDate.class`
+|Represents a specific year, month and day.
+
+|*time*
+|`LocalTime.class`
+|Represents a combination of hours, minutes, seconds, millseconds and nanoseconds.
+
+|*datetime*
+|`LocalDateTime.class`
+|Represents a specific point in time. Per se `datetime` is a combination of `date` and `time`.
+
+|*integer*
+|`Long.class`
+|Represents a whole number.
+
+|*decimal*
+|`BigDecimal.class`
+|Represents a decimal number. Can optionally define a precision.
+
+|*currency*
+|
+|Represents a value in a specific currency.
+
+|===
+
+A type can also represent a group of fields.
+This enables the possibility to define custom data-types, without any code intervention.
+
+//TODO
+.Example type definition
+[source,yaml,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+
+----
+
+[#document-data]
+=== Document data
+Document data holds the content for a specified document definition.
+
+//TODO
+.Example document data
+[source,yaml,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+
+----
+
+:!sectnums:
