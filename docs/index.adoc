@@ -79,6 +79,7 @@ The document data holds the content for the various field for the document.
 Document definitions represent a group of fields belonging to a data set.
 Each definition is defined as a `RawDocumentDefinition`, which is the base representation of a document template in a `json`/`yaml` format.
 A `RawDocumentDefinition` can be converted to a `DynamicDocumentDefinition`, which represents a fully usable document.
+
 Conversion is done through the `DynamicDocumentDefinitionBuilder`, which creates property descriptors with the correct type and validation for the various fields defined in the document definition.
 Aside of creating the `DynamicDocumentDefinition`, it will also ensure that document definitions have a correct configuration.
 
@@ -96,8 +97,8 @@ Aside of creating the `DynamicDocumentDefinition`, it will also ensure that docu
 Type definitions enable documents to use typed fields, as well as provide the necessary configuration for a specific field.
 The default type definitions are the building blocks to create new custom types and have a java representation.
 
-The following types are supported by default:
-
+.Default types
+[cols="1,1,2", options="header"]
 |===
 
 |Type |Backing java type |Description
