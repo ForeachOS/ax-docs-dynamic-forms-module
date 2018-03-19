@@ -1,6 +1,5 @@
 = DynamicFormsModule
 Steven Gentens
-0.0.1-SNAPSHOT
 :toc: left
 :sectanchors:
 :module-version: 0.0.1-SNAPSHOT
