@@ -8,11 +8,6 @@ Steven Gentens
 :module-url: https://across.foreach.be/modules/DynamicFormsModule
 :module-javadoc-url: https://across-docs.foreach.be/across-standard-modules/DynamicsFormsModule/0.0.1-SNAPSHOT/javadoc
 
-[copyright,verbatim]
---
-Copyright (C) 2014-2017 +
-[small]#Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.#
---
 
 :!sectnums:
 
