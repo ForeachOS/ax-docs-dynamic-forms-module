@@ -1,0 +1,15 @@
+= Getting started
+
+generate an application
+
+add dynamic documents module
+
+create a simple document definition
+
+create a dataset
+
+adding a document
+
+creating a new document version
+
+what's next?

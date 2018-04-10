@@ -1,4 +1,4 @@
-= DynamicFormsModule
+= Dynamic Documents & Forms Module
 Steven Gentens
 :toc: left
 :sectanchors:
