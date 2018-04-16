@@ -19,7 +19,7 @@ document-definition:
   content:
     - id: name
       type: string
-      messages: # <2>
+      messages: # <1>
         description: "Your personal name"
     - id: telephone
       label: "Telephone number"
