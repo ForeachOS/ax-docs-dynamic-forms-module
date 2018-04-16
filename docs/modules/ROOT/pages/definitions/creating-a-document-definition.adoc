@@ -1,0 +1,45 @@
+= Creating a document definition
+
+== Configure UI messages
+
+You can add custom messages to be used in the user interface for any field or type.
+Messages are specified under the `messages` key as a map of `message code` and `message` entries.
+
+.Example YAML document definition with custom messages
+[source,yaml]
+----
+document-definition:
+  name: sample-document
+  types:
+    - id: telephone-number
+      base-type: number
+      messages: # <1>
+        tooltip: "Enter your telephone number"
+        help: "+32 xxxx/xx.xx.xx"
+  content:
+    - id: name
+      type: string
+      messages: # <2>
+        description: "Your personal name"
+    - id: telephone
+      label: "Telephone number"
+      type: telephone-number
+      messages: # <2>
+        help: "0032 xxxx/xx.xx.xx"
+----
+
+<1> You can define a `messages` block on both a type or a content field definition.
+<2> A message defined on a content field will replace a message with the same code on the type definition.
+
+=== Default message codes used
+
+The following message codes can be configured:
+
+description::
+ On a form, this shows a description message above the control for that field.
+
+help::
+ On a form, this shows a help text below the control for that field.
+
+tooltip::
+ On a form, this is the text behind a tooltip (question mark) icon next to the field label.
