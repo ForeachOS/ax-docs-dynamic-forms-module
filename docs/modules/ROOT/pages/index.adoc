@@ -11,6 +11,13 @@ Steven Gentens
 
 :!sectnums:
 
+== What is a...
+=== Dynamic Document
+some thing
+
+=== Dynamic Form
+some thing else
+
 == General information
 
 :sectnums:

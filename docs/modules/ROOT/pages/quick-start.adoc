@@ -1,15 +1,54 @@
 = Getting started
 
-generate an application
+This document provides a quick introduction to using Dynamic Documents in your application.
 
-add dynamic documents module
+What we'll do:
 
-create a simple document definition
+* [*] Create a simple application with DynamicFormsModule
+* [*] Design a new document type and put it in a dataset
+* [*] Create a document instance of that type, using the built-in admin UI
 
-create a dataset
+== Create a new web application
 
-adding a document
+//goto initializr, create a web application with adminweb, usermodule, entitymodule
 
-creating a new document version
+== Add the DynamicFormsModule
 
-what's next?
+//add the dependency
+//add the module name
+//start application
+
+== Designing our document
+
+//explain that we we will create a new definition
+
+=== Create a dataset
+//goto dataset, create a new dataset name
+//explain what a dataset is
+
+=== Create the document definition
+
+// add document definition
+// add a simple document with some field types & a field set
+// save the definition
+
+== Add a document
+
+// go to document, create a new document
+// fill-in the document, notice form layout - mention basic validation being applied
+// after saving, the general tab shows readonly data of the document
+// we can also see version 1 being mentioned
+
+== Create a new document version
+
+// go to history tab, see there is one clickable entry, the current version
+// back to general, update document
+// we have existing data loaded, if we update
+// new version gets created
+// history shows both versions and allows us to view them
+
+== What's next?
+
+// more on building a document definition
+// link to field types
+// working with documents section

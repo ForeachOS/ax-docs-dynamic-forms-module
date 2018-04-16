@@ -1,0 +1,144 @@
+= Using documents in code
+
+When working with dynamic documents directly from code, the main component you need to use is a `DynamicDocumentWorkspace`.
+It manages a single document, and allows you to:
+
+* load a specific version of the document
+* create a new version
+* work with individual fields of the current document version
+* change the definition for the document version
+* import data from other documents
+* save the document version
+
+You create a `DynamicDocumentWorkspace` component using the `DynamicDocumentService`.
+
+WARNING: `DynamicDocumentWorkspace` instances are stateful and not thread-safe, do not share or cache them.
+
+== Create a new document
+
+You create a new document by creating a workspace from either a `DynamicDefinition` or `DynamicDefinitionVersion` for the document type.
+If you use a `DynamicDefinition`, the attached latest version will be used for creating your document.
+
+[source,java]
+----
+@Autowired
+private DynamicDocumentService documentService;
+
+DynamicDefinition documentType;
+
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( documentType ); # <1>
+workspace.setDocumentName( "My document" ); # <2>
+workspace.setFieldValue( "some.field", 123 ); # <3>
+
+DynamicDocumentVersion documentVersion = workspace.save(); # <4>
+----
+
+<1> Create a new document workspace for the document definition
+<2> Set a custom name for your document, a random string will be assigned if you do not set a name manually
+<3> Modify document fields, the value you provide must match with the specific Java type of the field
+<3> Call `save()` on the workspace to persist the document in the database, the return value is the `DynamicDocumentVersion` that has been created
+
+== Reading document fields
+
+You can use the workspace to read values from a document, optionally with type conversion.
+
+[source,java]
+----
+DynamicDocument document;
+
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document ); # <1>
+String number = workspace.getFieldValue( "number.as.string" ); # <2>
+long count = workspace.getFieldValue( "number.as.string", Long.class ); # <2>
+----
+
+<1> Create a new workspace for the document, this will load the latest document version in the workspace
+<2> Retrieve field values.
+If you do not specify a second type parameter, the return type will be the exact java type from the document definition.
+If you do specify a type parameter, a `ConversionService` will be used to convert from the source type to your desired output type.
+
+== Update a document
+
+Updating a document is done by creating a new version of that document.
+
+[source,java]
+----
+DynamicDocument document;
+
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document ); # <1>
+workspace.createNewVersion( true ); # <2>
+workspace.setFieldValue( "some.field", 123 );
+
+DynamicDocumentVersion newDocumentversion = document.save();
+----
+
+<1> Create a new workspace for the document (or specific document version)
+<2> Initialize a new document version, keeping the current field values.
+In this example the new version will use the latest document definition.
+If we had supplied `false` as method argument, a new document version would be created using the same definition version as the currently loaded document version.
+
+== Update an existing document version
+
+By default an exception will be thrown if you attempt to call `save()` on an already saved document version.
+This is a safeguard for accidentally re-writing version history.
+
+If you want to update an existing document version, you must tell the workspace to allow it.
+
+[source,java]
+----
+DynamicDocumentVersion documentVersion;
+
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( documentVersion ); # <1>
+workspace.setAllowVersionUpdates( true ); # <2>
+workspace.setFieldValue( "some.field", 123 );
+DynamicDocumentVersion updateVersion = document.save(); # <3>
+workspace.setAllowVersionUpdates( false ); # <4>
+----
+
+<1> Create a new workspace based on the specific document version
+<2> Configure the workspace to allow saving the current - existing - version
+<3> The `save()` method will now return the same, but updated document version
+<4> Reset the workspace behaviour if you want to keep using it
+
+== Importing document data
+
+`DynamicDocumentWorkspace` has several methods that allow bulk setting of field values on a document.
+Bulk modifying methods do not throw exceptions, but return a `DynamicDocumentDataLoader.Report` object instead.
+The latter holds a list of all fields that have been updated, as well as the list of field errors that have occurred.
+
+[source,java]
+----
+DynamicDocumentVersion document;
+Map<String, Object> dataToImport;
+
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document );
+workspace.createNewVersion( true );
+DynamicDocumentDataLoader.Report report = workspace.importFields( dataToImport );
+
+if ( report.hasErrors() ) {
+    // the report object will contain an entry for every field that could not be set
+    // containing details like the full path to the field, reason for failure and value that was set
+}
+----
+
+There are several `importFieldsXX` methods available on a `DynamicDocumentWorkspace`.
+Please investigate the API for all options.
+
+== Exporting document data
+
+You can convert a single document version to another format by calling the `exportFields()` method on the workspace.
+This will convert the actual fields data of the document version to the format you've specified.
+
+NOTE: The export method signature is `exportFields( String format )`.
+For exports to work there must be a `DynamicDocumentDataMapper` registered for that format in the `DynamicDocumentDataMapperFactory`.
+
+[source,java]
+----
+DynamicDocumentVersion document;
+
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document );
+String json = workspace.exportFields( DynamicDataObjectMapper.JSON ); # <1>
+----
+
+<1> Export the fields in the format specified.
+The return value depends on the format you used.
+In case of `JSON` we get a `String` returned.
