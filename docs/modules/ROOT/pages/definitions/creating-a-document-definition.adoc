@@ -31,7 +31,7 @@ document-definition:
 <1> You can define a `messages` block on both a type or a content field definition.
 <2> A message defined on a content field will replace a message with the same code on the type definition.
 
-=== Default message codes used
+=== Default message codes
 
 The following message codes can be configured:
 
