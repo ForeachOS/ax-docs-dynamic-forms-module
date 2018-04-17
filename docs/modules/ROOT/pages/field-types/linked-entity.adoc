@@ -1,0 +1,36 @@
+= Linked entities
+
+You can refer to another entity by prefixing it with the *@* symbol in the `type` field.
+
+The type definition is built by the `EntityDynamicTypeDefinitionBuilder`.
+It will lookup the entity by removing the @ and looking up the name in the `EntityRegistry`.
+
+The following example uses the xref:user-module::index.adoc[UserModule] to generate a `manager` dropdown with a list of users known in its xref:user-module::index.adoc#_user_directories[User Directory]:
+
+[source,yaml]
+----
+document-definition:
+  name: employee
+  content:
+    - id: firstname
+      type: string
+    - id: lastname
+      type: string
+    - id: manager
+      type: '@user'
+----
+
+You can also use a `@user[]` which will create a checkbox group for the entity with the name `user`:
+
+[source,yaml]
+----
+document-definition:
+  name: employee
+  content:
+    - id: firstname
+      type: string
+    - id: lastname
+      type: string
+    - id: managers
+      type: '@user[]'
+----

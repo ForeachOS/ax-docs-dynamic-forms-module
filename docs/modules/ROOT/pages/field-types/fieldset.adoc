@@ -1,0 +1,26 @@
+= `fieldset` field type
+
+The `fieldset` type in a document definition represents a collection of fields. It accepts a `field` property, which can be used to group the fields inside an HTML `fieldset` tag.
+
+The type definition is built by the `FieldsetDynamicTypeDefinitionBuilder`.
+
+The following example is a representation of a company:
+
+[source,yaml]
+----
+document-definition:
+  name: company-data
+  content:
+    - id: general
+      type: fieldset
+      fields:
+        - id: name
+          type: string
+        - id: operational
+          type: boolean
+        - id: shareholders
+          type: string
+          possible-values:
+            - private
+            - public
+----

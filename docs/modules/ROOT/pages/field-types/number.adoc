@@ -1,0 +1,55 @@
+= `number` field type
+
+The `number` type in a document definition will render an `input field`. It will be mapped to the Java Type `java.util.Long`.
+
+The type definition is built by the `SimpleDynamicTypeDefinitionBuilder`.
+
+The following example is a minimalistic representation of a user with a certain age:
+
+[source,yaml]
+----
+document-definition:
+  name: person
+  content:
+    - id: name
+      type: string
+    - id: age
+      type: number
+----
+
+It is also possible to supply several accepted values for a `number`, with a descriptive label. This will render a dropdown with the values of the `possible-values` field:
+
+[source,yaml]
+----
+document-definition:
+  name: first-five-fibonnaci-numbers
+  content:
+    - id: fibonnaci
+      type: number
+      possible-values:
+        - 1: 'number 1'
+        - 2: '1+1'
+        - 3: '1+2'
+        - 5: '2+3'
+        - 8: '3+5'
+----
+
+You can also use a `number[]` which will create a checkbox group for the list of `possible-values`:
+
+[source,yaml]
+----
+document-definition:
+  name: participant
+  content:
+    - id: name
+      type: string
+    - id: olympic-year-locations
+      type: number[]
+      possible-values:
+        - 2014: 'Sochi (2014)'
+        - 2016: 'Rio De Janeiro (2016)'
+        - 2018: 'Pyeongchang (2018)'
+        - 2020: 'Tokyo (2020)'
+        - 2022: 'Beijing (2022)'
+        - 2024: 'Paris (2024)'
+----

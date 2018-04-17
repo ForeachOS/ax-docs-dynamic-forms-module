@@ -1,0 +1,70 @@
+= Dynamic field types
+
+A document definition supports several field types:
+
+** xref:field-types/string.adoc[`string` / `text`]
+** xref:field-types/boolean.adoc[`boolean`]
+** xref:field-types/number.adoc[`number`]
+** xref:field-types/fieldset.adoc[`fieldset`]
+// ** Date & Time
+** xref:field-types/enumeration.adoc[Enumerations]
+** xref:field-types/linked-entity.adoc[Linked entities]
+
+A complete example can be found below:
+
+[source,yaml]
+----
+document-definition:
+  name: person
+  types:
+    - id: street-name
+      base-type: string
+    - id: address
+      base-type: fieldset
+      fields:
+        - id: street-name
+          type: street-name
+        - id: street-nr
+          type: number
+        - id: zipcode
+          type: number
+    - id: company
+      base-type: fieldset
+      fields:
+        - id: name
+          type: string
+          label: Name
+          text:
+            description: Public company name
+        - id: activities
+          type: string[]
+          possible-values:
+            - building-software
+            - selling-cars
+            - destroying-houses
+        - id: founded
+          type: date
+        - id: operational
+          type: boolean
+        - id: shareholders
+          type: string
+          possible-values:
+            - private
+            - public
+  content:
+    - id: firstname
+      type: string
+    - id: lastname
+      type: string
+    - id: phone-number
+      type: string
+    - id: email
+      type: string
+    - id: description
+      type: text
+    - id: address
+      type: address
+    - id: company
+      type: company
+----
+

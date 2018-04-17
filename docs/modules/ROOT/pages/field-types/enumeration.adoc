@@ -1,0 +1,8 @@
+= Enumerations
+
+A list of values can be supplied using the `possible-values` field.
+
+This field is supported by the following field types:
+
+* xref:field-types/number.adoc[`number`]
+* xref:field-types/string.adoc[`string`]

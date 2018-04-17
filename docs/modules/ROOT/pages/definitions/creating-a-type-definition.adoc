@@ -1,0 +1,36 @@
+= Creating a custom type definition
+
+It is possible to create a custom type definition inside your your YAML file. The scope of the type definition is limited to the current document definition.
+
+The types defined in a custom type definition can be reused several times throughout the document definition.
+
+A custom type definition is defined by using the `types` field and specifying the `base-type` for each field.
+
+The following example creates a `street` type, which can be reused:
+
+[source,yaml]
+----
+document-definition:
+  name: person
+  types:
+    - id: street
+      base-type: string
+    - id: address
+      base-type: fieldset
+      fields:
+        - id: street-name
+          type: street
+        - id: street-nr
+          type: number
+        - id: zipcode
+          type: number
+  content:
+    - id: firstname
+      type: string
+    - id: lastname
+      type: string
+    - id: home-address
+      type: address
+    - id: work-address
+      type: address
+----

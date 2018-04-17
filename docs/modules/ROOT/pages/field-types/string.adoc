@@ -1,0 +1,52 @@
+= `string` and `text` field type
+
+The `string` type in a document definition will render an `input` field. It will be mapped to the Java Type `java.lang.String`.
+
+The `text` field in a document definition will render a `textarea`.  It will be mapped to the Java Type `java.lang.String`.
+
+The type definition is built by the `SimpleDynamicTypeDefinitionBuilder`.
+
+The following example is a representation of a user with a description of his hobbies:
+
+[source,yaml]
+----
+document-definition:
+  name: person
+  content:
+    - id: firstname
+      type: string
+    - id: lastname
+      type: string
+    - id: hobbies
+      type: text
+----
+
+It is also possible to supply several accepted values for a `string` this will render a dropdown the values of the `possible-values` field:
+
+[source,yaml]
+----
+document-definition:
+  name: company
+  content:
+    - id: activities
+      type: string
+      possible-values:
+        - building-software
+        - selling-cars
+        - destroying-houses
+----
+
+You can also use a `string[]` which will create a checkbox group for the list of `possible-values`:
+
+[source,yaml]
+----
+document-definition:
+  name: company
+  content:
+    - id: activities
+      type: string[]
+      possible-values:
+        - building-software
+        - selling-cars
+        - destroying-houses
+----

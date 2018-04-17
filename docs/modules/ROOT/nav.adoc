@@ -7,10 +7,11 @@
 ** xref:definitions/definition-versions.adoc[Definition versions]
 * xref:field-types/index.adoc[Dynamic field types]
 ** xref:field-types/string.adoc[Strings]
-** Numbers
+** xref:field-types/number.adoc[Numbers]
 // ** Date & Time
-** Enumerations/Option lists
-** Linked entities
+** xref:field-types/fieldset.adoc[Field Sets]
+** xref:field-types/enumeration.adoc[Enumerations]
+** xref:field-types/linked-entity.adoc[Linked entities]
 ** xref:definitions/creating-a-type-definition.adoc[Creating a custom type]
 * xref:working-with-documents/index.adoc[Working with documents]
 ** xref:working-with-documents/document-versions.adoc[Document versions]
