@@ -1,8 +1,16 @@
 = Creating a custom type definition
 
-It is possible to create a custom type definition inside your your YAML file. The scope of the type definition is limited to the current document definition.
+It is possible to create a custom field type inside your your YAML file. The scope of the field type is limited to the current document definition.
 
-The types defined in a custom type definition can be reused several times throughout the document definition.
+The types defined in a custom type definition can be reused several times throughout the document definition. Note that this custom type will serve as a kind of _template_ for any field types that implement it.
+
+In particular keep follow behaviour in mind:
+
+// TODO: fix link to validation
+* If you are using xref:validation.adoc[validation] in your field type, it will also inherit the validators defined on the custom type definition.
+* If you are using xref:creating-a-document-definition.adoc#_default_message_codes[message] on the field type, it will also inherit and/or replace messages from the custom field type.
+* Any `possible-values` defined on a field type, will *replace* the `possible-values` from the custom field type.
+* Any `fields` defined in a field type, will be added to the list of `fields` from the custom field type. The `fields` from the field type will come *after* those from the custom field type.
 
 A custom type definition is defined by using the `types` field and specifying the `base-type` for each field.
 

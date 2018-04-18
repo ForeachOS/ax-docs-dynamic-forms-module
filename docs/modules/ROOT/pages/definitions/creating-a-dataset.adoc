@@ -1,0 +1,22 @@
+= Creating a data set
+
+A data set is a logical group of document definitions and consists of a name and a key. The key must be alfanumeric.
+
+The following example creates a data set:
+
+[source,java]
+----
+        private final DynamicDefinitionDataSetRepository dataSetRepository;
+
+	private DynamicDefinitionDataSet createDataSet( String name, String key ) {
+		DynamicDefinitionDataSet dataSet = dataSetRepository.findOneByName( name );
+
+		if ( dataSet == null ) {
+			dataSet = new DynamicDefinitionDataSet();
+			dataSet.setName( name );
+			dataSet.setKey( key );
+			dataSetRepository.save( dataSet );
+		}
+		return dataSet;
+	}
+----
