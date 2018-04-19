@@ -1,22 +1,22 @@
-= Creating a data set
+= Creating a definition data set
+:experimental:
 
-A data set is a logical group of document definitions and consists of a name and a key. The key must be alfanumeric.
+A data set is a logical group of document, type and form definitions.
 
-The following example creates a data set:
+A data set has a unique name and key. +
+The key must be alphanumeric.
 
+Data sets can be managed in Admin Web UI from menu:Data set[Dynamic documents]
+
+.Example creating a data set from code
 [source,java]
 ----
-        private final DynamicDefinitionDataSetRepository dataSetRepository;
+DynamicDefinitionDataSetRepository dataSetRepository;
 
-	private DynamicDefinitionDataSet createDataSet( String name, String key ) {
-		DynamicDefinitionDataSet dataSet = dataSetRepository.findOneByName( name );
-
-		if ( dataSet == null ) {
-			dataSet = new DynamicDefinitionDataSet();
-			dataSet.setName( name );
-			dataSet.setKey( key );
-			dataSetRepository.save( dataSet );
-		}
-		return dataSet;
-	}
+DynamicDefinitionDataSet dataSet = new DynamicDefinitionDataSet();
+dataSet.setName( "my-dataset" );
+dataSet.setKey( "my-ds" );
+dataSetRepository.save( dataSet );
 ----
+
+Once a data set has been created, you can start adding xref:definitions/creating-a-document-definition.adoc[document definitions] to it.

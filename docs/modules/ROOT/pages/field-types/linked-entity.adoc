@@ -1,11 +1,17 @@
 = Linked entities
 
-You can refer to another entity by prefixing it with the *@* symbol in the `type` field.
+A linked entity field is a field referencing another entity that must be registered in the `EntityRegistry`.
+A target entity could for example be a `User` object, in which case the Java type of the field would also be `User`.
 
-The type definition is built by the `EntityDynamicTypeDefinitionBuilder`.
-It will lookup the entity by removing the @ and looking up the name in the `EntityRegistry`.
+You define a linked entity field by specifying the entity name as type, prefixed with an `@`.
+The entity name is key under which the entity is available in the `EntityRegistry`.
 
-The following example uses the xref:user-module::index.adoc[UserModule] to generate a `manager` dropdown with a list of users known in its xref:user-module::index.adoc#_user_directories[User Directory]:
+== Single value field
+
+Suppose you have the xref:user-module::index.adoc[UserModule] in your application.
+UserModule provides several entities, one of which being `User`.
+
+The following employee document defines a `manager` field which is the `User` that manages the employee.
 
 [source,yaml]
 ----
@@ -20,8 +26,27 @@ document-definition:
       type: '@user'
 ----
 
-You can also use a `@user[]` which will create a checkbox group for the entity with the name `user`:
+NOTE: In YAML you have to wrap the `@entity` type specifier in single or double quotes to ensure it is treated as a string and to avoid parsing errors.
 
+=== Storage
+
+When storing a document only a reference (usually the id) to a target entity will be saved.
+The referenced entity itself will be fetched when reading the document.
+
+=== Visualization
+
+Dynamic documents integrate seamlessly with EntityModule constructs.
+
+A single value linked entity will usually be visualized as a drop-down.
+However when determining the actual control to render, the default entity configuration of the target entity will be taken into account.
+If you configured the default `ViewElementMode.CONTROL` for a single `User` to be a radio-button list, that will be used instead.
+
+== Multi-value field
+
+You can allow multiple values of a linked entity, by appending an indexer (`[]`) to your field type.
+A multi-value linked entity by default visualizes as a checkbox group.
+
+.Example multi-value user reference (managers)
 [source,yaml]
 ----
 document-definition:

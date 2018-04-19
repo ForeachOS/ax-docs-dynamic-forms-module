@@ -1,5 +1,40 @@
 = Creating a document definition
 
+== Defining fields
+
+A dynamic document consists of a number of fields with corresponding values.
+A dynamic document definition holds all the metadata of those fields, it is in turn comprised of a number of _field definitions_.
+
+A single field definition at minimum defines a unique `id` for that field, as well as a field `type`.
+
+The `id` identifies the field.
+The `type` determines how the field will be stored and treated in code (see xref:field-types/index.adoc[dynamic field types]).
+
+A field `id` must be unique in the scope of its parent (usually the document itself or a fieldset).
+The field `id` will be used to build a fully qualified, unique _path_ to that field in a document.
+
+.Example field id and path
+[source,yaml]
+----
+document-definition:
+  name: sample-document
+  content:
+    - id: name # <1>
+      type: string
+    - id: address # <2>
+      type: fieldset
+      fields:
+      - id: street # <3>
+        type: string
+      - id: number # <3>
+        type: number
+----
+
+<1> top-level field with id `name` has path `name`
+<2> top-level field with id `address` has path `address`
+<3> fieldset member with id `street` has path `address.street`
+<4> fieldset member with id `number` has path `address.number`
+
 == Add field validators
 
 A document field can have any number of validators attached to it.

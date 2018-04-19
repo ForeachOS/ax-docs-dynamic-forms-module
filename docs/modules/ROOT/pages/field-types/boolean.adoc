@@ -1,11 +1,9 @@
-= `boolean` field type
+= Boolean field type
 
-The `boolean` type in a document definition will render a checkbox. It will be mapped to the Java Type `java.util.Boolean`.
+A `boolean` field type stores its value as a `Boolean` java type (`true`/`false`).
+It is usually visualized as a single checkbox.
 
-The type definition is built by the `SimpleDynamicTypeDefinitionBuilder`.
-
-The following example is a minimalistic representation of an active user:
-
+.Example boolean field (active)
 [source,yaml]
 ----
 document-definition:

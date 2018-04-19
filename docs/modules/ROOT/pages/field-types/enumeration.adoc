@@ -1,8 +1,60 @@
-= Enumerations
+= Fixed value fields or enumerations
 
-A list of values can be supplied using the `possible-values` field.
+You can limit the possible values of a field by turning it into an enumeration.
 
-This field is supported by the following field types:
+You turn another base type into an enumeration by supplying the `possible-values`.
+The actual field value is still stored as the original base type.
 
-* xref:field-types/number.adoc[`number`]
+Enumeration is support for the following field types:
+
+* xref:field-types/number.adoc[Numbers]
 * xref:field-types/string.adoc[`string`]
+
+== Single value enumeration
+
+A single value type with limited possible values will by default be visualized as a drop-down.
+
+.Example string enumeration, rendering a drop-down instead of textbox
+[source,yaml]
+----
+document-definition:
+  name: company
+  content:
+    - id: activities
+      type: string
+      possible-values: # <1>
+        - building-software # <2>
+        - selling-cars: "Selling cars" # <3>
+        - destroying-houses
+----
+
+<1> Supply the possible values as a list of items.
+<2> A single value item will use that value for both storage and visualization of the value.
+<3> A possible value can also be specified as a _key_/_value_ pair.
+The _key_ must be convertable to the target field type (in this case `string`) and is the value which will be stored for that field.
+The _value_ of the item can be a `String`, and serves as the visual label for the selected value.
+You can also use a `string[]` which will create a checkbox group for the list of `possible-values`:
+
+== Multi-value enumeration
+
+If you want to store a collection of possible values, you can create a multi-value enumeration by applying an indexer (`[]`) to your base type.
+A multi-value enumeration will by default visualize as a checkbox group.
+
+.Example multi-value number field
+[source,yaml]
+----
+document-definition:
+  name: participant
+  content:
+    - id: name
+      type: string
+    - id: olympic-year-locations
+      type: number[]
+      possible-values:
+        - 2014: 'Sochi (2014)'
+        - 2016: 'Rio De Janeiro (2016)'
+        - 2018: 'Pyeongchang (2018)'
+        - 2020: 'Tokyo (2020)'
+        - 2022: 'Beijing (2022)'
+        - 2024: 'Paris (2024)'
+----

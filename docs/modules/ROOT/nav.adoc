@@ -8,9 +8,10 @@
 * xref:field-types/index.adoc[Dynamic field types]
 ** xref:field-types/string.adoc[Strings]
 ** xref:field-types/number.adoc[Numbers]
+** xref:field-types/boolean.adoc[Booleans]
 // ** Date & Time
-** xref:field-types/fieldset.adoc[Field Sets]
-** xref:field-types/enumeration.adoc[Enumerations]
+** xref:field-types/fieldset.adoc[Fieldsets]
+** xref:field-types/enumeration.adoc[Fixed value fields]
 ** xref:field-types/linked-entity.adoc[Linked entities]
 ** xref:definitions/creating-a-type-definition.adoc[Creating a custom type]
 * xref:validators/index.adoc[Dynamic field validators]

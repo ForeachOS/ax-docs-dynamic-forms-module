@@ -1,13 +1,24 @@
-= `string` and `text` field type
+= String field types
 
-The `string` type in a document definition will render an `input` field. It will be mapped to the Java Type `java.lang.String`.
+A string field type stores its value as a `String` java type.
+It is usually visualized as a textbox.
 
-The `text` field in a document definition will render a `textarea`.  It will be mapped to the Java Type `java.lang.String`.
+Two sub-types are available by default:
 
-The type definition is built by the `SimpleDynamicTypeDefinitionBuilder`.
+[cols="1,4"]
+|===
+|Type |Description
 
-The following example is a representation of a user with a description of his hobbies:
+|`string`
+|Meant for a single line of text.
+Visualizes as a single-line textbox (`input type="text"` in HTML).
 
+|`text`
+|Meant for large text objects.
+Visualizes as a multi-line textbox (`textarea` in HTML).
+|===
+
+.Example string fields
 [source,yaml]
 ----
 document-definition:
@@ -17,36 +28,8 @@ document-definition:
       type: string
     - id: lastname
       type: string
-    - id: hobbies
+    - id: bio
       type: text
 ----
 
-It is also possible to supply several accepted values for a `string` this will render a dropdown the values of the `possible-values` field:
-
-[source,yaml]
-----
-document-definition:
-  name: company
-  content:
-    - id: activities
-      type: string
-      possible-values:
-        - building-software
-        - selling-cars
-        - destroying-houses
-----
-
-You can also use a `string[]` which will create a checkbox group for the list of `possible-values`:
-
-[source,yaml]
-----
-document-definition:
-  name: company
-  content:
-    - id: activities
-      type: string[]
-      possible-values:
-        - building-software
-        - selling-cars
-        - destroying-houses
-----
+A `string` can also be used as storage type for an xref:field-types/enumeration.adoc[enumeration].

@@ -4,7 +4,8 @@ The following field validators are available by default:
 
 == Required field
 
-Validator that checks that a field value has been entered:
+The required field validator can be applied to any field type.
+It checks that a field value has been entered:
 
 * the value should not be `null`
 * the value should not be empty ("") if the field type is a `String`

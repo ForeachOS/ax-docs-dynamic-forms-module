@@ -1,44 +1,58 @@
 = Creating a custom type definition
 
-It is possible to create a custom field type inside your your YAML file. The scope of the field type is limited to the current document definition.
+It is possible to create a custom field type inside your document definition.
+Other fields in the document definition can reference that field type.
 
-The types defined in a custom type definition can be reused several times throughout the document definition. Note that this custom type will serve as a kind of _template_ for any field types that implement it.
+A custom type definition is almost exactly like a regular field definition, with the exception of defining a `base-type` key instead of a `type` key.
+The id of a custom type can be used by other fields as the value of field `type`.
 
-In particular keep follow behaviour in mind:
-
-// TODO: fix link to validation
-* If you are using xref:validation.adoc[validation] in your field type, it will also inherit the validators defined on the custom type definition.
-* If you are using xref:creating-a-document-definition.adoc#_default_message_codes[message] on the field type, it will also inherit and/or replace messages from the custom field type.
-* Any `possible-values` defined on a field type, will *replace* the `possible-values` from the custom field type.
-* Any `fields` defined in a field type, will be added to the list of `fields` from the custom field type. The `fields` from the field type will come *after* those from the custom field type.
-
-A custom type definition is defined by using the `types` field and specifying the `base-type` for each field.
-
-The following example creates a `street` type, which can be reused:
-
+.Example defining and using custom types
 [source,yaml]
 ----
 document-definition:
   name: person
   types:
-    - id: street
+    - id: country # <1>
       base-type: string
-    - id: address
+      possible-values:
+        - BE
+        - NL
+    - id: address # <1>
       base-type: fieldset
       fields:
         - id: street-name
-          type: street
+          type: string
         - id: street-nr
           type: number
-        - id: zipcode
-          type: number
+        - id: city
+          type: string
+        - id: country
+          type: country # <2>
   content:
     - id: firstname
       type: string
     - id: lastname
       type: string
     - id: home-address
-      type: address
+      type: address # <2>
     - id: work-address
-      type: address
+      type: address # <2>
 ----
+
+<1> Custom type definitions.
+<2> Using custom types as field type.
+
+In our example the `address` custom type in turn defines a field using the `country` custom type.
+
+A custom type behaves as a sort of template definition for a field.
+The options defined on the type definition can often be extended by the same options on the implementing field.
+
+The following rules apply:
+
+* Any `possible-values` defined on a field, will *replace* the `possible-values` from the custom type.
+* Any xref:validators/index.adoc[validators] defined on the field will be added to the ones attached to the custom type; for that particular field.
+* Any xref:definitions/creating-a-document-definition.adoc#_configure_ui_messages[messages] defined on the field will replace the same message codes from the custom type.
+All other messages defined both on the field or the custom type will be available.
+* When dealing with fieldset: any `fields` defined on the field will be *added after* the ones defined on the custom type.
+
+These rules cascade: if you have a custom field type that uses another custom type as `base-type`, all definitions will be merged according to the rules described above.

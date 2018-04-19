@@ -1,20 +1,23 @@
-= `fieldset` field type
+= Fieldset field types
 
-The `fieldset` type in a document definition represents a collection of fields. It accepts a `field` property, which can be used to group the fields inside an HTML `fieldset` tag.
+A fieldset is a collection of other fields, stored as a `DynamicDataFieldSet` map.
+It is usually visualized as a `fieldset` in HTML, with the member fields inside it.
 
-The type definition is built by the `FieldsetDynamicTypeDefinitionBuilder`.
+When working with fieldsets the different member fields are usually accessed and set directly.
+The path to a member field of a fieldset will always start with the path of the fieldset it belongs to.
 
-The following example is a representation of a company:
+A `fieldset` field requires additional field definitions to be registered under the `fields` key.
 
+.Example fieldset field
 [source,yaml]
 ----
 document-definition:
   name: company-data
   content:
-    - id: general
+    - id: general # <1>
       type: fieldset
-      fields:
-        - id: name
+      fields: # <2>
+        - id: name # <3>
           type: string
         - id: operational
           type: boolean
@@ -24,3 +27,7 @@ document-definition:
             - private
             - public
 ----
+
+<1> Defines the fieldset field.
+<2> Holds the list of other fields that make up this fieldset (in order).
+<3> The full path for directly accessing the `name` field would be `general.name`.

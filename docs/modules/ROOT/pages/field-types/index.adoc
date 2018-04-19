@@ -1,16 +1,13 @@
 = Dynamic field types
 
-A document definition supports several field types:
+A dynamic document field definition requires a specific field type.
+The field type determines how the field value is handled, displayed and stored.
 
-** xref:field-types/string.adoc[`string` / `text`]
-** xref:field-types/boolean.adoc[`boolean`]
-** xref:field-types/number.adoc[`number`]
-** xref:field-types/fieldset.adoc[`fieldset`]
-// ** Date & Time
-** xref:field-types/enumeration.adoc[Enumerations]
-** xref:field-types/linked-entity.adoc[Linked entities]
+A field type usually corresponds with a specific Java type.
 
-A complete example can be found below:
+== Example
+
+The following is an example with both simple fields and custom field types.
 
 [source,yaml]
 ----
@@ -68,3 +65,46 @@ document-definition:
       type: company
 ----
 
+== Default type keys
+
+The following type keys (for use in `type` or `base-type`) are available:
+
+[cols="1,1,3"]
+|===
+|Type key |Field type |Description
+
+|`string`
+|xref:field-types/string.adoc[Strings]
+|Single-line text.
+
+|`text`
+|xref:field-types/string.adoc[Strings]
+|Multi-line text.
+
+|`number`
+|xref:field-types/number.adoc[Numbers]
+|Whole number (`Long`).
+
+|`boolean`
+|xref:field-types/boolean.adoc[Boolean]
+|Boolean (`true`/`false`) value.
+
+|`fieldset`
+|xref:field-types/fieldset.adoc[Fieldset]
+|Collection of nested fields.
+
+|`@entity`
+|xref:field-types/linked-entity.adoc[Linked entity]
+|Linked entity field (for example a `User`).
+
+|===
+
+== Enumerations
+
+Several base types can be turned into an enumeration by specifying the `possible-values`.
+See the xref:field-types/enumeration.adoc[separate page] for more information.
+
+== Custom types
+
+The example shows the use of custom field types.
+The chapter on xref:definitions/creating-a-type-definition.adoc[creating a custom type] gives more information on how to to this.
