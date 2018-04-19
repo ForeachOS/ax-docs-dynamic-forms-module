@@ -1,0 +1,38 @@
+= Dynamic field validators
+
+The following field validators are available by default:
+
+== Required field
+
+Validator that checks that a field value has been entered:
+
+* the value should not be `null`
+* the value should not be empty ("") if the field type is a `String`
+* the value should not be empty (length 0) if the field type is a `Collection` or `Array`
+
+Adding a required field validator can be done with a single key value.
+
+[cols="1,4"]
+|===
+|Key |Description
+
+|`required`
+|Validates the field value and customizes the field control so it visually displays as a required field.
+
+|`required-silent`
+|Validates the field value, but does *not* customize the field control to visually display as a required field.
+|===
+
+No additional settings are available.
+
+.Example required field
+[source,yaml]
+----
+document-definition:
+  name: sample-document
+  content:
+    - id: name
+      type: string
+      validators:
+       - required
+----

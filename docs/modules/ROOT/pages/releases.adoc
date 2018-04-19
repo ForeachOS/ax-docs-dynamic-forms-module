@@ -5,4 +5,15 @@
 
 NOTE: This is the current development release.
 
-Supported
+The following features are available in the first release:
+
+* ability to create a dataset for grouping document definitions
+* defining a document using YAML
+** adding document fields: strings, numbers, booleans, enumerations, fieldsets and linked entities
+** customizing text messages for a document field
+** adding validators to a document field
+* versioning document definitions
+* creating and updating a document
+** from code or using the default Admin UI
+** every update is a separate version of that document attached to the specific definition version
+** validating a document

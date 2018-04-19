@@ -1,5 +1,46 @@
 = Creating a document definition
 
+== Add field validators
+
+A document field can have any number of validators attached to it.
+When a document is validated, every field will be checked against its validators to determine if the field value is valid.
+
+Validators are specified under the `validators` key as a list of configuration settings.
+Configuration settings can either be a single `String` value identifying the validator, or a map with `String` keys.
+
+NOTE: The default administration UI will not allow saving an invalid document.
+However, document validation is a separate step that needs to be performed manually.
+ +
+ +
+See the chapter on xref:working-with-documents/using-documents-in-code.adoc#validation[validating a document in code] for more information.
+
+.Example YAML document definition with field validators
+[source,yaml]
+----
+document-definition:
+  name: sample-document
+  types:
+    - id: telephone-number
+      base-type: number
+      validators: # <1>
+        - my-custom-pattern-validator: "+xxxx/xx.xx.xx"
+  content:
+    - id: name
+      type: string
+      validators:  # <1>
+       - required
+    - id: telephone
+      type: telephone-number
+      validators:  # <2>
+       - required
+----
+
+<1> Validators can be added on both type and field definitions.
+<2> The set of validators defined on type and field definition will be merged.
+For our `telephone` field, both `my-custom-pattern-validator` and `required` would be applied.
+
+There are separate pages with the xref:validators/index.adoc[list of the available validators] and information on xref:validators/creating-a-field-validator.adoc[creating a custom validator].
+
 == Configure UI messages
 
 You can add custom messages to be used in the user interface for any field or type.
@@ -12,7 +53,7 @@ document-definition:
   name: sample-document
   types:
     - id: telephone-number
-      base-type: number
+      base-type: string
       messages: # <1>
         tooltip: "Enter your telephone number"
         help: "+32 xxxx/xx.xx.xx"
@@ -43,3 +84,6 @@ help::
 
 tooltip::
  On a form, this is the text behind a tooltip (question mark) icon next to the field label.
+
+placeholder::
+ For a textbox form control, this is the placeholder message shown if the textbox is empty.

@@ -13,6 +13,8 @@
 ** xref:field-types/enumeration.adoc[Enumerations]
 ** xref:field-types/linked-entity.adoc[Linked entities]
 ** xref:definitions/creating-a-type-definition.adoc[Creating a custom type]
+* xref:validators/index.adoc[Dynamic field validators]
+** xref:validators/creating-a-field-validator.adoc[Creating a custom field validator]
 * xref:working-with-documents/index.adoc[Working with documents]
 ** xref:working-with-documents/document-versions.adoc[Document versions]
 ** xref:working-with-documents/using-documents-in-code.adoc[Using documents in code]

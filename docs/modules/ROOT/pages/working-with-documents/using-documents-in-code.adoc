@@ -8,6 +8,7 @@ It manages a single document, and allows you to:
 * work with individual fields of the current document version
 * change the definition for the document version
 * import data from other documents
+* validating a document version
 * save the document version
 
 You create a `DynamicDocumentWorkspace` component using the `DynamicDocumentService`.
@@ -99,6 +100,49 @@ workspace.setAllowVersionUpdates( false ); # <4>
 <3> The `save()` method will now return the same, but updated document version
 <4> Reset the workspace behaviour if you want to keep using it
 
+[#validation]
+== Validating a document
+
+Validating a document is done by calling the `validate()` method on the `DynamicDocumentWorkspace`.
+Validation will execute the different field validators and report violations in an `Errors` object.
+
+Validation is always a manual step, how possible errors are handled afterwards is up to the caller.
+
+[source,java]
+----
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( documentVersion );
+Errors validationErrors = workspace.validate();
+
+if ( !validationErrors.hasErrors() ) {
+    // save if the document data is valid
+    workspace.save();
+}
+else {
+    // report violations back to the user
+}
+----
+
+In a web scenario where you are using a `DynamicDocumentWorkspace` as a `WebDataBinder` target, you can also call `validate()` with an existing `BindingResult`.
+
+[source,java]
+----
+@ModelAttribute
+DynamicDocumentWorkspace document() {
+  return documentService.createDocumentWorkspace( ... );
+}
+
+@RequestMapping
+String updateDocument( @ModelAttribute DynamicDocumentWorkspace document, BindingResult bindingResult ) {
+  document.validate( bindingResult );
+
+  if ( !bindingResult.hasErrors() ) {
+   ...
+  }
+
+  ...
+}
+----
+
 == Importing document data
 
 `DynamicDocumentWorkspace` has several methods that allow bulk setting of field values on a document.
@@ -122,6 +166,31 @@ if ( report.hasErrors() ) {
 
 There are several `importFieldsXX` methods available on a `DynamicDocumentWorkspace`.
 Please investigate the API for all options.
+
+=== Using a data loader
+
+If you want to perform multiple document updates, with possible type conversion, you can also use a `DynamicDocumentDataLoader`.
+This helper allows you to perform multiple actions sequentially, and retrieve the report separately when done.
+Additionally it allows for some configuration options regarding error reporting and type conversion.
+
+.Creating a data loader for your current document version
+[source,java]
+----
+DynamicDocumentVersion document;
+Map<String, Object> dataToImport;
+
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document );
+DynamicDocumentDataLoader dataLoader = workspace.createDataLoader(); # <1>
+dataLoader.setFieldValue( "user.name", "john.doe" ); # <2>
+dataLoader.setFieldValue( "user.email", "john.doe@domain.com" );
+
+DynamicDocumentDataLoader.Report report = dataLoader.getReport(); # <3>
+----
+
+<1> Create a data loader preconfigured for the current document version.
+Type conversion will be applied using a `ConversionService` and all errors will be added to the report instead of throwing the exceptions.
+<2> Perform document updates using the data loader.
+<3> When done, get the report and determine next steps.
 
 == Exporting document data
 

@@ -1,0 +1,140 @@
+= Creating a custom field validator
+
+Creating a custom field validator involves two different steps:
+
+. creating a `DynamicDocumentFieldValidator` which performs the actual validation for a field
+. creating a `DynamicDocumentFieldValidatorBuilder` which is responsible for building an instance of your validator with the supplied settings from a field definition
+
+:numbered:
+== Creating the validator
+
+The `DynamicDocumentFieldValidator` performs the actual validation of the field value.
+
+.Example dynamic field validator that rejects a specific value
+[source,java]
+----
+@RequiredArgsConstructor
+public class ValueNotAllowedValidator implements DynamicDocumentFieldValidator
+{
+    @NonNull
+    private final Object notAllowed;
+
+    @Override
+    public void validate( DynamicDocumentFieldValue field, Errors errors ) { # <1>
+        if ( notAllowed.equals( field.getFieldValue() ) ) {
+            errors.rejectValue( field.getFieldKey(), "ValueNotAllowed" );  # <2>
+        }
+    }
+}
+----
+
+<1> The `DynamicDocumentFieldValue` provides the full context of the field, including the full document, the path to the field, the field definition and the field value.
+<2> Always use the `fieldKey` property when rejecting values.
+This ensures correct behaviour in different data binding scenarios.
+
+[discrete]
+=== Customizing field rendering
+
+Sometimes the presence of a validator will influence how a field is visualized in the UI.
+If you require this you can implement the `customizePropertyDescriptor` method in your validator
+
+[source,java]
+----
+interface DynamicDocumentFieldValidator {
+    /**
+     * Allow this validator to apply some customization
+     * to the {@link EntityPropertyDescriptorBuilder}
+     * of a field that uses this validator.
+     *
+     * @param builder to customize
+     */
+    default void customizePropertyDescriptor( EntityPropertyDescriptorBuilder builder ) {
+    }
+    ...
+}
+----
+
+== Providing the validator builder
+
+A `DynamicDocumentFieldValidator` is usually parameterized for a specific field.
+It is a `DynamicDocumentFieldValidatorBuilder` that takes the field definition settings and turns it into an instance of your validator.
+
+[source,java]
+----
+@Component # <1>
+public class ValueNotAllowedValidatorBuilder implements DynamicDocumentFieldValidatorBuilder
+{
+	@Override
+	public boolean accepts( RawDocumentDefinition.AbstractField field,   # <2>
+                                DynamicTypeDefinition typeDefinition,
+                                Map<String, Object> validatorSettings ) {
+		return validatorSettings.containsKey( "not-allowed" );
+	}
+
+	@Override
+	public DynamicDocumentFieldValidator buildValidator( RawDocumentDefinition.AbstractField field, # <3>
+	                                                     DynamicTypeDefinition typeDefinition,
+	                                                     Map<String, Object> validatorSettings ) {
+		return new ValueNotAllowedValidator( validatorSettings.get( "not-allowed" ) );
+	}
+}
+----
+
+<1> Create your `DynamicDocumentFieldValidatorBuilder` as a `@Bean` or `@Component`.
+<2> The `accepts()` method is called to determine if this builder should be used to create a `DynamicDocumentFieldValidator` for those `validatorSettings`.
+The first builder that returns `true` will be used to create the validator.
+<3> The `buildValidator()` method is where an instance of your validator is created with the settings specified.
+
+[discrete]
+=== Validator settings
+
+The validator settings it the `Map` of values specified with a validator entry in a field definition.
+
+.Example field definition with validators
+[source,yaml]
+----
+document-definition:
+  content:
+    - id: name
+      type: string
+      validators:
+       - required # <1>
+       - not-allowed: "John Doe" # <2>
+       - type: custom # <3>
+         allowed:
+          - 1
+          - 2
+         not-allowed:
+          - 3
+          - 4
+         extra-settings:
+          something: false
+          else: true
+----
+
+<1> A single value would be converted to a `Map` with the value as key and `true` as value.
+In this example `required` would result in `Collections.singletonMap( "required", true )` being passesd as validator settings.
+<2> Valid settings for our example `ValueNotAllowedValidator` (see above).
+<3> For complex configuration, an entire hierarchy of settings can be provided.
+The only requirement is that the top-level keys are `String` values.
+In this example the value of `allowed` and `not-allowed` will be a `List`, whereas the value of `extra-settings` will be a `Map`.
+
+[discrete]
+== Replacing existing validators
+
+`DynamicDocumentFieldValidatorBuilder` components are ordered.
+The first builder where `accepts()` returns `true` will be used to create the validator instance.
+If you want to replace an existing validator implementation, you should provide an order to your own builder, so it comes before the original one.
+
+.Example providing a global order to a validator builder
+[source,java]
+----
+@Order(1)
+@Component
+public class ValueNotAllowedValidatorBuilder implements DynamicDocumentFieldValidatorBuilder
+----
+
+The default validator builders are automatically ordered with `Ordered.LOWEST_PRECEDENCE`, ensuring that a custom builder can replace them without having to explicitly provide an order.
+
+
+
