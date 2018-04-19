@@ -1,7 +1,8 @@
 = Creating a custom type definition
 
-It is possible to create a custom field type inside your document definition.
-Other fields in the document definition can reference that field type.
+== Shared type definition
+
+It is possible to create a custom field type inside your document definition, so other fields in the same document definition can reference it.
 
 A custom type definition is almost exactly like a regular field definition, with the exception of defining a `base-type` key instead of a `type` key.
 The id of a custom type can be used by other fields as the value of field `type`.
@@ -56,3 +57,18 @@ All other messages defined both on the field or the custom type will be availabl
 * When dealing with fieldset: any `fields` defined on the field will be *added after* the ones defined on the custom type.
 
 These rules cascade: if you have a custom field type that uses another custom type as `base-type`, all definitions will be merged according to the rules described above.
+
+== Globally available base type
+
+You can also define a new globally available custom base type from Java code.
+To define a new base type you must provide a `DynamicTypeDefinitionBuilder` component (`@Bean` or `@Component`).
+
+Defining a new base type is rarely necessary and only useful if you want to provide advanced customizations.
+
+Example code can be found in the default implementations:
+
+* `SimpleDynamicTypeDefinitionBuilder`
+* `FieldsetDynamicTypeDefinitionBuilder`
+* `EntityDynamicTypeDefinitionBuilder`
+* `EnumDynamicTypeDefinitionBuilder`
+
