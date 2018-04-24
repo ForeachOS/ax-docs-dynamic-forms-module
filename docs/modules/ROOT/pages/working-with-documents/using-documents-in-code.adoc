@@ -37,7 +37,7 @@ DynamicDocumentVersion documentVersion = workspace.save(); # <4>
 <1> Create a new document workspace for the document definition
 <2> Set a custom name for your document, a random string will be assigned if you do not set a name manually
 <3> Modify document fields, the value you provide must match with the specific Java type of the field
-<3> Call `save()` on the workspace to persist the document in the database, the return value is the `DynamicDocumentVersion` that has been created
+<4> Call `save()` on the workspace to persist the document in the database, the return value is the `DynamicDocumentVersion` that has been created
 
 == Reading document fields
 

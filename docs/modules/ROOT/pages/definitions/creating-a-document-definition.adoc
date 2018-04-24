@@ -26,7 +26,7 @@ document-definition:
       fields:
       - id: street # <3>
         type: string
-      - id: number # <3>
+      - id: number # <4>
         type: number
 ----
 

@@ -24,16 +24,12 @@ document-definition:
       type: string
       possible-values: # <1>
         - building-software # <2>
-        - selling-cars: "Selling cars" # <3>
+        - selling-cars: "Selling cars" # <2>
         - destroying-houses
 ----
 
 <1> Supply the possible values as a list of items.
-<2> A single value item will use that value for both storage and visualization of the value.
-<3> A possible value can also be specified as a _key_/_value_ pair.
-The _key_ must be convertable to the target field type (in this case `string`) and is the value which will be stored for that field.
-The _value_ of the item can be a `String`, and serves as the visual label for the selected value.
-You can also use a `string[]` which will create a checkbox group for the list of `possible-values`:
+<2> A possible value can be specified in several ways, see the chapter on <<possible-value-specification,possible value specification>>.
 
 == Multi-value enumeration
 
@@ -58,3 +54,73 @@ document-definition:
         - 2022: 'Beijing (2022)'
         - 2024: 'Paris (2024)'
 ----
+
+[[possible-value-specification]]
+== Possible value specification
+
+There are multiple ways to specify a possible value entry in YAML, depending on how much customization you wish to apply.
+The different specification types can be mixed in the same list of possible values.
+
+
+
+=== Single value
+
+When specifying an item as a single value, the value will be used as both the label and the actual persisted value.
+
+[source,yaml]
+----
+- id: olympic-year-locations
+  type: string
+  possible-values:
+    - myvalue
+    - 'Another value'
+----
+
+=== Key/value pair
+
+When specifying a possible value as a _key_/_value_ pair:
+
+* the _key_ represents to be the actual value of the item
+* the _value_ represents the label that is displayed for that item
+
+[source,yaml]
+----
+- id: olympic-year-locations
+  type: number
+  possible-values:
+    - 2014: 'Sochi (2014)'
+    - '2022': 'Beijing (2022)'
+----
+
+=== Map of settings
+
+If you want to customize how an item is displayed, you can use a map to set more options.
+
+[source,yaml]
+----
+- id: olympic-year-locations
+  type: number
+  possible-values:
+    - value: 2014 # <1>
+      label: 'Sochi (2014)' # <2>
+      html-attributes: # <3>
+        class: past-event
+        data-info:
+          category: winter
+          weather: cold
+----
+
+<1> The required `value` key is used to set the actual value of the item.
+<2> The optional `label` key can be used to specify the display label for the item.
+When omitted, the `value` will be used instead.
+<3> The optional `html-attributes` key can represent a map of values that are HTML attributes that should be set on the control for that item.
+The keys of a `html-attributes` map are expected to be strings, the values can be any type of construct.
+Anything other than string values will usually be serialized to JSON on the generated HTML.
++
+You can use `html-attributes` to apply per-item styling.
+
+[IMPORTANT]
+====
+It is required that the actual value of an item can always be converted to the target type of the field it belongs to.
+For example a value of 'abc' will fail when you try to put it on a field that has a `number` type.
+====
