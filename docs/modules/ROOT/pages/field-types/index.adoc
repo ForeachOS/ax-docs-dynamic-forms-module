@@ -99,11 +99,11 @@ The following type keys (for use in `type` or `base-type`) are available:
 
 |`decimal`
 |xref:field-types/number.adoc[Numbers]
-|Floating point number (`BigDecimal`). Unbounded precision.
+|Floating point number (`BigDecimal`). Two decimal points precision by default.
 
-|`decimal(2)`
+|`decimal(3)`
 |xref:field-types/number.adoc[Numbers]
-|Floating point number (`BigDecimal`). Two decimal points precision.
+|Floating point number (`BigDecimal`). Three decimal points precision.
 
 |`boolean`
 |xref:field-types/boolean.adoc[Boolean]

@@ -18,9 +18,9 @@ The following number types are available:
 |`number(integer)`
 |`Integer`
 |`decimal`
-|`BigDecimal` with unbounded precision.
-|`decimal(2)`
-|`BigDecimal` with two decimal points precision
+|`BigDecimal` with two decimal points precision.
+|`decimal(3)`
+|`BigDecimal` with three decimal points precision
 
 |===
 
