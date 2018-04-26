@@ -83,7 +83,27 @@ The following type keys (for use in `type` or `base-type`) are available:
 
 |`number`
 |xref:field-types/number.adoc[Numbers]
-|Whole number (`Long`).
+|Whole number (`Long`). Ranges from -9223372036854775808 to 9223372036854775807.
+
+|`number(byte)`
+|xref:field-types/number.adoc[Numbers]
+|Whole number (`Byte`). Ranges from -128 to 127.
+
+|`number(short)`
+|xref:field-types/number.adoc[Numbers]
+|Whole number (`Short`). Ranges from -32768 to 32767.
+
+|`number(integer)`
+|xref:field-types/number.adoc[Numbers]
+|Whole number (`Integer`). Ranges from -2147483648 to 2147483647.
+
+|`decimal`
+|xref:field-types/number.adoc[Numbers]
+|Floating point number (`BigDecimal`). Unbounded precision.
+
+|`decimal(2)`
+|xref:field-types/number.adoc[Numbers]
+|Floating point number (`BigDecimal`). Two decimal points precision.
 
 |`boolean`
 |xref:field-types/boolean.adoc[Boolean]

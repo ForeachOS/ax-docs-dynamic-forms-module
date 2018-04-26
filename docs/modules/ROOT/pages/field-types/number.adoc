@@ -11,6 +11,16 @@ The following number types are available:
 
 |`number`
 |`Long`
+|`number(byte)`
+|`Byte`
+|`number(short)`
+|`Short`
+|`number(integer)`
+|`Integer`
+|`decimal`
+|`BigDecimal` with unbounded precision.
+|`decimal(2)`
+|`BigDecimal` with two decimal points precision
 
 |===
 
@@ -23,7 +33,19 @@ document-definition:
     - id: name
       type: string
     - id: age
-      type: number
+      type: number(byte)
+----
+
+.Example decimal field (temperature)
+[source,yaml]
+----
+document-definition:
+  name: location-temperature
+  content:
+    - id: location-name
+      type: string
+    - id: temperature
+      type: decimal(1)
 ----
 
 A number type can also be used as storage type for an xref:field-types/enumeration.adoc[enumeration].
