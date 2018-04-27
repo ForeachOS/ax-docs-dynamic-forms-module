@@ -81,29 +81,35 @@ The following type keys (for use in `type` or `base-type`) are available:
 |xref:field-types/string.adoc[Strings]
 |Multi-line text.
 
+|`char`
+|xref:field-types/string.adoc[Strings]
+|Single character.
+
 |`number`
 |xref:field-types/number.adoc[Numbers]
-|Whole number (`Long`). Ranges from -9223372036854775808 to 9223372036854775807.
+|Whole number (`Long`).
 
 |`number(byte)`
 |xref:field-types/number.adoc[Numbers]
-|Whole number (`Byte`). Ranges from -128 to 127.
+|Whole number (`Byte`).
+
 
 |`number(short)`
 |xref:field-types/number.adoc[Numbers]
-|Whole number (`Short`). Ranges from -32768 to 32767.
+|Whole number (`Short`).
+
 
 |`number(integer)`
 |xref:field-types/number.adoc[Numbers]
-|Whole number (`Integer`). Ranges from -2147483648 to 2147483647.
+|Whole number (`Integer`).
 
 |`decimal`
 |xref:field-types/number.adoc[Numbers]
-|Floating point number (`BigDecimal`). Two decimal points precision by default.
+|Floating point number (`BigDecimal`) with 2 decimal points precision.
 
-|`decimal(3)`
+|`decimal(x)`
 |xref:field-types/number.adoc[Numbers]
-|Floating point number (`BigDecimal`). Three decimal points precision.
+|Floating point number (`BigDecimal`) with x decimal points precision, eg `decimal(4)`.
 
 |`boolean`
 |xref:field-types/boolean.adoc[Boolean]

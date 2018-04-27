@@ -5,22 +5,33 @@ It is usually visualized as a textbox.
 
 The following number types are available:
 
-[cols="1,4"]
+[cols="1,1,3"]
 |===
-|Type |Java type
+|Type |Java type | Remarks
 
 |`number`
 |`Long`
+|Ranges from -9223372036854775808 to 9223372036854775807.
+
 |`number(byte)`
 |`Byte`
+|Ranges from -128 to 127.
+
 |`number(short)`
 |`Short`
+|Ranges from -32768 to 32767.
+
 |`number(integer)`
 |`Integer`
+|Ranges from -2147483648 to 2147483647.
+
 |`decimal`
-|`BigDecimal` with two decimal points precision.
-|`decimal(3)`
-|`BigDecimal` with three decimal points precision
+|`BigDecimal`
+|Two decimal points precision.
+
+|`decimal(x)`
+|`BigDecimal`
+|X decimal points precision, eg `decimal(4)`.
 
 |===
 
@@ -47,5 +58,8 @@ document-definition:
     - id: temperature
       type: decimal(1)
 ----
+
+NOTE: Decimal types are always stored with the full decimal precision in the actual document.
+The configured precision (2 points by default) only applies to the form controls and rendering of a value.
 
 A number type can also be used as storage type for an xref:field-types/enumeration.adoc[enumeration].

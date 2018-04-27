@@ -16,6 +16,11 @@ Visualizes as a single-line textbox (`input type="text"` in HTML).
 |`text`
 |Meant for large text objects.
 Visualizes as a multi-line textbox (`textarea` in HTML).
+
+|`char`
+|Single character.
+Visualizes as a single-line textbox (`input type="text"` in HTML).
+
 |===
 
 .Example string fields
@@ -30,6 +35,8 @@ document-definition:
       type: string
     - id: bio
       type: text
+    - id: gender
+      type: char
 ----
 
 A `string` can also be used as storage type for an xref:field-types/enumeration.adoc[enumeration].
