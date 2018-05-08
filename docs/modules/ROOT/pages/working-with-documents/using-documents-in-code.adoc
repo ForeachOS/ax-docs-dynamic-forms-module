@@ -195,3 +195,24 @@ String json = workspace.exportFields( DynamicDataObjectMapper.JSON ); # <1>
 <1> Export the fields in the format specified.
 The return value depends on the format you used.
 In case of `JSON` we get a `String` returned.
+
+== Re-using a workspace
+
+A `DynamicDocumentWorkspace` is always attached to a single document (version) at any point in time.
+You can change the document loaded or create a new document using the same workspace however.
+This will re-initialize the workspace for the new configuration.
+
+Re-using the same workspace is a good solution when you want to perform sequential processing of multiple documents (eg. exports).
+A workspace uses a definition cache by default.
+Loading a new document in the same workspace often has better performance than creating a new workspace.
+
+[source,java]
+----
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( documentDefinition );
+
+for ( DynamicDocumentVersion document : documents ) {
+  workspace.loadDocument( document );
+  String json = workspace.exportFields( DynamicDataObjectMapper.JSON );
+  // write the json data to file
+}
+----
