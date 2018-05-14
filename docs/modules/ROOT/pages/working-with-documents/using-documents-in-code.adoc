@@ -25,8 +25,6 @@ If you use a `DynamicDefinition`, the attached latest version will be used for c
 @Autowired
 private DynamicDocumentService documentService;
 
-DynamicDefinition documentType;
-
 DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( documentType ); # <1>
 workspace.setDocumentName( "My document" ); # <2>
 workspace.setFieldValue( "some.field", 123 ); # <3>
@@ -45,8 +43,6 @@ You can use the workspace to read values from a document, optionally with type c
 
 [source,java]
 ----
-DynamicDocument document;
-
 DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document ); # <1>
 String number = workspace.getFieldValue( "number.as.string" ); # <2>
 long count = workspace.getFieldValue( "number.as.string", Long.class ); # <2>
@@ -63,8 +59,6 @@ Updating a document is done by creating a new version of that document.
 
 [source,java]
 ----
-DynamicDocument document;
-
 DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document ); # <1>
 workspace.createNewVersion( true ); # <2>
 workspace.setFieldValue( "some.field", 123 );
@@ -86,8 +80,6 @@ If you want to update an existing document version, you must tell the workspace 
 
 [source,java]
 ----
-DynamicDocumentVersion documentVersion;
-
 DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( documentVersion ); # <1>
 workspace.setAllowVersionUpdates( true ); # <2>
 workspace.setFieldValue( "some.field", 123 );
@@ -151,9 +143,6 @@ The latter holds a list of all fields that have been updated, as well as the lis
 
 [source,java]
 ----
-DynamicDocumentVersion document;
-Map<String, Object> dataToImport;
-
 DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document );
 workspace.createNewVersion( true );
 DynamicDocumentDataLoader.Report report = workspace.importFields( dataToImport );
@@ -176,9 +165,6 @@ Additionally it allows for some configuration options regarding error reporting 
 .Creating a data loader for your current document version
 [source,java]
 ----
-DynamicDocumentVersion document;
-Map<String, Object> dataToImport;
-
 DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document );
 DynamicDocumentDataLoader dataLoader = workspace.createDataLoader(); # <1>
 dataLoader.setFieldValue( "user.name", "john.doe" ); # <2>
@@ -202,8 +188,6 @@ For exports to work there must be a `DynamicDocumentDataMapper` registered for t
 
 [source,java]
 ----
-DynamicDocumentVersion document;
-
 DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( document );
 String json = workspace.exportFields( DynamicDataObjectMapper.JSON ); # <1>
 ----
@@ -211,3 +195,24 @@ String json = workspace.exportFields( DynamicDataObjectMapper.JSON ); # <1>
 <1> Export the fields in the format specified.
 The return value depends on the format you used.
 In case of `JSON` we get a `String` returned.
+
+== Re-using a workspace
+
+A `DynamicDocumentWorkspace` is always attached to a single document (version) at any point in time.
+You can change the document loaded or create a new document using the same workspace however.
+This will re-initialize the workspace for the new configuration.
+
+Re-using the same workspace is a good solution when you want to perform sequential processing of multiple documents (eg. exports).
+A workspace uses a definition cache by default.
+Loading a new document in the same workspace often has better performance than creating a new workspace.
+
+[source,java]
+----
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( documentDefinition );
+
+for ( DynamicDocumentVersion document : documents ) {
+  workspace.loadDocument( document );
+  String json = workspace.exportFields( DynamicDataObjectMapper.JSON );
+  // write the json data to file
+}
+----
