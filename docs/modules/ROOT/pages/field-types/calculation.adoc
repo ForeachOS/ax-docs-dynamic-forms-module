@@ -1,0 +1,61 @@
+= Calculated fields
+
+A calculated field is a field that receives a value based on a given formula.
+The given formula can be specified using the xref:https://docs.spring.io/spring/docs/3.0.x/reference/expressions.html[spring expression language], as well as various helper functions.
+
+You turn another base type into a calculated field by supplying the `formula` attribute.
+The actual field value is still stored as the original base type.
+
+Calculation is supported for the following field types:
+
+* xref:field-types/number.adoc[Numbers]
+* xref:field-types/string.adoc[`string`]
+* xref:field-types/boolean.adoc[`boolean`]
+
+== Single value calculation
+
+A single value type with a formula will be visualised as a read-only control.
+
+.Example number calculation, rendering read-only control
+[source,yaml]
+----
+document-definition:
+  name: store
+  content:
+    - id: item
+      label: "name"
+      type: "String"
+    - id: amount-items
+      label: "# items"
+      type: number
+    - id: buy-value
+      type: number
+    - id: sell-value
+      type: number
+    - id: profit-per-item
+      type: number
+      formula: "{sell-value} - {buy-value}" # <1>
+----
+
+<1> Supply the formula that represents the value of the field.
+In this case, the value is the difference between the `sell-value` and the `buy-value`
+
+== Functions
+
+////
+
+For ease of use, various helper functions are provided to ...
+
+[cols="1,2,3"]
+|===
+|Method |Parameters |Remarks
+
+|`sum`
+|an unlimited amount of numbers or fields representing a number.
+
+Example: `sum( 5,23,89, {{myField}} )`
+|Performs the sum operation on all the given values.
+
+|===
+
+////
