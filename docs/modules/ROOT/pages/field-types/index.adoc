@@ -123,6 +123,18 @@ The following type keys (for use in `type` or `base-type`) are available:
 |xref:field-types/boolean.adoc[Boolean]
 |Boolean (`true`/`false`) value.
 
+|`date`
+|xref:field-types/date.adoc[Dates and Times]
+|A date without a time-zone.
+
+|`time`
+|xref:field-types/date.adoc[Dates and Times]
+|A time without a time-zone.
+
+|`datetime`
+|xref:field-types/date.adoc[Dates and Times]
+|A date-time without a time-zone.
+
 |`fieldset`
 |xref:field-types/fieldset.adoc[Fieldset]
 |Collection of nested fields.

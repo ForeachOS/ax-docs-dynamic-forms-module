@@ -1,0 +1,64 @@
+= Date field types
+
+A date,time or datetime field type stores its value as a specific `LocalDate`, `LocalTime` or `LocalDateTime` java type.
+It is usually visualized as a textbox with a date and/or time picker.
+
+The following date and time types are available:
+
+[cols="1,1,3"]
+|===
+|Type |Java type | Remarks
+
+|`date`
+|`LocalDate`
+|Displayed as 20-May-2018.
+
+|`time`
+|`LocalTime`
+|Displayed as 15:06.
+
+|`datetime`
+|`LocalDateTime`
+|Displayed as 20-May-2018 15:06.
+
+|===
+
+.Example date field
+[source,yaml]
+----
+document-definition:
+  name: person
+  content:
+    - id: name
+      type: string
+    - id: birthdate
+      type: date
+----
+
+.Example time field
+[source,yaml]
+----
+document-definition:
+  name: employee
+  content:
+    - id: name
+      type: string
+    - id: starts-working-at
+      type: time
+    - id: stops-working-at
+      type: time
+----
+
+.Example datetime field
+[source,yaml]
+----
+document-definition:
+  name: review
+  content:
+    - id: name
+      type: string
+    - id: reviewed-at
+      type: datetime
+----
+
+A date, time, and datetime type can also be used as storage type for an xref:field-types/enumeration.adoc[enumeration].

@@ -9,7 +9,7 @@
 ** xref:field-types/string.adoc[Strings]
 ** xref:field-types/number.adoc[Numbers]
 ** xref:field-types/boolean.adoc[Booleans]
-// ** Date & Time
+** xref:field-types/date.adoc[Dates and Times]
 ** xref:field-types/fieldset.adoc[Fieldsets]
 ** xref:field-types/enumeration.adoc[Fixed value fields]
 ** xref:field-types/linked-entity.adoc[Linked entities]
