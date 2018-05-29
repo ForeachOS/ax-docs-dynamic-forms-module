@@ -111,6 +111,14 @@ The following type keys (for use in `type` or `base-type`) are available:
 |xref:field-types/number.adoc[Numbers]
 |Floating point number (`BigDecimal`) with x decimal points precision, eg `decimal(4)`.
 
+|`currency(EUR)`
+|xref:field-types/number.adoc[Numbers]
+|Floating point number (`BigDecimal`) with 2 decimal points precision with currency formatter for €.
+
+|`currency(USD,4)`
+|xref:field-types/number.adoc[Numbers]
+|Floating point number (`BigDecimal`) with 4 decimal points precision with currency formatter for $.
+
 |`boolean`
 |xref:field-types/boolean.adoc[Boolean]
 |Boolean (`true`/`false`) value.

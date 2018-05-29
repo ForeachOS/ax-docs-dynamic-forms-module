@@ -33,6 +33,14 @@ The following number types are available:
 |`BigDecimal`
 |X decimal points precision, eg `decimal(4)`.
 
+|`currency(EUR)`
+|`BigDecimal`
+|Two decimal points precision with a currency formatting for €.
+
+|`currency(USD)`
+|`BigDecimal`
+|Two decimal points precision with a currency formatting for $.
+
 |===
 
 .Example number field (age)
