@@ -11,15 +11,15 @@ The following date and time types are available:
 
 |`date`
 |`LocalDate`
-|Displayed as 20-May-2018.
+|A date without a time fragment, eg. 20-May-2018.
 
 |`time`
 |`LocalTime`
-|Displayed as 15:06.
+|Time fragment only, eg. 15:06.
 
 |`datetime`
 |`LocalDateTime`
-|Displayed as 20-May-2018 15:06.
+|A date with a time fragment, eg. 20-May-2018 15:06.
 
 |===
 

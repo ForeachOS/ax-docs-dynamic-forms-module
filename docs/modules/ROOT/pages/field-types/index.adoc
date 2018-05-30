@@ -93,11 +93,9 @@ The following type keys (for use in `type` or `base-type`) are available:
 |xref:field-types/number.adoc[Numbers]
 |Whole number (`Byte`).
 
-
 |`number(short)`
 |xref:field-types/number.adoc[Numbers]
 |Whole number (`Short`).
-
 
 |`number(integer)`
 |xref:field-types/number.adoc[Numbers]
@@ -111,13 +109,13 @@ The following type keys (for use in `type` or `base-type`) are available:
 |xref:field-types/number.adoc[Numbers]
 |Floating point number (`BigDecimal`) with x decimal points precision, eg `decimal(4)`.
 
-|`currency(EUR)`
+|`currency(y)`
 |xref:field-types/number.adoc[Numbers]
-|Floating point number (`BigDecimal`) with 2 decimal points precision with currency formatter for €.
+|Floating point number (`BigDecimal`) with 2 decimal points precision with currency formatter for y, eg `currency(EUR)`.
 
-|`currency(USD,4)`
+|`currency(y,x)`
 |xref:field-types/number.adoc[Numbers]
-|Floating point number (`BigDecimal`) with 4 decimal points precision with currency formatter for $.
+|Floating point number (`BigDecimal`) with x decimal points precision with currency formatter for y, eg `currency(USD,4)`.
 
 |`boolean`
 |xref:field-types/boolean.adoc[Boolean]

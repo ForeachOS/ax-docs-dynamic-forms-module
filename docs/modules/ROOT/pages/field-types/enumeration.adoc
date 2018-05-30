@@ -8,7 +8,8 @@ The actual field value is still stored as the original base type.
 Enumeration is support for the following field types:
 
 * xref:field-types/number.adoc[Numbers]
-* xref:field-types/string.adoc[`string`]
+* xref:field-types/string.adoc[Strings]
+* xref:field-types/date.adoc[Dates and Times]
 
 == Single value enumeration
 

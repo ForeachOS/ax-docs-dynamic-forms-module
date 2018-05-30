@@ -29,17 +29,17 @@ The following number types are available:
 |`BigDecimal`
 |Two decimal points precision.
 
-|`decimal(x)`
+|`decimal(X)`
 |`BigDecimal`
 |X decimal points precision, eg `decimal(4)`.
 
-|`currency(EUR)`
+|`currency(Y)`
 |`BigDecimal`
-|Two decimal points precision with a currency formatting for €.
+|Two decimal points precision with a currency formatting for currency Y, eg `currency(EUR)`.
 
-|`currency(USD)`
+|`currency(Y,X)`
 |`BigDecimal`
-|Two decimal points precision with a currency formatting for $.
+|X decimal points precision with a currency formatting for currency Y, eg `currency(USD,4)`.
 
 |===
 

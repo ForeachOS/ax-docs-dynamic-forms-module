@@ -7,7 +7,7 @@
 ** xref:definitions/definition-versions.adoc[Definition versions]
 * xref:field-types/index.adoc[Dynamic field types]
 ** xref:field-types/string.adoc[Strings]
-** xref:field-types/number.adoc[Numbers]
+** xref:field-types/number.adoc[Numbers & Currency]
 ** xref:field-types/boolean.adoc[Booleans]
 ** xref:field-types/date.adoc[Dates and Times]
 ** xref:field-types/fieldset.adoc[Fieldsets]
