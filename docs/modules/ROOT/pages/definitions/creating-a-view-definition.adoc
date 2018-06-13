@@ -3,7 +3,7 @@
 == Defining views
 
 A dynamic view consist of a number of properties that should be rendered on a specific view.
-A dynamic view is registered for a specific xref:definitions/create-a-view-definition.adoc[dynamic document] through a parent-child relationship, where the document definition is the parent of the view definition.
+A dynamic view is registered for a specific xref:definitions/creating-a-document-definition.adoc[dynamic document] through a parent-child relationship, where the document definition is the parent of the view definition.
 Depending on the view type, additional configuration options may be available, for example on a <<defining-list-views,list view>>, filter controls may be defined.
 
 A single definition requires at least
@@ -27,8 +27,8 @@ The combination of `name` and `type` must be unique in the scope of its parent, 
 [[defining-list-views]]
 === Defining list views
 
-To configure a xref:entity-module:building-views/list-view.adoc[list view] for a document, a view definition will be created with the type `list`.
-Specifically on a list view, xref:entity-module:entity-query/filtering-list-views.adoc[filter controls] can be configured.
+To configure a xref:entity-module::building-views/list-view.adoc[list view] for a document, a view definition will be created with the type `list`.
+Specifically on a list view, xref:entity-module::entity-query/filtering-list-views.adoc[filter controls] can be configured.
 
 .Example list view definition
 [source,yaml]
@@ -56,38 +56,41 @@ Document definition properties must be prefixed with `field:`.
 <6> The filter control modes are defined.
 <7> A field is specified for which a filter control should be rendered.
 
-Below is a listing of all filter options that are available.
+.Listing of available properties on a filter configuration
+[cols="1,1,2", options="header"]
+|===
+|property |required |description
 
-.Example list view definition
-[source,yaml]
-----
-view-definition:
-  name: listView
-  type: list
-  properties:
-    - "field:singular"
-    - "field:multiple"
-  filter:
-    mode:
-      basic: true # <1>
-      advanced: true # <2>
-    defaultSelector: MULTI # <3>
-    defaultQuery: "order by field:singular asc" # <4>
-    basePredicate: "field:multiple contains ('something')" # <5>
-    fields:
-      - id: field:singular # <6>
-        selector: SINGLE
-        operand: NEQ
-      - id: field:multiple # <7>
-----
-<1> Basic filter controls should be rendered.
-This option defaults to true if at least one field is defined.
-<2> The advanced EQL filer control should be rendered. Defaults to false
-<3> The default selector for controls. Defaults to SINGLE.
-<4> The default query that should *always* be applied.
-<5> The base predicate that provides the initial filtering.
-<6> A configuration for a field that should have a single selectable option with a specific operand.
-<7> A configuration for a field that uses defaults.
-This field will have `MULTI` as a selector and will receive a default operand.
+|mode
+|optional
+|Allows for the definition of which filter control modes should be available.
+By default the `basic` mode will be shown if at least one field is configured.
+`advanced` mode will by default not be available.
+
+A specific mode can be set by setting the mode to true, e.g. `advanced: true`
+
+|defaultSelector
+|optional
+|Sets the default selector that should be used for all specified fields, if no selector is provided for the field itself.
+Defauls to `SINGLE`.
+
+|defaultQuery
+|optional
+|Sets the query that should be executed on every request.
+The provided query is an xref:entity-module::entity-query/eql.adoc[EQL statement].
+
+|basePredicate
+|optional
+|Sets the query that provides the initial filtering when navigating to the view.
+The provided query is an xref:entity-module::entity-query/eql.adoc[EQL statement].
+
+|fields
+|optional
+|Defines for which fields an xref:entity-module::entity-query/filtering-list-views.adoc[EQL filter control] should be rendered.
+Listed fields must always specify an `id` and can override the `selector` and `operand` that should be used.
+
+|===
 
 === Defining form views
+
+TODO
