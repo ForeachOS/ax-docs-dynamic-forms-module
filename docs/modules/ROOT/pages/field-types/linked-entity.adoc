@@ -4,7 +4,7 @@ A linked entity field is a field referencing another entity that must be registe
 A target entity could for example be a `User` object, in which case the Java type of the field would also be `User`.
 
 You define a linked entity field by specifying the entity name as type, prefixed with an `@`.
-The entity name is key under which the entity is available in the `EntityRegistry`.
+The entity name is the key under which the entity is available in the `EntityRegistry`.
 
 == Single value field
 

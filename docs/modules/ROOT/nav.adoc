@@ -14,6 +14,7 @@
 ** xref:field-types/fieldset.adoc[Fieldsets]
 ** xref:field-types/enumeration.adoc[Fixed value fields]
 ** xref:field-types/linked-entity.adoc[Linked entities]
+** xref:field-types/linked-document.adoc[Linked documents]
 ** xref:field-types/calculation.adoc[Calculated fields]
 ** xref:definitions/creating-a-type-definition.adoc[Creating a custom type]
 * xref:validators/index.adoc[Dynamic field validators]

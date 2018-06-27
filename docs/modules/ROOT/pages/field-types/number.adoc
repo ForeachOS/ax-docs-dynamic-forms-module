@@ -41,6 +41,20 @@ The following number types are available:
 |`BigDecimal`
 |X decimal points precision with a currency formatting for currency Y, eg `currency(USD,4)`.
 
+|`percentage`
+|`BigDecimal`
+| Percentage formatting without any decimal points, e.g. 57%.
+
+|`percentage(Y)`
+|`BigDecimal`
+| Percentage formatting with a Y multiplier.
+ E.g. `percentage(2)` with a value of `24%` will be persisted as `12` (24 divided by 2).
+
+|`percentage(Y,X)`
+|`BigDecimal`
+| Percentage formatting with a Y multiplier and X decimal points.
+ E.g. `percentage(4,2)` with a value of `24,12%` will be persisted as `8,03` (24,12 divided by 4).
+
 |===
 
 .Example number field (age)

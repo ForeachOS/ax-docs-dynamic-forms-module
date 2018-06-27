@@ -1,0 +1,44 @@
+= Linked documents
+
+A linked document field is a field referencing another document or documentVersion.
+A linked document field is defined by specifying the document id as type.
+
+== Single value field
+We're creating a definition to save job applications, however the data from the application is saved separately, e.g. a reference to the job application, but also the applicants information.
+The following `applicant` definition will reference existing vacancy within the dataset `jobs` as well as the applicant, which is saved as a user document in dataset `hr`.
+
+[source,yaml]
+----
+document-definition:
+  name: applicant
+  content:
+    - id: applicant
+      type: 'document(hr:user)' # <1>
+    - id: vacancy
+      type: 'document(jobs:vacancy@2)' # <2>
+----
+<1> Reference to a document which uses a definition with full key `hr:user`.
+<2> Reference to a document which uses version 2 of the definition with full key `jobs:vacancy`.
+
+NOTE: It is advised to wrap the `type` specifier in single or double quotes to ensure it is treated as a string and to avoid parsing errors.
+[cols="1,2"]
+.Listing of possible types
+[]
+|===
+|Type specifier |Description
+
+| `document`
+| References a `DynamicDocument` entity.
+ The type specification is equal to `@dynamicDocument`.
+
+| `document(hr:user)`
+| References a `DynamicDocument` for a definition `user` in the `hr` dataset.
+
+| `document(hr:user/address)`
+| References a `DynamicDocument` for a definition `address` which has the `user` definition as its parent in the `hr` dataset.
+
+| `document(hr:user@2)`
+| References a `DynamicDocument` for a definition `user` with version `2` in the `hr` dataset.
+|===
+
+NOTE: In the table above `documentVersion` can be used instead of `document` as well to reference documents that use a specific definition version, e.g. `documentVersion(hr:user@2)`
