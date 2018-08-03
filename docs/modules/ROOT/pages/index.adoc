@@ -1,6 +1,5 @@
 = Dynamic Documents & Forms Module
-Steven Gentens
-:toc: left
+Steven Gentens, Arne Vandamme, Marc Vanbrabant
 :sectanchors:
 :module-version: 0.0.1-SNAPSHOT
 :module-name: DynamicFormsModule
@@ -10,13 +9,6 @@ Steven Gentens
 
 
 :!sectnums:
-
-== What is a...
-=== Dynamic Document
-some thing
-
-=== Dynamic Form
-some thing else
 
 == General information
 
@@ -68,30 +60,38 @@ The `DynamicFormsModule` enables users to manage custom documents, which can be 
 
 == Documents
 Documents are the base building blocks to create manageable groups of fields.
-Documents are split up in various parts, being the <<type-definition,types>> that can be used in a document, a <<document-definition,template>> for a document and filled in <<document-data,data>> for a document.
+Documents are split up in various parts, being a <<document-definition,template>> for a document, the <<type-definition,types>> that can be used in a document and filled in <<document-data,data>> for a document.
 A document definition is a template defining the fields and sets of fields that the document represents.
-The document data holds the content for the various field for the document.
+The document data holds the content for the various fields for the document.
 
 :sectnums:
 :chapter-number: 0
 
 [#document-definition]
 === Document definition
-Document definitions represent a group of fields belonging to a data set.
-Each definition is defined as a `RawDocumentDefinition`, which is the base representation of a document template in a `json`/`yaml` format.
+Document definitions represent groups of fields and are in turn grouped within datasets.
+Each definition is defined as a `RawDocumentDefinition`, which is the base representation of a document template in a `json` or `yaml` format.
 A `RawDocumentDefinition` can be converted to a `DynamicDocumentDefinition`, which represents a fully usable document.
 
 Conversion is done through the `DynamicDocumentDefinitionBuilder`, which creates property descriptors with the correct type and validation for the various fields defined in the document definition.
 Aside of creating the `DynamicDocumentDefinition`, it will also ensure that document definitions have a correct configuration.
 
-//TODO
 .Example document definition
 [source,yaml,indent=0]
 [subs="verbatim,quotes,attributes"]
 ----
-
+document-definition:
+  name: Event # <1>
+  content:
+  - id: location # <2>
+    type: string
+    label: Location
+  - id: date # <2>
+    type: date
+    label: Date
 ----
-
+<1> We create a definition for an event.
+<2> An event has 2 fields, being the location and date of the event.
 
 [#type-definition]
 === Type definition
@@ -122,13 +122,13 @@ The default type definitions are the building blocks to create new custom types 
 
 |*time*
 |`LocalTime.class`
-|Represents a combination of hours, minutes, seconds, millseconds and nanoseconds.
+|Represents a combination of hours, minutes, seconds, milliseconds and nanoseconds.
 
 |*datetime*
 |`LocalDateTime.class`
 |Represents a specific point in time. Per se `datetime` is a combination of `date` and `time`.
 
-|*integer*
+|*number*
 |`Long.class`
 |Represents a whole number.
 
@@ -137,27 +137,46 @@ The default type definitions are the building blocks to create new custom types 
 |Represents a decimal number. Can optionally define a precision.
 
 |*currency*
-|
+|`BigDecimal.class`
 |Represents a value in a specific currency.
+
+|*percentage*
+|`BigDecimal.class`
+|Represents a fraction. Optionally, the multiplier and precision can be specified.
 
 |===
 
 A type can also represent a group of fields.
 This enables the possibility to define custom data-types, without any code intervention.
 
-//TODO
 .Example type definition
 [source,yaml,indent=0]
 [subs="verbatim,quotes,attributes"]
 ----
-
+document-definition:
+  name: Sample document
+  types:
+  - id: address # <1>
+    base-type: fieldset
+    fields:
+    - id: street # <2>
+      type: string
+    - id: number # <2>
+      type: number
+    - id: zip-code # <2>
+      type: number
+      label: Zipcode
+    - id: city # <2>
+      type: string
 ----
+<1> We define a custom `address` type.
+<2> An address consists of a `street`, a house `number`, a `zip-code` and a `city`.
 
 [#document-data]
 === Document data
 Document data holds the content for a specified document definition.
 
-//TODO
+//TODO - haven't definined document imports yet.
 .Example document data
 [source,yaml,indent=0]
 [subs="verbatim,quotes,attributes"]

@@ -8,7 +8,7 @@ NOTE: This is the current development release.
 The following features are available in the first release:
 
 * ability to create a dataset for grouping document definitions
-* defining a document using YAML
+* defining a document definition using YAML
 ** adding document fields: strings, numbers, booleans, enumerations, fieldsets and linked entities
 ** customizing text messages for a document field
 ** adding validators to a document field
