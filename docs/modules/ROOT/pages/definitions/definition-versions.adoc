@@ -1,0 +1,35 @@
+= Definition versions
+
+//TODO
+Definitions are dynamic structures which can change at any given time for various incentives.
+Fields can be added, removed, moved from position.
+
+To ensure compatibility with older versions and to prevent data being inaccessible, a versioning system has been provided.
+The structure of a definition is not persisted via the definition, but through it's definition versions.
+
+== Creating a version
+
+- creating a raw definition
+
+.Example creating a raw definition
+```
+Yaml yaml = new Yaml();
+Object raw = yaml.load( new ClassPathResource( path ).getInputStream() ); # <1>
+String convertedJson = objectMapper.writeValueAsString( raw ); # <1>
+
+RawDefinition definition = rawDefinitionService.readRawDefinition( convertedJson, typeName ); # <2>
+```
+<1> If your definition structure is provided in the `yaml` format, it must first be converted to a `json` format.
+<2> A `RawDefinition` object is created.
+
+- creating a new definition version for a definition and with a version specifier
+
+.Example creating a definition version using a definition and a version
+```
+
+```
+
+== Using a version
+
+Specific versions can be fetched from the database and used when creating documents.
+To create a document for a specific version, simply create a workspace using the fetched definition.
