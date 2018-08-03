@@ -88,7 +88,7 @@ The first builder that returns `true` will be used to create the validator.
 [discrete]
 === Validator settings
 
-The validator settings it the `Map` of values specified with a validator entry in a field definition.
+The validator settings is a `Map` of values specified with a validator entry in a field definition.
 
 .Example field definition with validators
 [source,yaml]

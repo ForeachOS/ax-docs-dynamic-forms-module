@@ -141,6 +141,23 @@ The following type keys (for use in `type` or `base-type`) are available:
 |xref:field-types/linked-entity.adoc[Linked entity]
 |Linked entity field (for example a `User`).
 
+|`document`
+|xref:field-types/linked-document.adoc[Linked document]
+|References a `DynamicDocument` entity.
+ The type specification is equal to `@dynamicDocument`.
+
+| `document(hr:user)`
+|xref:field-types/linked-document.adoc[Linked document]
+| References a `DynamicDocument` for a definition `user` in the `hr` dataset.
+
+| `document(hr:user/address)`
+|xref:field-types/linked-document.adoc[Linked document]
+| References a `DynamicDocument` for a definition `address` which has the `user` definition as its parent in the `hr` dataset.
+
+| `document(hr:user@2)`
+|xref:field-types/linked-document.adoc[Linked document]
+| References a `DynamicDocument` for a definition `user` with version `2` in the `hr` dataset.
+
 |===
 
 == Enumerations

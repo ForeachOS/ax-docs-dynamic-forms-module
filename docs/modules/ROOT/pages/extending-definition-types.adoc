@@ -6,19 +6,21 @@ A definition type represents the data structure which its definition instances m
 
 == Defining types
 
-Creating a definition type requires both a raw definition and an actual definition.
-The raw definition of a type is the converted value of json (or yaml) to a typed object.
-During conversion no validation will occur and as such, invalid content may be correctly parsed.
+Creating a definition requires two base elements, the raw definition and the definition.
+A raw definition simply defines that the provided definition in json/yaml is parsable to a typed object.
+It will not validate whether it's content is valid.
+The definition is a valid typed representation of the structure based on the raw definition.
 
 Using raw definitions as the definition object to work with is not advised.
 It is preferred to create a separate object that fully represents a validated definition of your custom type.
-Once the raw definition and the actual definition are created, a type configuration has to be registered on the `DefinitionTypeConfigurationRegistry`
+
+Finally, once a type configuration is registered on the `DefinitionTypeConfigurationRegistry`, the type is ready to be used in definitions.
 
 === Raw Definition
 
 Before a definition is created, a raw definition will be made.
 A raw definition is simply a typed object converted from a given json/yaml and must implement the `RawDefinition` marker interface.
-A raw definition can hold anything and is not validated as to whether it is the correct format.
+A raw definition can hold anything and is not validated as to whether it is of the correct format.
 
 .Example raw definition
 [source,java,indent=0]
@@ -50,10 +52,6 @@ public class RawViewDefinition implements Serializable, RawDefinition
 }
 ----
 
-==== Validation
-
-A custom `Validator` object can be registered on the `DynamicDefinitionTypeConfiguration` of your type to validate its `RawDefinition` instances.
-
 === Definition
 
 A `Definition` is the encapsulating object with strongly typed fields.
@@ -77,8 +75,7 @@ public class DynamicViewDefinition
 === Registering on the registry
 
 Definitions can be converted to and from raw definitions using the `RawDefinitionService`.
-To allow a custom type to be converted by the `RawDefinitionService`, a configuration must be registered on the `DynamicDefinitionTypeConfigurationRegistry`
-A configuration can be created by registering the type information on the registry.
+To support a custom type, a type configuration must be registered on the `DynamicDefinitionTypeConfigurationRegistry`.
 
 .Type configuration information of a DefinitionType
 [cols="1,2",opts=header]
@@ -108,4 +105,4 @@ If the raw definition is successfully validated, an actual definition can be cre
     }
 ----
 
-After registering the configuration, a `DynamicDefinitionTypeConfiguration` will be created and returned, which holds the provided parameters, as well as the actual type instance.
+After registering the configuration, a `DynamicDefinitionTypeConfiguration` will be created and returned, which holds the provided parameters, as well as the corresponding `DynamicDefinitionType` instance.

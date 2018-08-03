@@ -42,13 +42,65 @@ In this case, the value is the difference between the `sell-value` and the `buy-
 
 == Functions
 
-////
-
-For ease of use, various helper functions are provided to ...
+Various helper functions are defined to define formulas for fields.
+The following table lists all functions that are currently available.
 
 [cols="1,2,3"]
 |===
 |Method |Parameters |Remarks
+
+|`count`
+|Collection of objects
+|Returns how many items are present in the given collection
+
+|`countNonNull`
+|Collection of objects
+|Returns how many items are present in the given collection that differ from null.
+
+|`countNull`
+|Collection of objects
+|Returns how many null values are present in the given collection.
+
+|`min`
+|Collection of numeric values
+|Returns the smallest value in the collection.
+
+|`max`
+|Collection of numeric values
+|Returns the largest value in the collection.
+
+|`sum`
+|Collection of numeric values
+|Returns the sum of the values in the collection
+
+|`avg`
+|Collection of numeric values
+|Returns the average of the values in the collection.
+
+|`isNotEmpty`
+|Collection or array of objects
+|Returns whether the collection or array contains at least one item.
+
+|`isEmpty`
+|Collection or array of objects
+|Returns whether the collection or array contains zero elements.
+
+|`and`
+|Collection of boolean values
+|Returns whether the provided values are all true
+
+|`or`
+|Collection of boolean values
+| Returns whether one of the provided values is true
+
+|`concat`
+|Collection of textual
+|Returns the concatenated result of the provided values
+
+|`join`
+|Separator and a collection of textual values
+|Returns a single text that joins the provided textual values wit the provided separator.
+
 
 |`sum`
 |an unlimited amount of numbers or fields representing a number.
@@ -57,5 +109,3 @@ Example: `sum( 5,23,89, {{myField}} )`
 |Performs the sum operation on all the given values.
 
 |===
-
-////

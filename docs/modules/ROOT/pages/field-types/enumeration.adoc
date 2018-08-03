@@ -81,7 +81,7 @@ When specifying an item as a single value, the value will be used as both the la
 
 When specifying a possible value as a _key_/_value_ pair:
 
-* the _key_ represents to be the actual value of the item
+* the _key_ represents the actual value of the item
 * the _value_ represents the label that is displayed for that item
 
 [source,yaml]

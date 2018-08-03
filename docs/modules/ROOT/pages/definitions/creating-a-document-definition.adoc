@@ -6,7 +6,6 @@ A dynamic document consists of a number of fields with corresponding values.
 A dynamic document definition holds all the metadata of those fields, it is in turn comprised of a number of _field definitions_.
 
 A single field definition at minimum defines a unique `id` for that field, as well as a field `type`.
-
 The `id` identifies the field.
 The `type` determines how the field will be stored and treated in code (see xref:field-types/index.adoc[dynamic field types]).
 
@@ -105,6 +104,7 @@ document-definition:
 ----
 
 <1> You can define a `messages` block on both a type or a content field definition.
+//TODO does this replace a message with the same code? Or is only help/description/tooltip available? Can those be localized using language tags?
 <2> A message defined on a content field will replace a message with the same code on the type definition.
 
 === Default message codes
