@@ -37,6 +37,11 @@ Creating a raw definition is necessary to confirm that the the structure can be 
 [source,java,indent=0]
 [subs="verbatim,quotes,attributes"]
 ----
+@Autowired
+private RawDefinitionService rawDefinitionService;
+@Autowired
+private ObjectMapper objectMapper;
+
 Yaml yaml = new Yaml();
 Object raw = yaml.load( new ClassPathResource( path ).getInputStream() ); # <1>
 String convertedJson = objectMapper.writeValueAsString( raw ); # <1>
@@ -54,6 +59,11 @@ Once we have our raw definition, we can create a new definition version.
 [source,java,indent=0]
 [subs="verbatim,quotes,attributes"]
 ----
+@Autowired
+private RawDefinitionService rawDefinitionService;
+@Autowired
+private ynamicDefinitionVersionRepository definitionVersionRepository;
+
 DynamicDefinitionVersion definitionVersion = new DynamicDefinitionVersion();
 definitionVersion.setDefinition( definition ); # <1>
 definitionVersion.setPublished( true ); # <2>
@@ -69,7 +79,7 @@ There is no default naming strategy when creating definitions in code.
 
 == Using a version in code
 
-Documents are mostly created and modified through the `DynamicDocumentWorkspace`.
+Documents are mostly created and modified through the xref::working-with-documents/using-documents-in-code.adoc[DynamicDocumentWorkspace].
 When a document (or document version) is loaded into a workspace, the linked definition is automatically fetched and loaded in for further use.
 If no specific definition version is specified, the latest version of the definition is automatically used.
 
