@@ -216,3 +216,17 @@ for ( DynamicDocumentVersion document : documents ) {
   // write the json data to file
 }
 ----
+
+When performing bulk operations on various documents, sequential processing might be insufficient.
+Through the `CachingDocumentWorkspaceFacory`, workspaces can be created using a basic definition cache.
+
+[source,java]
+----
+CachingDynamicDocumentWorkspaceFactory workspaceFactory = documentService.createCachingDocumentWorkspaceFactory();
+
+documents.stream()
+    .map(workspaceFacory::createDocumentWorkspace)
+    .foreach(ws -> ws.exportFields(DynamicDataObjectMapper.JSON));
+  // write the json data to file
+}
+----
