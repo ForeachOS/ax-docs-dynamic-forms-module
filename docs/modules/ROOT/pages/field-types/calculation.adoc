@@ -34,7 +34,7 @@ document-definition:
       type: number
     - id: profit-per-item
       type: number
-      formula: "{sell-value} - {buy-value}" # <1>
+      formula: "$(sell-value) - $(buy-value)" # <1>
 ----
 
 <1> Supply the formula that represents the value of the field.
@@ -105,7 +105,7 @@ The following table lists all functions that are currently available.
 |`sum`
 |an unlimited amount of numbers or fields representing a number.
 
-Example: `sum( 5,23,89, {{myField}} )`
+Example: `sum( 5,23,89, $(myField) )`
 |Performs the sum operation on all the given values.
 
 |===
