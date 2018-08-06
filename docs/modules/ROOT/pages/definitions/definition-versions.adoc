@@ -16,8 +16,8 @@ Once a version is published, it will automatically be linked from the definition
 == Default interface
 
 The default interface uses the versioning strategy when creating and modifying definitions.
-Modifying a definition will result in new versions being created.
-The naming of these versions is entirely user-definable, but for ease of use, a default naming strategy has been provided that uses number increments.
+As soon as changes are made to a definition, a new version will be created.
+The naming of these versions is entirely user-definable, but for ease of use, a default naming strategy has been provided that uses number increments e.g. `1`, `2` ...
 
 Before the changes will actually be available for use, the version should be published.
 Once a version is published, it is no longer modifiable and it will automatically be used when creating new documents for the corresponding definition.
