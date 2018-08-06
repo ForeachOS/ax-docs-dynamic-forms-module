@@ -206,7 +206,8 @@ Re-using the same workspace is a good solution when you want to perform sequenti
 A workspace uses a definition cache by default.
 Loading a new document in the same workspace often has better performance than creating a new workspace.
 
-[source,java]
+[source,java,indent=0]
+[subs="verbatim,quotes,attributes"]
 ----
 DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( documentDefinition );
 
@@ -220,7 +221,8 @@ for ( DynamicDocumentVersion document : documents ) {
 When performing bulk operations on various documents, sequential processing might be insufficient.
 Through the `CachingDocumentWorkspaceFacory`, workspaces can be created using a basic definition cache.
 
-[source,java]
+[source,java,indent=0]
+[subs="verbatim,quotes,attributes"]
 ----
 CachingDynamicDocumentWorkspaceFactory workspaceFactory = documentService.createCachingDocumentWorkspaceFactory();
 

@@ -1,5 +1,7 @@
 = Getting started
 
+// TODO split up in three different parts? Bootstrapping DFM / Desinging a document / Creating documents
+
 This document provides a quick introduction to using Dynamic Documents in your application.
 
 What we'll do:
@@ -10,45 +12,188 @@ What we'll do:
 
 == Create a new web application
 
+To create an application with the use of `DynamicFormsModule`, generate an across application through the link:{ax-initializr-url}[Across Initializr].
+Let's create an application using xref:across:releases:platform/2.1.1.adoc[Across 2.1.1] of Across Platform and the following modules:
+
+- `AcrossWebModule`
+- `AdminWebModule`
+- `AcrossHibernateJpaModule`
+- `UserModule`
+- `EntityModule`
 //goto initializr, create a web application with adminweb, usermodule, entitymodule
 
 == Add the DynamicFormsModule
 
-//add the dependency
-//add the module name
-//start application
+Now that we have a sample application, we still need to add DynamicFormsModule.
+This is done by adding the dependency, and specifying that the module should be bootstrapped.
+
+.Add the maven dependency
+[source,xml, indent=0]
+----
+<dependency>
+     <groupId>com.foreach.across.modules</groupId>
+     <artifactId>dynamic-forms-module</artifactId>
+</dependency>
+----
+
+.Bootstrap the module when starting the application
+[source,java,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+@AcrossApplication(
+		modules = {
+				AcrossWebModule.NAME,
+				AdminWebModule.NAME,
+				AcrossHibernateJpaModule.NAME,
+				UserModule.NAME,
+				EntityModule.NAME,
+				DynamicFormsModule.NAME # <1>
+		}
+)
+public class DemoApplication
+{
+	public static void main( String[] args ) {
+		SpringApplication.run( DemoApplication.class, args );
+	}
+}
+----
+<1> Add `DynamicFormsModule` to the bootstrapped modules.
+
+When starting up the application, we can see that `DynamicFormsModule` is bootstrapped.
+
+.Abbreviated start-up log
+----
+INFO --- [ost-startStop-1] c.f.a.c.c.bootstrap.AcrossBootstrapper   : AcrossContext: DemoApplication (AcrossContext-1)
+...
+INFO --- [ost-startStop-1] c.f.a.c.c.bootstrap.AcrossBootstrapper   : 9 - DynamicFormsModule [resources: DynamicFormsModule]: class com.foreach.across.modules.dynamicforms.DynamicFormsModule
+INFO --- [ost-startStop-1] c.f.a.c.c.bootstrap.AcrossBootstrapper   : 10 - DemoApplicationModule [resources: demo]: class com.foreach.across.core.DynamicAcrossModule$DynamicApplicationModule
+INFO --- [ost-startStop-1] c.f.a.c.c.bootstrap.AcrossBootstrapper   : 11 - SpringSecurityModule [resources: SpringSecurityModule]: class com.foreach.across.modules.spring.security.SpringSecurityModule
+INFO --- [ost-startStop-1] c.f.a.c.c.bootstrap.AcrossBootstrapper   : 12 - AcrossContextPostProcessorModule [resources: AcrossContextPostProcessorModule]: class com.foreach.across.core.AcrossContextConfigurationModule
+INFO --- [ost-startStop-1] c.f.a.c.c.bootstrap.AcrossBootstrapper   : ---
+----
 
 == Designing our document
+
+Now that the module is present in the application, we can start using it's functionality.
+The core of the module is the creation of dynamic documents, e.g. storing content in a dynamically configurable structure.
+
+Before we can store content, we need to create the structure for storing that data, which is done by creating a document definition.
+In the following sections, we'll go through all the steps required to store data in documents.
 
 //explain that we we will create a new definition
 
 === Create a dataset
-//goto dataset, create a new dataset name
-//explain what a dataset is
+
+Before we can store data inside a document, we need to create a definition.
+Definitions themselves are grouped within datasets.
+
+Let's start off by creating a dataset.
+To do so, we'll navigate to the menu item `Data sets & definitions`.
+There we can create a new data set with a specific name and key, for example:
+
+----
+name: Job application
+key: job-application
+----
+
+image::creating-a-dataset.png[Creating a dataset]
 
 === Create the document definition
 
-// add document definition
-// add a simple document with some field types & a field set
-// save the definition
+Now that we have our dataset, we can define the structure of our document by creating a definition.
+To do so, we can navigate to the tab `Definitions` on our newly created dataset and start creating a new definition.
+
+Let's create the following definition:
+
+----
+name: Applicant
+key: applicant
+type: document # <1>
+----
+<1> We create a definition of the type document, because we're defining the structure for a document.
+
+image::creating-a-definition.png[Creating a definition]
+
+Now that we've created our definition, we can define the structure for our `applicant` document.
+This can be done by modifying the current definition (by clicking on the modify button).
+
+The applicant document will contain the following information:
+
+- The applicant's date of birth
+- The address of the applicant; being a combination of the street (name + house number), zipcode and city.
+- Expected monthly salary (in EUR)
+- The applicant's motivation
+
+When we transform this into a definition, we end up with the following structure:
+
+[source,yaml,indent=0]
+----
+document-definition: # <1>
+  name: Applicant
+  content: # <2>
+  - id: date-of-birth
+    type: date # <3>
+  - id: address
+    type: fieldset # <3>
+    fields:
+    - id: street
+      type: string
+    - id: zip-code
+      type: number
+    - id: city
+      type: string
+  - id: expected-salary
+    type: currency(EUR) #<3>
+  - id: motivation
+    type: text
+----
+<1> The root element of a definition is always `document-definition`.
+<2> The fields of a document are defined in the `content` element of the definition.
+<3> Various types of fields are available.
+
+
+image::creating-definition-structure.png[Creating a definition structure]
 
 == Add a document
 
-// go to document, create a new document
-// fill-in the document, notice form layout - mention basic validation being applied
-// after saving, the general tab shows readonly data of the document
-// we can also see version 1 being mentioned
+Now that a definition is present, a menu item for our definition is automatically generated through which we can create documents for that definition.
+Every document for the aforementioned definition will have the structure we've defined, so, let's create a document with the following information:
+
+----
+Name: Nancy Thompson
+Date of birth: 1971/12/28
+Street: Elm Street, 1428
+Zip code: 8972
+City: SpringWood
+Expected salary: 2134
+----
+
+image::creating-a-document.png[Creating an applicant]
+
+Depending on the fields we've defined in the `Applicant` definition, various fields were generated based on their field type e.g. a date control, a fieldset (to group other fields), a currency control...
+The fields are rendered in the order that they were defined, should you reorder the fields in your definition the new order would be applied to the document as well.
+
+Aside of the rendering of fields, basic validation is applied as well, should you for example, attempt to submit plain text in the `zip-code` control or not fill in the name of the document, validation errors will occur.
+
+image::basic-validation.png
+
+NOTE: One of the fields on the document was not defined in the definition structure.
+This is the field `Name`, which will be the `name` of the document itself.
 
 == Create a new document version
 
-// go to history tab, see there is one clickable entry, the current version
-// back to general, update document
-// we have existing data loaded, if we update
-// new version gets created
-// history shows both versions and allows us to view them
+Documents are also xref:working-with-documents/document-versions.adoc[versioned].
+As soon as we had created our document, a `History` tab appeared.
+The history tab provides a list of all document versions of a single document.
+
+To illustrate a new version being created, let's modify the expected salary from `€ 2134` to `€ 3140`.
+By saving the modifications, a new version will be created with the original data and our modifications.
+When we now navigate to the history tab once more, two versions will be available.
+By clicking on the eye-icon of a specific version, it will be highlighted and the data for that version can be viewed.
+
+image::document-history-tab.png[Document version history]
 
 == What's next?
 
-// more on building a document definition
-// link to field types
-// working with documents section
+The above are te basics of working with documents and definitions.
+To learn more about the details, see the relevant chapters on xref:document-definitions.adoc[Designing a document], the xref:field-types/index.adoc[available field types] and xref:working-with-documents/index.adoc[working with documents].
