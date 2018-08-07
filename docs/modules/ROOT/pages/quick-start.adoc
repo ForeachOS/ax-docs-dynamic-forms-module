@@ -76,10 +76,14 @@ INFO --- [ost-startStop-1] c.f.a.c.c.bootstrap.AcrossBootstrapper   : ---
 Now that the module is present in the application, we can start using it's functionality.
 The core of the module is the creation of dynamic documents, e.g. storing content in a dynamically configurable structure.
 
-Before we can store content, we need to create the structure for storing that data, which is done by creating a document definition.
-In the following sections, we'll go through all the steps required to store data in documents.
+Before we can store content, we need to create the structure for storing that data, which is done by creating a definition.
+Different types of definitions exist for a different purpose.
+Currently, two types are used:
 
-//explain that we we will create a new definition
+- `document`: documents definitions hold the structures of our document content.
+Using these definitions, groups of fields can be declared to store data.
+- `view`: `DynamicFormsModule` integrates with `EntityModule` through which various views can be defined to render data.
+View definitions allow these views to be modified, for example which properties should be rendered.
 
 === Create a dataset
 
@@ -96,8 +100,6 @@ key: job-application
 ----
 
 image::creating-a-dataset.png[Creating a dataset]
-
-Within this dataset, we can now create definitions, which define document structures.
 
 === Create the document definition
 
