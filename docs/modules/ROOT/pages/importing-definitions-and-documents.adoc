@@ -1,0 +1,131 @@
+= Importing definitions and documents
+
+When developing applications a base set of content is often required, such as your domain entities.
+Dynamic documents allows you to dynamically create data structures and forms, but has similar use cases as domain entities, such as:
+
+- The migration of data from one application to another.
+- Sample data that must be available during the development process or when the application goes live.
+- Initial configuration of the application.
+- ...
+
+Most of those cases rest upon the creation of data, which in the case of definitions and documents, can easily be achieved by importing existing data.
+DynamicFormsModule supports both `json` and `yaml`, but is mostly used with the yaml format.
+
+== Importing a definition
+
+Definitions have two aspects.
+One of these is the definition itself, which represents a data structure as a group of fields.
+The other is the definition version, which holds the defined fields of the data structure at a given point in time.
+
+When we talk about importing a definition, we talk about importing a definition version.
+The definition itself (and its dataset) can be created whilst importing the definition version, but also earlier in the process.
+
+=== Creating the data structure
+
+The first thing to do is to have a data structure available to be imported.
+To do so, we'll create a `yaml` file which contains that datastructure.
+
+.sample-document.yml in resources/installers/definitions
+[source,yaml,indent=0]
+----
+document-definition:
+  name: sample-document
+  content:
+    - id: name
+      type: string
+    - id: address
+      type: fieldset
+      fields:
+      - id: street
+        type: string
+      - id: number
+        type: number
+----
+
+NOTE: To learn more about creating a definition, please see the relevant chapters in xref::document-definitions.adoc[Designing a document].
+
+
+=== Creating an installer
+
+Now that we have the data structure ready, we can create and import our definition.
+To start off, we'll create an xref:across:developing-modules:installers.adoc[installer] that we'll use to import the definition.
+
+[source,java,indent=0]
+----
+@Installer(description = "Creates the initial document definitions", phase = InstallerPhase.AfterContextBootstrap)
+public class DefinitionInstaller {
+
+}
+----
+
+Next up, before we can import the data structure we've created, we need to make sure that we have a definition.
+To do so, we'll create a dataset and definition (if necessary), for which we can import the given structure.
+
+[source,java,indent=0]
+----
+éAutowired
+private DynamicDefinitionDataSetRepository dataSetRepository;
+
+DynamicDefinitionDataSet dataSet = new DynamicDefinitionDataSet();
+dataSet.setName( name );
+dataSet.setKey( key );
+dataSet = dataSetRepository.save( dataSet );
+----
+
+Once we have our dataset, we can create the definition.
+
+[source,java,indent=0]
+----
+@Autowired
+private DynamicDefinitionTypeConfigurationRegistry typeConfigurationRegistry;
+@Autowired
+private DynamicDefinitionRepoository definitionRepository;
+
+DynamicDefinition definition = DynamicDefinition.builder()
+                              .dataSet( dataSet )
+                              .type( typeConfigurationRegistry.getbyName(DynamicDefinitionTypes.DOCUMENT)
+                              .name( name )
+                              .key( key )
+                              .parent( parent )
+                              .build();
+definition = definitionRepository.save( definition );
+----
+
+Next, we can read out the file we've created and convert it to a `RawDefinition` object.
+Raw definitions are a basic building block, which will validate whether the provided data structure is correct for a definition of a given type.
+In this case, we're defining the structure for a document, so if a `RawDefinition` is successfully created, we can be sure that the provided definition can be parsed.
+
+[source,java,indent=0]
+----
+@Autowired
+private RawDefinitionService rawDefinitionService;
+
+Yaml yaml = new Yaml();
+Object raw = yaml.load( new ClassPathResource( "installers/definitions/sample-document.yml" ).getInputStream() );
+String convertedToJson = objectMapper.writeValueAsString( raw );
+RawDefinition rawDefinition = rawDefinitionService.readRawDefinition( convertedToJson, DynamicDefinitionTypes.DOCUMENT );
+----
+
+Now we have all the building blocks to import the definition data structure.
+
+[source,java,indent=0]
+----
+@Autowired
+private DynamicDefinitionVersionRepository definitionVersionRepository;
+
+DynamicDefinitionVersion definitionVersion = new DynamicDefinitionVersion();
+definitionVersion.setDefinition( definition );
+definitionVersion.setPublished( published );
+definitionVersion.setRemarks( remarks );
+definitionVersion.setVersion( version );
+definitionVersion.setDefinitionContent( rawDefinitionService.writeDefinition( rawDefinition ) ); # <1>
+definitionVersion = definitionVersionRepository.save( definitionVersion );
+----
+<1> The `RawDefinition` we've created is converted back to a json structure
+
+== Importing a document
+
+// TODO
+// create yaml / json structure for a document
+// convert json to Map<>
+// insert values using workspace
