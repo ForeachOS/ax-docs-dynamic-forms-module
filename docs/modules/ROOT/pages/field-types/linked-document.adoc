@@ -21,6 +21,26 @@ document-definition:
 <2> Reference to a document which uses version 2 of the definition with full key `jobs:vacancy`.
 
 NOTE: It is advised to wrap the `type` specifier in single or double quotes to ensure it is treated as a string and to avoid parsing errors.
+
+The above example can also been written with the `options-query` attribute, as shown below.
+
+[source,yaml]
+----
+document-definition:
+  name: applicant
+  content:
+    - id: applicant
+      type: 'document'
+      attributes:
+         options-query: "type.key = 'user' and type.dataSet.key = 'hr'" # <1>
+    - id: vacancy
+      type: 'document'
+      attributes:
+         options-query: "type.key = 'vacancy' and type.dataSet.key = 'jobs' and type.latestVersion.version = 2" # <2>
+----
+<1> The equivalent of `type: 'document(hr:user)'`
+<2> The equivalent of `type: 'document(jobs:vacancy@2)'`
+
 [cols="1,2"]
 .Listing of possible types
 []

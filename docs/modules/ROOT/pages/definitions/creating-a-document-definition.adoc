@@ -75,10 +75,12 @@ For our `telephone` field, both `my-custom-pattern-validator` and `required` wou
 
 There are separate pages with the xref:validators/index.adoc[list of the available validators] and information on xref:validators/creating-a-field-validator.adoc[creating a custom validator].
 
-== Configure UI messages
+== Configure custom messages and labels
 
 You can add custom messages to be used in the user interface for any field or type.
 Messages are specified under the `messages` key as a map of `message code` and `message` entries.
+
+A `label` can also be provided for every field definition.
 
 .Example YAML document definition with custom messages
 [source,yaml]
@@ -97,15 +99,38 @@ document-definition:
       messages: # <1>
         description: "Your personal name"
     - id: telephone
-      label: "Telephone number"
+      label: "Telephone number" # <2>
       type: telephone-number
-      messages: # <2>
+      messages: # <3>
         help: "0032 xxxx/xx.xx.xx"
 ----
 
 <1> You can define a `messages` block on both a type or a content field definition.
-//TODO does this replace a message with the same code? Or is only help/description/tooltip available? Can those be localized using language tags?
-<2> A message defined on a content field will replace a message with the same code on the type definition.
+<2> This is the label used to display as the column heading in a list view or the label of the form.
+<3> A message defined on a content field will replace a message with the same code on the type definition.
+In this example, the `help` code from the base type will be overwritten and contain `0032 xxxx/xx.xx.xx`.
+
+Any message code can be localized by suffixing the locale code.
+
+.Example YAML document definition with custom messages and locales
+[source,yaml]
+----
+document-definition:
+  name: sample-document
+  content:
+    - id: name
+      type: string
+      messages: # <1>
+        description: "Your personal name" # <1>
+        description_en_: "Your personal name in English" # <2>
+        description_ja_JP_: "あなたの個人的な名前" # <3>
+        description_no_NO_NY: "Ditt personlige navn"  # <4>
+----
+
+<1> The default description, used when no matching locale was found.
+<2> The description for all English speaking countries (Australia, Candara, India, Ireland, Malta, ...).
+<3> The description for Japan.
+<4> The description for Norvegian Norsk, a variant of standard Norvegian Bokmål.
 
 === Default message codes
 

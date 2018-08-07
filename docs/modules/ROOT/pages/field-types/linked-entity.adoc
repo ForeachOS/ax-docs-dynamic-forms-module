@@ -24,7 +24,11 @@ document-definition:
       type: string
     - id: manager
       type: '@user'
+      attributes:
+        options-query: "deleted = false" # <1>
 ----
+
+<1> Only show active users in the dropdown
 
 NOTE: In YAML you have to wrap the `@entity` type specifier in single or double quotes to ensure it is treated as a string and to avoid parsing errors.
 
@@ -57,5 +61,10 @@ document-definition:
     - id: lastname
       type: string
     - id: managers
-      type: '@user[]'
+      type: '@user[]' # <1>
+      attributes:
+        options-query: "email like '%@google.com%' and deleted = false" # <2>
 ----
+
+<1> With `@user[]`, you reference a list of user entities.
+<2> The checkbox group will be filtered, by using the specified query. It will only list users belonging to the google.com domain and are not deleted.
