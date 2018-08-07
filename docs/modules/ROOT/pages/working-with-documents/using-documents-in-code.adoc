@@ -218,8 +218,14 @@ for ( DynamicDocumentVersion document : documents ) {
 }
 ----
 
-When performing bulk operations on various documents, sequential processing might be insufficient.
-Through the `CachingDocumentWorkspaceFacory`, workspaces can be created using a basic definition cache.
+== Performing bulk operations on documents
+
+`DynamicDocumentWorkspace` s are always created through the `DynamicDocumentService`.
+These workspaces have their own definition cache, so that if a workspace is reused for various documents, a performance boost may occur for documents that use the same definition.
+When performing bulk operations on documents, sequential processing will become insufficient and using more than one workspace will require additional fetching and conversion of the same definitions.
+
+Through the `DynamicDocumentService`, it is possible to create a `CachingDynamicDocumentWorkspaceFactory`, which has it's own cache for definitions.
+All workspaces created through the caching workspace factory will then reuse that same cache, and as such cause a significant performance boost when creating multiple workspaces for documents with the same definition.
 
 [source,java,indent=0]
 [subs="verbatim,quotes,attributes"]
@@ -227,8 +233,14 @@ Through the `CachingDocumentWorkspaceFacory`, workspaces can be created using a 
 CachingDynamicDocumentWorkspaceFactory workspaceFactory = documentService.createCachingDocumentWorkspaceFactory();
 
 documents.stream()
-    .map(workspaceFacory::createDocumentWorkspace)
-    .foreach(ws -> ws.exportFields(DynamicDataObjectMapper.JSON));
-  // write the json data to file
+    .map(workspaceFacory::createDocumentWorkspace) # <1>
+    .forEach(ws -> {
+        ws.exportFields(DynamicDataObjectMapper.JSON);
+        // write the json data to file
+        }
+    )
+
 }
 ----
+<1> Each document is converted to a workspace by the workspace factory.
+Definitions that are reused by various workspaces are converted once to a `DynamicDocumentDefinition`, instead of for every workspace that is created.
