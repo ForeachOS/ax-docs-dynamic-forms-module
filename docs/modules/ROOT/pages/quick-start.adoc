@@ -13,14 +13,13 @@ What we'll do:
 == Create a new web application
 
 To create an application with the use of `DynamicFormsModule`, generate an across application through the link:{ax-initializr-url}[Across Initializr].
-Let's create an application using xref:across:releases:platform/2.1.1.adoc[Across 2.1.1] of Across Platform and the following modules:
+In the following sections, we'll be using an application generated with xref:across:releases:platform/2.1.1.adoc[Across 2.1.1.RELEASE] and the following modules:
 
 - `AcrossWebModule`
 - `AdminWebModule`
 - `AcrossHibernateJpaModule`
 - `UserModule`
 - `EntityModule`
-//goto initializr, create a web application with adminweb, usermodule, entitymodule
 
 == Add the DynamicFormsModule
 
@@ -84,10 +83,10 @@ In the following sections, we'll go through all the steps required to store data
 
 === Create a dataset
 
-Before we can store data inside a document, we need to create a definition.
-Definitions themselves are grouped within datasets.
+The first step to create a document, is to create a dataset.
+Datasets are logical groups of a combination of definitions, for example a dataset `Job application` could hold definitions for job, applicants, job titles...
 
-Let's start off by creating a dataset.
+Let's start off by creating a data set.
 To do so, we'll navigate to the menu item `Data sets & definitions`.
 There we can create a new data set with a specific name and key, for example:
 
@@ -98,26 +97,28 @@ key: job-application
 
 image::creating-a-dataset.png[Creating a dataset]
 
+Within this dataset, we can now create definitions, which define document structures.
+
 === Create the document definition
 
-Now that we have our dataset, we can define the structure of our document by creating a definition.
-To do so, we can navigate to the tab `Definitions` on our newly created dataset and start creating a new definition.
+Definitions can define various structures, such as the content structure for a document and the configuration of a view.
+In this example, we'll be creating a `document` for an Applicant, to define which information we would like to store.
 
-Let's create the following definition:
+To create a definition, we navigate to the tab `Definitions` on a dataset, where we can start creating new definitions.
+Before we can define the structure for our Applicant, we must create the definition:
 
 ----
 name: Applicant
 key: applicant
 type: document # <1>
 ----
-<1> We create a definition of the type document, because we're defining the structure for a document.
+<1> We create a definition of the type `document` which allows us to define the document structure as a combination of various fields.
 
 image::creating-a-definition.png[Creating a definition]
 
-Now that we've created our definition, we can define the structure for our `applicant` document.
-This can be done by modifying the current definition (by clicking on the modify button).
+Now, we can further modify the definition and add fields to store information.
 
-The applicant document will contain the following information:
+For each applicant, we'd like to store the following information:
 
 - The applicant's date of birth
 - The address of the applicant; being a combination of the street (name + house number), zipcode and city.
@@ -131,10 +132,10 @@ When we transform this into a definition, we end up with the following structure
 document-definition: # <1>
   name: Applicant
   content: # <2>
-  - id: date-of-birth
-    type: date # <3>
+  - id: date-of-birth # <3>
+    type: date # <4>
   - id: address
-    type: fieldset # <3>
+    type: fieldset # <4>
     fields:
     - id: street
       type: string
@@ -143,16 +144,30 @@ document-definition: # <1>
     - id: city
       type: string
   - id: expected-salary
-    type: currency(EUR) #<3>
+    type: currency(EUR) #<4>
   - id: motivation
     type: text
 ----
-<1> The root element of a definition is always `document-definition`.
-<2> The fields of a document are defined in the `content` element of the definition.
-<3> Various types of fields are available.
-
+<1> Definitions always have a root element.
+In this case, we're creating the structure for a document, so the root element is `document-definition`.
+<2> A document has fields which will make up the structure of the document.
+ These are defined in the `content` element of the definition.
+<3> Every field has an `id` which make up the key under which the information will be stored.
+The key for a field is a combination of the field itself and its (direct) parents, with fields under the `content` element as root items.
+In this definition, the following are examples of full keys: `date-of-birth`, `address.zip-code` and `expected-salary`.
+<4> Various types of fields are available.
 
 image::creating-definition-structure.png[Creating a definition structure]
+
+[NOTE]
+====
+In the above image, we can also notice the `published` and `current/new version` fields.
+Modifying a definition results in a new version with the applied modifications:
+
+- published modifications: The modifications are gathered in a fixed version.
+Documents that are updated or created through the default UI will be using this version.
+- non-published modifications: A draft version is created and further non-published modifications will modify the draft version.
+====
 
 == Add a document
 
@@ -175,7 +190,7 @@ The fields are rendered in the order that they were defined, should you reorder 
 
 Aside of the rendering of fields, basic validation is applied as well, should you for example, attempt to submit plain text in the `zip-code` control or not fill in the name of the document, validation errors will occur.
 
-image::basic-validation.png
+image::basic-validation.png[Example of basic validation]
 
 NOTE: One of the fields on the document was not defined in the definition structure.
 This is the field `Name`, which will be the `name` of the document itself.
@@ -187,13 +202,14 @@ As soon as we had created our document, a `History` tab appeared.
 The history tab provides a list of all document versions of a single document.
 
 To illustrate a new version being created, let's modify the expected salary from `€ 2134` to `€ 3140`.
-By saving the modifications, a new version will be created with the original data and our modifications.
-When we now navigate to the history tab once more, two versions will be available.
-By clicking on the eye-icon of a specific version, it will be highlighted and the data for that version can be viewed.
+By updating the content of the document, a new version will be created with the original data and our changes.
+
+Upon navigating to the history tab, two versions will be available, of which the details can be viewed by clicking on the eye-icon.
 
 image::document-history-tab.png[Document version history]
 
 == What's next?
 
-The above are te basics of working with documents and definitions.
-To learn more about the details, see the relevant chapters on xref:document-definitions.adoc[Designing a document], the xref:field-types/index.adoc[available field types] and xref:working-with-documents/index.adoc[working with documents].
+The above are the basics of how to work with definitions and documents.
+To learn more about how to use documents, see the chapters on xref:document-definitions.adoc[Designing a document] and xref:working-with-documents/index.adoc[Working with documents].
+For more details on configuring the fields for a definition, take a look at the xref:field-types/index.adoc[field types] and xref:validators/index.adoc[validators].
