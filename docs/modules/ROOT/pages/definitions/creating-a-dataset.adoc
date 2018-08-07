@@ -6,7 +6,7 @@ A data set is a logical group of document, type and form definitions.
 A data set has a unique name and key. +
 The key must be alphanumeric.
 
-Data sets can be managed in Admin Web UI from menu:Data set[Dynamic documents]
+Data sets can be managed in Admin Web UI via the menu *Data sets & definitions*
 
 .Example creating a data set from code
 [source,java]
