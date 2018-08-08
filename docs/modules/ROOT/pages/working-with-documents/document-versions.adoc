@@ -5,7 +5,7 @@ By setting the `versionable` property on a `DynamicDocument` to `true`, modifica
 This allows a single document to be linked to various definition versions or various documents for the same definition to link to different definition versions.
 Each document also has a backlink to its latest version for easy access.
 
-Document versions hold the content of the document and link to the definition version that holds the structure of when the document was created or last modified.
+Document versions hold the content of the document and link to the definition version that holds the structure for that specific version.
 
 NOTE: The content of a document is persisted through `DynamicDocumentVersion` s.
 This means that at least one version will be present if a document contains data.
@@ -20,4 +20,4 @@ For versioned documents, a `history` tab is also provided through which older ve
 
 == Creating a document version
 
-See xref::working-with-documents/using-documents-in-code.adoc[Working with documents] for more information on how to create new documents, modify an existing document (version) or creating a new version for a document.
+See xref::working-with-documents/using-documents-in-code.adoc[Using documents in code] for more information on how to create new documents, modify an existing document (version) or creating a new version for a document.

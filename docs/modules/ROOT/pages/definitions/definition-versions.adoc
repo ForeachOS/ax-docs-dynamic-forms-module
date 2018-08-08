@@ -4,12 +4,12 @@ Definitions are dynamic structures which are easily modified, e.g. fields are ad
 This means, that when a document is created, the next one isn't necessarily based on the same structure.
 To ensure compatibility with older versions and to prevent data being inaccessible, a versioning system has been provided.
 
-In this versioning system, the modifiable structure is persisted using a `DynamicDefinitionVersion`, which results in a version for every change made to the defined structure.
+The modifiable structure is persisted using a `DynamicDefinitionVersion`, which results in a version for every change made to the defined structure.
 Documents then refer to a specific definition version and as such can have a different structure whilst having the same definition.
 
 Versions have two important concepts:
 
-- Every version of the same definition has a unique name
+- Every version of the same definition has a unique version name
 - Versions can be published.
 Once a version is published, it will automatically be linked from the definition as the latest version.
 
@@ -53,7 +53,8 @@ In this example, the structure is available in a file on the classpath.
 <2> A `RawDefinition` object is created based on a json structure and a specific definition type.
 Before a type can be used, it must be registered on the `DynamicDefinitionTypeConfigurationRegistry`.
 
-Once we have our raw definition, we can create a new definition version.
+If the raw definition is successfully created, the document structure is of a parsable format.
+Now we can create a new version, using the content of the raw definition.
 
 .Example creating a definition version using a definition and a version
 [source,java,indent=0]
@@ -75,13 +76,15 @@ definitionVersion = definitionVersionRepository.save( definitionVersion );
 <2> Publishing a version will ensure that the version is linked as the latest version of the definition.
 <3> A version name *must* be specified.
 There is no default naming strategy when creating definitions in code.
-<4> The raw definition that has been created is converted back to json and then added to the version.
+<4> The raw definition that has been created is converted back to json and then added.
 
 == Using a version in code
 
 Documents are mostly created and modified through the xref::working-with-documents/using-documents-in-code.adoc[DynamicDocumentWorkspace].
-When a document (or document version) is loaded into a workspace, the linked definition is automatically fetched and loaded in for further use.
-If no specific definition version is specified, the latest version of the definition is automatically used.
+When a document (or document version) is loaded into a workspace, the linked definition version is automatically fetched and loaded in for further use.
 
-Documents can also be created with a specific definition version, by loading that version into the workspace.
+Workspaces can also be created with a specific definition version or a definition.
+If no specific definition version is specified, the latest version will be used in the workspace.
+Documents can then be created for that definition (version).
+
 See the link:https://across-docs.foreach.be/across-standard-modules/DynamicFormsModule/0.0.1.RELEASE/javadoc/[javadoc] for more information on which methods can be used.
