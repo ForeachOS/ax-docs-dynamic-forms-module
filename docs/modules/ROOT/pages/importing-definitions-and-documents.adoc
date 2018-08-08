@@ -1,31 +1,21 @@
 = Importing definitions and documents
 
-When developing applications a base set of content is often required, such as your domain entities.
-Dynamic documents allows you to dynamically create data structures and forms, but has similar use cases as domain entities, such as:
-
-- The migration of data from one application to another.
-- Sample data that must be available during the development process or when the application goes live.
-- Initial configuration of the application.
-- ...
-
-Most of those cases rest upon the creation of data, which in the case of definitions and documents, can easily be achieved by importing existing data.
-DynamicFormsModule supports both `json` and `yaml`, but is mostly used with the yaml format.
+`DynamicsFormsModule` supports importing of definitions and documents using `json` or `yaml` structures.
 
 == Importing a definition
 
-Definitions have two aspects.
-One of these is the definition itself, which represents a data structure as a group of fields.
-The other is the definition version, which holds the defined fields of the data structure at a given point in time.
+A definition represents groups of fields which define the template for a document, the content of which is stored within a definition version.
+Creating a definition has two steps, being the creation of the `DynamicDefinition` and the creation of a corresponding `DynamicDefinitionVersion`.
 
-When we talk about importing a definition, we talk about importing a definition version.
-The definition itself (and its dataset) can be created whilst importing the definition version, but also earlier in the process.
+In the following sections, we'll be creating a definition from scratch, including the data set it belongs to.
 
 === Creating the data structure
 
 The first thing to do is to have a data structure available to be imported.
-To do so, we'll create a `yaml` file which contains that datastructure.
+To do so, we'll create a `yaml` file which contains that data structure.
+This will later on be imported and used to create a `DynamicDefinitionVersion`
 
-.sample-document.yml in resources/installers/definitions
+.resources/installers/definitions/sample-document.yml
 [source,yaml,indent=0]
 ----
 document-definition:
@@ -48,7 +38,7 @@ NOTE: To learn more about creating a definition, please see the relevant chapter
 === Creating an installer
 
 Now that we have the data structure ready, we can create and import our definition.
-To start off, we'll create an xref:across:developing-modules:installers.adoc[installer] that we'll use to import the definition.
+To start off, we'll create an xref:across:developing-modules:installers.adoc[installer] to create the definition.
 
 [source,java,indent=0]
 ----
@@ -63,16 +53,16 @@ To do so, we'll create a dataset and definition (if necessary), for which we can
 
 [source,java,indent=0]
 ----
-éAutowired
+Autowired
 private DynamicDefinitionDataSetRepository dataSetRepository;
 
 DynamicDefinitionDataSet dataSet = new DynamicDefinitionDataSet();
-dataSet.setName( name );
-dataSet.setKey( key );
+dataSet.setName( "Samples" );
+dataSet.setKey( "samples" );
 dataSet = dataSetRepository.save( dataSet );
 ----
 
-Once we have our dataset, we can create the definition.
+Now that we have a dataset, we can add definitions to it.
 
 [source,java,indent=0]
 ----
@@ -84,15 +74,14 @@ private DynamicDefinitionRepoository definitionRepository;
 DynamicDefinition definition = DynamicDefinition.builder()
                               .dataSet( dataSet )
                               .type( typeConfigurationRegistry.getbyName(DynamicDefinitionTypes.DOCUMENT)
-                              .name( name )
-                              .key( key )
-                              .parent( parent )
+                              .name( "Sample document" )
+                              .key( "sample-document" )
                               .build();
 definition = definitionRepository.save( definition );
 ----
 
 Next, we can read out the file we've created and convert it to a `RawDefinition` object.
-Raw definitions are a basic building block, which will validate whether the provided data structure is correct for a definition of a given type.
+Raw definitions are basic building blocks, which will validate whether the provided data structure is correct for a definition of a given type.
 In this case, we're defining the structure for a document, so if a `RawDefinition` is successfully created, we can be sure that the provided definition can be parsed.
 
 [source,java,indent=0]
@@ -106,7 +95,7 @@ String convertedToJson = objectMapper.writeValueAsString( raw );
 RawDefinition rawDefinition = rawDefinitionService.readRawDefinition( convertedToJson, DynamicDefinitionTypes.DOCUMENT );
 ----
 
-Now we have all the building blocks to import the definition data structure.
+Finally, we can create the definition version.
 
 [source,java,indent=0]
 ----
@@ -121,7 +110,7 @@ definitionVersion.setVersion( version );
 definitionVersion.setDefinitionContent( rawDefinitionService.writeDefinition( rawDefinition ) ); # <1>
 definitionVersion = definitionVersionRepository.save( definitionVersion );
 ----
-<1> The `RawDefinition` we've created is converted back to a json structure
+<1> The raw definition is converted to a `json` structure before it is persisted.
 
 == Importing a document
 
