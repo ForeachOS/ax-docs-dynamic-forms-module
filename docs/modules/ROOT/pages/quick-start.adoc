@@ -24,7 +24,7 @@ In the following sections, we'll be using an application generated with xref:acr
 == Add the DynamicFormsModule
 
 Now that we have a sample application, we still need to add DynamicFormsModule.
-This is done by adding the dependency, and specifying that the module should be bootstrapped.
+This is done by adding the dependency for the module and specifying it in the application descriptor.
 
 .Add the maven dependency
 [source,xml, indent=0]
@@ -58,7 +58,7 @@ public class DemoApplication
 ----
 <1> Add `DynamicFormsModule` to the bootstrapped modules.
 
-When starting up the application, we can see that `DynamicFormsModule` is bootstrapped.
+If we'd now start up the application, we can see that `DynamicFormsModule` is bootstrapped.
 
 .Abbreviated start-up log
 ----
@@ -88,7 +88,7 @@ View definitions allow these views to be modified, for example which properties 
 === Create a dataset
 
 The first step to create a document, is to create a dataset.
-Datasets are logical groups of a combination of definitions, for example a dataset `Job application` could hold definitions for job, applicants, job titles...
+Datasets are logical groups of definitions, for example a dataset `Job application` could hold definitions for job, applicants, job titles...
 
 Let's start off by creating a data set.
 To do so, we'll navigate to the menu item `Data sets & definitions`.
@@ -107,7 +107,7 @@ Definitions can define various structures, such as the content structure for a d
 In this example, we'll be creating a `document` for an Applicant, to define which information we would like to store.
 
 To create a definition, we navigate to the tab `Definitions` on a dataset, where we can start creating new definitions.
-Before we can define the structure for our Applicant, we must create the definition:
+Before we can define the structure for the `Applicant` documents, we must create a definition of the correct type:
 
 ----
 name: Applicant
@@ -151,23 +151,23 @@ document-definition: # <1>
     type: text
 ----
 <1> Definitions always have a root element.
-In this case, we're creating the structure for a document, so the root element is `document-definition`.
-<2> A document has fields which will make up the structure of the document.
+In this case, we're creating the structure for a document, for which the root element is `document-definition`.
+<2> A definition has fields which will make up the structure of the document.
  These are defined in the `content` element of the definition.
-<3> Every field has an `id` which make up the key under which the information will be stored.
-The key for a field is a combination of the field itself and its (direct) parents, with fields under the `content` element as root items.
+<3> Every field has an `id` which makes up the key under which the information will be stored.
+The key for a field is a combination of the ids of field itself and its parents, with fields under the `content` element as root items.
 In this definition, the following are examples of full keys: `date-of-birth`, `address.zip-code` and `expected-salary`.
-<4> Various types of fields are available.
+<4> Various types of fields are used to represent data.
 
 image::creating-definition-structure.png[Creating a definition structure]
 
 [NOTE]
 ====
 In the above image, we can also notice the `published` and `current/new version` fields.
-Modifying a definition results in a new version with the applied modifications:
+Modifying a definition by using the default UI will always result in a new version with the applied modifications:
 
 - published modifications: The modifications are gathered in a fixed version.
-Documents that are updated or created through the default UI will be using this version.
+Documents that are updated or created will be using the most recently published version.
 - non-published modifications: A draft version is created and further non-published modifications will modify the draft version.
 ====
 
@@ -188,7 +188,8 @@ Expected salary: 2134
 image::creating-a-document.png[Creating an applicant]
 
 Depending on the fields we've defined in the `Applicant` definition, various fields were generated based on their field type e.g. a date control, a fieldset (to group other fields), a currency control...
-The fields are rendered in the order that they were defined, should you reorder the fields in your definition the new order would be applied to the document as well.
+The order in which they are defined, is also kept during the rendering process.
+If you would reorder the fields in the definition, the new order would be applied to the document as well.
 
 Aside of the rendering of fields, basic validation is applied as well, should you for example, attempt to submit plain text in the `zip-code` control or not fill in the name of the document, validation errors will occur.
 
