@@ -26,7 +26,11 @@ Adding a required field validator can be done with a single key value.
 
 No additional settings are available.
 
-.Example required field
+If validation fails the field is rejected with a `required` message code.
+Specifying a custom feedback message is optional.
+A default "field is required" message will always be shown.
+
+.Example required field with custom message
 [source,yaml]
 ----
 document-definition:
@@ -36,4 +40,6 @@ document-definition:
       type: string
       validators:
        - required
+      messages:
+       validation.required: "You MUST enter a name"
 ----

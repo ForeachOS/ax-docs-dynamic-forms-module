@@ -1,7 +1,7 @@
 = Dynamic Documents & Forms Module
 Steven Gentens, Arne Vandamme, Marc Vanbrabant
 :sectanchors:
-:module-version: 0.0.1-SNAPSHOT
+:module-version: 0.0.2-SNAPSHOT
 :module-name: DynamicFormsModule
 :module-artifact: dynamic-forms-module
 :module-url: https://across.foreach.be/modules/DynamicFormsModule
