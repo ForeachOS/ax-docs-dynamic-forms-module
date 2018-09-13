@@ -48,12 +48,12 @@ The following number types are available:
 |`percentage(Y)`
 |`BigDecimal`
 | Percentage formatting with a Y multiplier.
- E.g. `percentage(2)` with a value of `24%` will be persisted as `12` (24 divided by 2).
+ E.g. `percentage(100)` with a value of `24%` will be persisted as `0.24` (24 divided by 100).
 
 |`percentage(Y,X)`
 |`BigDecimal`
 | Percentage formatting with a Y multiplier and X decimal points.
- E.g. `percentage(4,2)` with a value of `24,12%` will be persisted as `8,03` (24,12 divided by 4).
+ E.g. `percentage(10,2)` with a value of `24,12%` will be persisted as `2,41` (24,12 divided by 10).
 
 |===
 
