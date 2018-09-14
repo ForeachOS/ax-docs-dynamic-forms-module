@@ -1,9 +1,13 @@
 = Releases
 
+[#0-0-2]
+== 0.0.2-SNAPSHOT
+
+* several bugfixes
+* it's now possible to add xref:definitions/creating-a-document-definition.adoc#translations[translations] inside a document definition
+
 [#0-0-1]
 == 0.0.1
-
-NOTE: This is the current development release.
 
 The following features are available in the first release:
 

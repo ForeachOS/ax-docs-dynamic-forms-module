@@ -110,6 +110,7 @@ document-definition:
 <3> A message defined on a content field will replace a message with the same code on the type definition.
 In this example, the `help` code from the base type will be overwritten and contain `0032 xxxx/xx.xx.xx`.
 
+[#translations]
 === Translations
 Any message or label can be translated by specifying it under the corresponding https://en.wikipedia.org/wiki/IETF_language_tag[IETF language tag] in the `messages` section.
 
@@ -190,4 +191,4 @@ Every document specific message code will be prefixed with the document definiti
  DynamicDocument[dataset\:document].properties.field\:address[help]=Please enter your home address.
  DynamicDocument[dataset\:document].validation.required.binderMap[address]=Address field is required
 
- NOTE: Properties files require colons to be escaped.
+WARNING: Properties files require colons to be escaped.
