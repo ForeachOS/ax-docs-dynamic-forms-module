@@ -1,0 +1,110 @@
+= Cheat Sheet
+
+On this page you'll find a cheat sheet to support designing documents.
+
+== Document definition
+
+[source,yaml,indent=0]
+----
+document-definition:
+  name: sample-document
+  types:
+  - id: address
+    base-type: fieldset
+    fields:
+    - id: street
+      type: fieldset
+      fields:
+      - id: name
+        type: string
+      - id: house-nr
+        type: number
+    - id: zip-code
+      type: number(short)
+  content:
+    - id: active
+      type: boolean
+
+    - id: name
+      type: string
+      validators:
+      - required
+    - id: motivation
+      type: text
+    - id: hobbies
+      type: string[]
+      possible-values:
+      - hockey
+      - basketball
+      - polo
+      - cycling
+      - running
+
+    - id: home-address
+      type: address
+    - id: work-address
+      type: address
+
+    - id: date-of-birth
+      type: date
+    - id: alarm-activates-at
+      type: time
+    - id: reviewed-at
+      type: datetime
+
+    - id: price
+      type: currency(EUR,2)
+    - id: tax
+      type: percentage(100)
+    - id: price-including-tax
+      type: currency(EUR,2)
+      formula: $(price) * (1 + $(tax))
+    - id: olympic-year-locations
+      type: number[]
+      - 2014: 'Sochi (2014)'
+      - 2016: 'Rio de Janeiro (2016)'
+      - 2018: 'Pyeongchang (2018)'
+
+    - id: mentors
+      type: '@user[]'
+      options-query: 'deleted = false'
+      validators:
+      - required
+
+    - id: is-sportive
+      label: Sportive
+      type: boolean
+      formula: 'isNotEmpty($(hobbies))'
+
+    - id: employees
+      type: '@user[]'
+
+    - id: company-information
+      type: fieldset
+      fields:
+      - id: name
+        type: string
+      - id: amount-of-employees
+        type: number
+        formula: count($(employees)
+      - id: phone-number
+        type: string
+----
+
+== View definition
+
+[source,yaml,indent=0]
+----
+view-definition: # root key
+  name: listView
+  type: list # type of view this definition can affect
+  properties:
+    - "document.lastModified"
+    - "versionLabel"
+    - "field:name"
+  filter: # filter configuration
+    mode:
+      advanced: true
+    fields:
+      - id: field:name
+----

@@ -101,11 +101,4 @@ The following table lists all functions that are currently available.
 |Separator and a collection of textual values
 |Returns a single text that joins the provided textual values wit the provided separator.
 
-
-|`sum`
-|an unlimited amount of numbers or fields representing a number.
-
-Example: `sum( 5,23,89, $(myField) )`
-|Performs the sum operation on all the given values.
-
 |===

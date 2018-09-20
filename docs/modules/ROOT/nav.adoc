@@ -27,3 +27,4 @@
 * xref:importing-definitions-and-documents.adoc[Importing definitions & documents]
 * xref:extending-definition-types.adoc[Extending definition types]
 * xref:services-and-components.adoc[Services and components]
+* xref:cheat-sheet.adoc[Cheat sheet]
