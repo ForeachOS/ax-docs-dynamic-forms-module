@@ -75,6 +75,7 @@ For our `telephone` field, both `my-custom-pattern-validator` and `required` wou
 
 There are separate pages with the xref:validators/index.adoc[list of the available validators] and information on xref:validators/creating-a-field-validator.adoc[creating a custom validator].
 
+[[configuring-custom-messages-labels]]
 == Configure custom messages and labels
 
 You can add custom messages to be used in the user interface for any field or type.

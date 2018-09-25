@@ -40,15 +40,26 @@ document-definition:
       - cycling
       - running
 
-    - id: home-address
+    - id: delivery-address
       type: address
-    - id: work-address
+    - id: facturation-address
       type: address
+      messages:
+        tooltip: Only required if it is different from the delivery address
+    - id: company-address
+      type: address
+      messages:
+        description: Enter the address of your workspace
 
     - id: date-of-birth
       type: date
+      messages:
+       placeholder: Enter your date of birth
     - id: alarm-activates-at
+      label: Alarm
       type: time
+      messages:
+        help: The alarm will activate at the specified hour
     - id: reviewed-at
       type: datetime
 
@@ -70,6 +81,8 @@ document-definition:
       options-query: 'deleted = false'
       validators:
       - required
+      messages:
+        validation.required: Atleast one mentor must be assigned
 
     - id: is-sportive
       label: Sportive
@@ -89,8 +102,19 @@ document-definition:
         formula: count($(employees)
       - id: phone-number
         type: string
+
+    - id: application
+      type: document(hr:applications)
 ----
 
+See the reference documentation for more information on configuring a document definition:
+
+* xref:definitions/creating-a-document-definition.adoc[Configuring a document definition]
+* xref:definitions/creating-a-document-definition.adoc#configuring-custom-messages-labels[Applying custom messages and translations]
+* xref:field-types/index.adoc[Fields]
+* xref:validators/index.adoc[Validation]
+
+//TODO support chaining of properties when referring another document (in both filter and rendering)
 == View definition
 
 [source,yaml,indent=0]
@@ -99,12 +123,36 @@ view-definition: # root key
   name: listView
   type: list # type of view this definition can affect
   properties:
+    - "document.name"
+    - "document.created"
+    - "document.createdAt"
+    - "document.createdBy"
     - "document.lastModified"
+    - "document.lastModifiedAt"
+    - "document.lastModifiedBy"
     - "versionLabel"
     - "field:name"
-  filter: # filter configuration
+    - "field:address.street"
+
+  filter:
     mode:
+      basic: false
       advanced: true
+
+    defaultSelector: SINGLE
+    defaultQuery: "field:company like 'google'"
+    basePredicate: "user.userDirectory != 1"
+
     fields:
       - id: field:name
+      - id: field:company
+        selector: MULTI
+      - id: documeny.createdBy
+        operand: ilike
+      - id: field:mentor
+        selector: MULTI
+        operand: in
 ----
+
+See the xref:definitions/creating-a-view-definition.adoc[reference documentation] for more information on configuring a view definition:
+
