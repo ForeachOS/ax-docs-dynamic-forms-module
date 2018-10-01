@@ -1,0 +1,84 @@
+= Customizing allowable actions
+
+The default interface provides crud views to work with xref:index.adoc#documents[documents] for all xref:definitions/creating-a-document-definition.adoc[definitions].
+These views are built using xref:working-with-documents/using-documents-in-code.adoc[document workspaces].
+To define the access permissions using xref:spring-security-module:ROOT:allowable-actions.adoc[allowable actions], simply specify an `EntityAllowableActionsBuilder` for the `DynamicDocumentWorkspace` entity type.
+
+.Configuring the allowable actions for a DynamicDocumentWorkspace
+[source,java,indent=0]
+----
+	@Override
+	public void configure( EntitiesConfigurationBuilder entities ) {
+		entities.withType( DynamicDocumentWorkspace.class )
+		        .allowableActionsBuilder( workspaceAllowableActionsBuilder )
+		        );
+	}
+----
+
+An `EntityAllowableActionsBuilder` allows you to specify actions on two levels, being
+
+* the global `EntityConfiguration` level, which holds the actions for the entity type
+* the instance level, which holds the actions for a specific instance of an entity type
+
+If you then configure actions for the `DynamicDocumentWorkspace` entity type, the global actions would automatically be configured for *all* documents.
+Documents however represent multiple types, being the definitions they were created for.
+This means that the actions can differ based on the definition that the document is attached to.
+
+When configuring the instance actions for a document, a definition is readily accessible via the workspace or document in the workspace.
+When the global actions are defined, only the `EntityConfiguration` is provided and no further information about the definition context is available.
+To access the definition for which documents are being rendered, you can use the `DynamicDocumentDefinitionContextViewProcessor#currentDefinition()`.
+
+.Sample EntityConfigurationAllowableActionsBuilder
+[source,java,indent=0]
+----
+public class WorkspaceAllowableActionsBuilder implements EntityConfigurationAllowableActionsBuilder
+{
+	@Override
+	public AllowableActions getAllowableActions( EntityConfiguration<?> entityConfiguration ) {
+		AllowableActionSet actions = new AllowableActionSet( );
+		DynamicDefinition currentDefinition = DynamicDocumentDefinitionContextViewProcessor.currentDefinition(); # <1>
+		AllowableActions definitionActions = entityRegistry.getEntityConfiguration( currentDefinition ).getAllowableActions( currentDefinition );
+		if ( definitionActions.contains( AllowableAction.CREATE ) ) { # <2>
+			actions.add( AllowableAction.CREATE );
+		}
+
+		return actions;
+	}
+
+	@Override
+	public <V> AllowableActions getAllowableActions( EntityConfiguration<V> entityConfiguration, V entity ) {
+		DynamicDocumentWorkspace ws = (DynamicDocumentWorkspace) entity; # <3>
+		AllowableActionSet actions = new AllowableActionSet();
+
+		// configure the actions
+
+		return actions;
+	}
+}
+----
+<1> Fetch the definition for which documents are being rendered.
+<2> The global `CREATE` action for a document depends on the instance `CREATE` action for the current definition.
+<3> The actions for a document can depend based on the information within the workspace (e.g. values, the document or definition).
+
+
+== Filtering the list view
+
+The default document views are custom built on top of the entity views.
+They are configured as a custom association for the `DynamicDefinition` type and rendered as a seemingly top-level entity type.
+
+As a side effect, modifying `EntityListFactoryBuilder#showOnlyItemsWithAction` does not have any effect on filtering the items within the list view.
+To filter the documents based on an action, you can specify the `WorkspaceListFilterViewProcessor#SHOW_ONLY_ITEMS_WITH_ACTION` attribute with the required action.
+The attribute should be specified on the listView to take effect.
+
+.Filtering documents by allowable actions
+[source,java,indent=0]
+----
+@Override
+public void configure( EntitiesConfigurationBuilder entities ) {
+    entities.withType( DynamicDefinition.class )
+            .association(
+                    ab -> ab.name( "documents" )
+                            .listView( lvb -> lvb.attribute( WorkspaceListFilterViewProcessor.SHOW_ONLY_ITEMS_WITH_ACTION, READ ) )
+            );
+}
+----
