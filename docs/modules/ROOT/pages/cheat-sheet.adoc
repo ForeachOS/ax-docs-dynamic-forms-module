@@ -82,7 +82,7 @@ document-definition:
       validators:
       - required
       messages:
-        validation.required: Atleast one mentor must be assigned
+        validation.required: At least one mentor must be assigned
 
     - id: is-sportive
       label: Sportive
@@ -110,7 +110,7 @@ document-definition:
 See the reference documentation for more information on configuring a document definition:
 
 * xref:definitions/creating-a-document-definition.adoc[Configuring a document definition]
-* xref:definitions/creating-a-document-definition.adoc#configuring-custom-messages-labels[Applying custom messages and translations]
+* xref:definitions/messages-and-labels.adoc[Applying custom messages and translations]
 * xref:field-types/index.adoc[Fields]
 * xref:validators/index.adoc[Validation]
 
