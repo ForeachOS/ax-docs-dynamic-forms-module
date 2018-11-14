@@ -1,0 +1,166 @@
+= Importing documents
+
+`DynamicsFormsModule` supports importing of documents using `json` or `yaml` structures.
+
+A document represents the data for a definition, the content of which is stored within a document version.
+Importing documents requires two things, being a definition for which you will import the data, as seen in xref:import-export/importing-definitions.adoc[importing definitions] and the data you'd like the import.
+
+In the following sections, we'll import documents for a definition that was created earlier.
+
+== Setup
+
+Documents adhere to the structure defined in a definition.
+In the following sections we'll be importing documents for the following definition:
+
+.Definition in yaml
+[source,yaml,indent=0]
+----
+document-definition:
+  name: Training
+  content:
+  - id: tag-line
+    label: Call to action
+    type: string
+  - id: date
+    label: Date of the training
+    type: date
+  - id: location
+    type: fieldset
+    fields:
+    - id: street
+      type: string
+    - id: zipCode
+      type: number
+    - id: city
+      type: string
+  - id: registrationFee
+    type: currency(EUR)
+  - id: discount
+    type: percentage(100)
+  - id: maximumNumberOfParticipants
+    type: number
+  - id: registrationPossible
+    label: Participants can register
+    type: boolean
+  - id: schedule
+    label: Schedule details
+    type: fieldset
+    fields:
+    - id: startTime
+      type: time
+    - id: endTime
+      type: time
+    - id: details
+      type: text
+----
+
+== Defining the documents to import
+
+First, we'll create a yaml file which contains the data for our documents.
+In this file, we'll import multiple documents, each defined as an item in a list.
+
+.resources/installers/documents/sample-documents.yml
+[source,yaml]
+----
+- documentName: 'Across School: Dynamic Forms Module (basic)' # <1>
+  fields: # <2>
+    tag-line: 'From n00b to basic development with Dynamic Forms Module'
+    date: '2018-09-13'
+    location:
+      street: Sint-Bartholomeusstraat
+      zipCode: 2170
+      city: Merksem
+    schedule:
+      details: 'DataSet, Definitions and Documents'
+      endTime: '08:00:00'
+      startTime: '12:00:00'
+    maximumNumberOfParticipants: 30
+    registrationFee: 19.99
+    registrationPossible: true
+    discount: 0.05
+
+- documentName: 'Across School: Dynamic Forms Module (advanced)'
+  fields:
+    tag-line: 'Become a wizard and learn the ins and outs of the Dynamic Forms Module'
+    date: '2018-10-22'
+    location:
+      street: Sint-Bartholomeusstraat
+      zipCode: 2170
+      city: Merksem
+    schedule:
+      details: 'DataSet, Definitions and Documents with ACL'
+      endTime: '08:00:00'
+      startTime: '12:00:00'
+    maximumNumberOfParticipants: 10
+    registrationFee: 29.99
+    registrationPossible: false
+    discount: 0.20
+----
+<1> A document must always specify a name.
+<2> The fields for the document are defined.
+
+== Creating an installer
+
+To finalise we'll create an we'll create an xref:across:developing-modules:installers.adoc[installer] to import the documents.
+
+In the installer, we'll read the yaml file we've created and map the content to a `List` of `Map` instances.
+Each document will have it's own map of key value pairs.
+These maps can then be imported using a xref:working-with-documents/using-documents-in-code.adoc[`DynamicDocumentWorkspace`].
+
+.Sample document installer.
+[source,java,indent=0]
+----
+@Installer(description = "Creates the initial documents", phase = InstallerPhase.AfterContextBootstrap)
+@RequiredArgsConstructor
+@Order(10) # <1>
+public class DocumentsInstaller {
+	private final DynamicDocumentService documentService;
+	private final DynamicDefinitionService definitionService;
+
+	@Value("classpath:installers/documents/sample-documents.yml")
+	private Resource trainings;
+
+	@InstallerMethod # <2>
+	@SneakyThrows
+	@SuppressWarnings("unchecked")
+	public void importDocuments() {
+		DynamicDefinition definition = definitionService.findDefinition( DynamicDefinitionId.fromString( "trainings:training" ) ); # <3>
+		Yaml yaml = new Yaml();
+		List<Map<String, Object>> raw = yaml.loadAs( trainings.getInputStream(), List.class ); # <4>
+		raw.forEach( training -> { # <5>
+			DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( definition );
+			workspace.setDocumentName( (String) training.get( "documentName" ) );
+			workspace.importFields( (Map<String, Object>) training.get( "fields" ) );
+			workspace.save();
+		} );
+	}
+}
+----
+<1> An installer is created.
+The installer has an order specified because it may not execute before the definitions are installed.
+<2> Each method in an installer that should be executed must be annotated with `@InstallerMethod`.
+<3> The definition for which we'll be importing documents is specified.
+The key is composed of the key of the data set, followed by the key of the definition id and joined by a colon (`:`).
+<4> The yaml file which contains our documents is read in and mapped to a list of `Map` objects.
+<5> For each document in the yaml, a workspace is created into which the data is loaded and then saved.
+
+[NOTE]
+====
+In the above example, we are creating a new workspace for each document.
+For each of these workspaces, the definition for the workspace has to be parsed and initialized.
+If you're importing a lot of documents, it is advised to create workspaces via a `CachingDynamicDocumentWorkspaceFactory`.
+A `CachingDynamicDocumentWorkspaceFactory` will use a cache to initialize workspaces for definitions.
+====
+
+When importing the fields into a workspace, the workspace will attempt to import all of the data provided.
+The import will result in a `Report` which contains the following information:
+
+errors::
+contains information about errors that occurred when importing fields
+modifiedFieldValues::
+which fields where updated or added as well as their old and current value
+updatedFieldValues::
+whether a field in the document has been updated
+
+In the above example, documents will be imported with the information provided, and no validation will be applied on the imported data.
+To validate the document, simply call `DynamicDocumentWorkspace#validate` which will return an `Errors` object containing the validation result.

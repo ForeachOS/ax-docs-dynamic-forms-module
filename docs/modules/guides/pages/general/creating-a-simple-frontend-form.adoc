@@ -1,0 +1,172 @@
+== Creating a simple frontend form
+
+In this example we will create a simple frontend form, based on a dynamic definition that is stored in the database.
+
+This example differs from other examples, because it does not rely on controllers or other contexts created by `EntityModule`.
+It is a normal `@Controller` which will utilize constructs as seen in xref:ROOT:working-with-documents/using-documents-in-code.adoc[using documents in code].
+
+The example assumes that the following definition is created, either with an installer or from the backend.
+
+.The YAML file defining the fields we want to be rendered in the form.
+[source,yaml]
+----
+document-definition:
+  name: Contact form
+  content:
+  - id: name
+    label: Name
+    type: string
+    validator:
+      - required
+  - id: email
+    label: E-mail
+    type: string
+    validator:
+      - required
+  - id: question-type
+    label: A question about?
+    type: string[]
+    possible-values:
+      - "I want to know more about Foreach"
+      - "I want to know more about a Job vacancy"
+      - "I want to know about your GDPR compliance"
+      - "I am an ex-employee, do you want me back? I'll work better!"
+  - id: question
+    label: Your Question
+    type: text
+----
+
+.The complete controller for rendering a form, based on the YAML definition above.
+[source,java]
+----
+@Controller
+public class DynamicFormController {
+
+    @Autowired
+    private DynamicDefinitionRepository dynamicDefinitionRepository;
+    @Autowired
+    private EntityViewElementBuilderHelper builderHelper;
+    @Autowired
+    private DynamicDocumentService documentService;
+
+    @ModelAttribute("dto")
+    DynamicDocumentWorkspace dynamicDocument(@RequestParam("type") String type) {
+        DynamicDocumentWorkspace dto = null;
+        List<DynamicDefinition> dynamicDefinitions = dynamicDefinitionRepository.findAll(QDynamicDefinition.dynamicDefinition.key.equalsIgnoreCase(type));
+        if (dynamicDefinitions.size() > 0) {
+            DynamicDefinition dynamicDefinition = dynamicDefinitions.get(0);
+            DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace(dynamicDefinition);
+            workspace.setDocumentName(UUID.randomUUID().toString());
+            dto = workspace;
+        }
+        return dto;
+    }
+
+    @GetMapping("/dynamicForm")
+    public String formGet(@ModelAttribute("dto") DynamicDocumentWorkspace dto, Model model) {
+        return renderForm(dto, model);
+    }
+
+    @PostMapping("/dynamicForm")
+    public String formPost(@ModelAttribute("dto") DynamicDocumentWorkspace dto, BindingResult bindingResult, Model model) {
+        dto.validate(bindingResult);
+        if (bindingResult.hasErrors()) {
+            return renderForm(dto, model);
+        }
+        dto.save();
+        return "th/demo/thankyou";
+    }
+
+    private String renderForm(DynamicDocumentWorkspace dto, Model model) {
+        DynamicDocumentDefinition dynamicDocumentDefinition = dto.getFields().getDocumentDefinition();
+        EntityViewElementBatch dtoBatch = builderHelper.createBatchForEntity(dto);
+
+        dtoBatch.setViewElementMode(ViewElementMode.FORM_WRITE);
+        dtoBatch.setEntity(dto.getFields());
+        dtoBatch.setPropertyRegistry(dynamicDocumentDefinition.getEntityPropertyRegistry());
+
+        FormViewElementBuilder formBuilder = BootstrapUiBuilders.form().post().noValidate().commandAttribute("dto")
+                .addAll( dtoBatch.build().values());
+        formBuilder.add(BootstrapUiBuilders.button().submit().style(Style.PRIMARY).text("Submit"));
+
+        model.addAttribute("dto", dto);
+        model.addAttribute("dynamicForm", formBuilder.build(new DefaultViewElementBuilderContext()));
+
+        return "th/demo/dynamicForm";
+    }
+}
+
+----
+
+.The dynamicForm thymeleaf template
+[source,html]
+----
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dynamic form</title>
+</head>
+<body th:fragment="content">
+
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+<header class="intro-header" th:style="${'background-image: url(' + #webapp.path('@static:/demo/img/about-bg.jpg') + ')'}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="page-heading">
+                    <h1><span th:text="${dto.definition.name}">Dynamic form</span></h1>
+                    <hr class="small">
+                    <span class="subheading"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <across:view element="${dynamicForm}"/>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+----
+
+.The thank you page template
+[source,html]
+----
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thank you page</title>
+</head>
+<body th:fragment="content">
+
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+<header class="intro-header" th:style="${'background-image: url(' + #webapp.path('@static:/demo/img/about-bg.jpg') + ')'}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="page-heading">
+                    <h1>Thank you!</h1>
+                    <hr class="small">
+                    <span class="subheading"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+----

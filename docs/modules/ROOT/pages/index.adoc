@@ -58,11 +58,31 @@ Steven Gentens, Arne Vandamme, Marc Vanbrabant
 == About the DynamicFormsModule
 The `DynamicFormsModule` enables users to manage custom documents, which can be used to create a custom form, or add additional fields to an existing form.
 
+It is useful for::
+
+* defining documents at runtime
+* quickly changing data models
+* adding metadata to entities
+* little code interaction is required for documents that are defined
+** logic should not be tightly coupled with documents as they are ever-changing
+* working with a small data sets
+** depending on performance requirements
+
+It is not advised for::
+
+* replacing actual entities
+* using documents that must never be modified
+* working with documents being mostly steered through code
+** logic should not be tightly coupled with documents as they can be changed at runtime.
+* working with large data sets
+** depending on performance requirements
+
 == Documents
 Documents are the base building blocks to create manageable groups of fields.
-Documents are split up in various parts, being a <<document-definition,template>> for a document, the <<type-definition,types>> that can be used in a document and filled in <<document-data,data>> for a document.
+They are split up in various parts, being a <<document-definition,template>> for a document, the <<type-definition,types>> that can be used in a document and filled in <<document-data,data>> for a document.
+
 A document definition is a template defining the fields and sets of fields that the document represents.
-The document data holds the content for the various fields for the document.
+The document holds the content for the various fields of its definition.
 
 :sectnums:
 :chapter-number: 0

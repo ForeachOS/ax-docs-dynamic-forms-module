@@ -1,0 +1,8 @@
+:page-partial:
+= How-tos
+:sectnums:
+:chapter-number: 0
+
+include::general/creating-a-simple-frontend-form.adoc[]
+
+:!sectnums:

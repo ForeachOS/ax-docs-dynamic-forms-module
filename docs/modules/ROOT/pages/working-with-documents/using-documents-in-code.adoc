@@ -107,6 +107,49 @@ workspace.setAllowVersionUpdates( false ); # <4>
 <3> The `save()` method will now return the same, but updated document version
 <4> Reset the workspace behaviour if you want to keep using it
 
+== Using calculated fields
+
+DynamicFormsModule supports the use of xref:field-types/calculation.adoc[calculated fields], which are read-only fields whose value depends on the specified formula.
+These fields will by default only be updated when the document itself is saved.
+
+Aside of updating calculated fields when the value is saved, those fields can immediately be recalculated for the entire document or be calculated whenever the field is fetched.
+
+In the following example, we'll assume our definition has the following fields:
+
+.Fields present in the definition
+[source,yaml]
+----
+content:
+- id: price
+  type: number
+- id: priceWithPaxes
+  type: currency(EUR, 2)
+  formula: $(price) * 1.25
+----
+
+.Fetching a calculated field
+[source,java]
+----
+DynamicDocumentWorkspace workspace = documentService.createDocumentWorkspace( definition );
+
+// set the value of the field that we have used in our formula
+workspace.setFieldValue( "price", 100 );
+// fetch the calculated field, no value will be present.
+workspace.getFieldValue( "priceWithTaxes", BigDecimal.class );
+
+// update all calculated fields in the document
+workspace.updateCalculatedFields();
+// fetch the calculated field, the value will be 125.
+workspace.getFieldValue( "priceWithTaxes", BigDecimal.class );
+
+// always calculate the value when a calculated field is retrieved
+workspace.setCalculatedFieldsEnabled( true );
+
+workspace.setFieldValue( "price", 200 );
+// fetch the calculated value, the value will be 250.
+workspace.getFieldValue( "priceWithTaxes", BigDecimal.class );
+----
+
 [#validation]
 == Validating a document
 

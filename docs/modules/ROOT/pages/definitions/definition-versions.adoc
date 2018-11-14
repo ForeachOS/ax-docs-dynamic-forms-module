@@ -5,7 +5,7 @@ This means, that when a document is created, the next one isn't necessarily base
 To ensure compatibility with older versions and to prevent data being inaccessible, a versioning system has been provided.
 
 The modifiable structure is persisted using a `DynamicDefinitionVersion`, which results in a version for every change made to the defined structure.
-Documents then refer to a specific definition version and as such can have a different structure whilst having the same definition.
+Documents refer to a specific definition version and as such can have a different structure whilst having the same definition.
 
 Versions have two important concepts:
 
@@ -20,7 +20,7 @@ As soon as changes are made to a definition, a new version will be created.
 The naming of these versions is entirely user-definable, but for ease of use, a default naming strategy has been provided that uses number increments e.g. 1, 2 ...
 
 Before the changes will actually be available for use, the version should be published.
-Once a version is published, it is no longer modifiable and it will automatically be used when creating new documents for the corresponding definition.
+Once a version is published, it is no longer modifiable via the administrative section and will automatically be used when creating new documents for the corresponding definition.
 
 == Creating a version in code
 

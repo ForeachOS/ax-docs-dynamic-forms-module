@@ -1,15 +1,13 @@
-= Importing definitions and documents
+= Importing definitions
 
-`DynamicsFormsModule` supports importing of definitions and documents using `json` or `yaml` structures.
-
-== Importing a definition
+`DynamicsFormsModule` supports importing of definitions using `json` or `yaml` structures.
 
 A definition represents groups of fields which define the template for a document, the content of which is stored within a definition version.
 Creating a definition has two steps, being the creation of the `DynamicDefinition` and the creation of a corresponding `DynamicDefinitionVersion`.
 
 In the following sections, we'll be creating a definition from scratch, including the data set it belongs to.
 
-=== Creating the data structure
+== Creating the data structure
 
 The first thing to do is to have a data structure available to be imported.
 To do so, we'll create a `yaml` file which contains that data structure.
@@ -35,7 +33,7 @@ document-definition:
 NOTE: To learn more about creating a definition, please see the relevant chapters in xref::document-definitions.adoc[Designing a document].
 
 
-=== Creating an installer
+== Creating an installer
 
 Now that we have the data structure ready, we can create and import our definition.
 To start off, we'll create an xref:across:developing-modules:installers.adoc[installer] to create the definition.
@@ -111,10 +109,3 @@ definitionVersion.setDefinitionContent( rawDefinitionService.writeDefinition( ra
 definitionVersion = definitionVersionRepository.save( definitionVersion );
 ----
 <1> The raw definition is converted to a `json` structure before it is persisted.
-
-== Importing a document
-
-// TODO
-// create yaml / json structure for a document
-// convert json to Map<>
-// insert values using workspace

@@ -22,7 +22,8 @@ document-definition:
 
 NOTE: It is advised to wrap the `type` specifier in single or double quotes to ensure it is treated as a string and to avoid parsing errors.
 
-The above example can also been written with the `options-query` attribute, as shown below.
+The above example can also be written with the `options-query` attribute, as shown below.
+The query in the attribute should be an xref:entity-module::entity-query/eql.adoc#entity-query-language-eql[EQL] statement.
 
 [source,yaml]
 ----
