@@ -71,6 +71,21 @@ DynamicDocumentVersion newDocumentversion = document.save();
 In this example the new version will use the latest document definition.
 If we had supplied `false` as method argument, a new document version would be created using the same definition version as the currently loaded document version.
 
+=== Updating calculated fields
+
+Calculated fields are by default only updated when saving a document.
+Manually triggering a recalculation can be done with:
+
+ workspace.updateCalculatedFields();
+
+If you want to have real-time calculated fields (updated immediately), you should set:
+
+ workspace.setCalculatedFields( true );
+
+This will recalculate a field whenever its value is fetched.
+
+WARNING: Enabling real-time calculated fields can have negative performance impact, use with care.
+
 == Update an existing document version
 
 By default an exception will be thrown if you attempt to call `save()` on an already saved document version.

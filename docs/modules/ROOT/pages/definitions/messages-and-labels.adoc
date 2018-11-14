@@ -1,0 +1,124 @@
+[[configuring-custom-messages-labels]]
+= Document messages, labels and translations
+
+== Custom messages
+You can add custom messages to be used in the user interface for any field or type.
+Messages are specified under the `messages` key as a map of `message code` and `message` entries.
+
+A `label` can also be provided for every field definition.
+
+.Example YAML document definition with custom messages
+[source,yaml]
+----
+document-definition:
+  name: sample-document
+  types:
+    - id: telephone-number
+      base-type: string
+      messages: # <1>
+        tooltip: "Enter your telephone number"
+        help: "+32 xxxx/xx.xx.xx"
+  content:
+    - id: name
+      type: string
+      messages: # <1>
+        description: "Your personal name"
+    - id: telephone
+      label: "Telephone number" # <2>
+      type: telephone-number
+      messages: # <3>
+        help: "0032 xxxx/xx.xx.xx"
+----
+
+<1> You can define a `messages` block on both a type or a content field definition.
+<2> This is the label used to display as the column heading in a list view or the label of the form.
+<3> A message defined on a content field will replace a message with the same code on the type definition.
+In this example, the `help` code from the base type will be overwritten and contain `0032 xxxx/xx.xx.xx`.
+
+[#translations]
+== Translations
+Any message or label can be translated by specifying it under the corresponding https://en.wikipedia.org/wiki/IETF_language_tag[IETF language tag] in the `messages` section.
+
+.Example YAML document definition with custom messages and locales
+[source,yaml]
+----
+document-definition:
+  name: sample-document
+  content:
+    - id: name
+      type: string
+      label: "Name"
+      messages: # <1>
+        description: "Your personal name" # <1>
+        en:
+          description: "Your personal name in English" # <2>
+        ja-JP:
+          label: "名"
+          description: "あなたの個人的な名前" # <3>
+        no-NO-NY:
+          label: "Navn"
+          description: "Ditt personlige navn"  # <4>
+  messages: <5>
+    name.plural: "Sample documents"
+    nl:
+      name.singular: "Voorbeeld document"
+----
+
+<1> The default description, used when no matching locale was found.
+<2> The description for all English speaking countries (Australia, Candara, India, Ireland, Malta, ...).
+<3> The description for Japan.
+<4> The description for Norvegian Norsk, a variant of standard Norvegian Bokmål.
+<5> Global document messages - like document name - can also be specified directly under a `messages` attribute at the root level.
+
+The default messages do not require being grouped under a language tag, but - for consistency - it is allowed to group them under a `default` language tag.
+
+== Default message codes
+
+=== Document message codes
+The following global message codes can be configured:
+
+name.singular::
+ The translated singular name of the document type.
+
+name.plural::
+ Plural form of the document type name.
+
+=== Field message codes
+The following message codes can be configured per field:
+
+label::
+ Descriptive label of the field.
+
+description::
+ On a form, this shows a description message above the control for that field.
+
+help::
+ On a form, this shows a help text below the control for that field.
+
+tooltip::
+ On a form, this is the text behind a tooltip (question mark) icon next to the field label.
+
+placeholder::
+ For a textbox form control, this is the placeholder message shown if the textbox is empty.
+
+addItem::
+ For a fieldset collection control, this is the label to display on the _add item_ button.
+
+validation.VALIDATION_CODE::
+ Feedback message if validation fails with the specified `VALIDATION_CODE`.
+
+NOTE: Field message codes can be configured under the global `messages` attribute if they are in the qualified form without the document definition prefix (see the next section).
+
+== Using properties files
+
+DynamicFormsModule uses entity views and corresponding message codes for its UI.
+It is possible to customize dynamic document messages directly in shared properties by using the fully qualified message code.
+Every document specific message code will be prefixed with the document definition key in the form of `DynamicDocument[DEFINITION_KEY]`.
+
+.Example messages in properties file
+ DynamicDocument[dataset\:document].name.singular=My document
+ DynamicDocument[dataset\:document].properties.field\:address=Address
+ DynamicDocument[dataset\:document].properties.field\:address[help]=Please enter your home address.
+ DynamicDocument[dataset\:document].validation.required.binderMap[address]=Address field is required
+
+WARNING: Properties files require colons to be escaped.

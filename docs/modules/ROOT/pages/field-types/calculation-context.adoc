@@ -1,0 +1,40 @@
+= Customizing the calculated field evaluation context
+
+A `formula` of a calculated field is evaluated as a link:{spring-framework-docs}#expressions-language-ref[spring expression language] statement against a SpEL `EvaluationContext`.
+
+== Default evaluation context
+The current document is always the root object against which expressions are evaluated.
+
+In addition the default `EvaluationContext` maps all functions of `DynamicDocumentFormulaFunctions` as if they are functions directly on the root object.
+This allows short-hands like `sum(1,2)` instead of `T(....DynamicDocumentFormulaFunctions).sum(1,2)`.
+
+WARNING: For security reasons, the default evaluation context does not allow access to components of the `BeanFactory`.  Expressions like `@myHelperBean.doSomething()` will not work out of the box.
+
+== Customizing the evaluation context
+Whenever an evaluation context for a document is created, a `BuildDynamicDocumentFormulaEvaluationContext` event is published.
+Listening for the event allows a developer to customize the evaluation context or even replace it entirely.
+
+The event also provides information of the `DynamicDocumentDefinition` (document type) for which a context is being created.
+Allowing the use of a different evaluation context for different document types.
+
+.Example customizing an evaluation context
+[source,java]
+----
+@Configuration
+@RequiredArgsConstructor
+static class CustomEvaluationContextConfiguration
+{
+    private final BeanFactory beanFactory;
+
+    @EventListener(condition = "#document.definitionId == 'my-dataset:my-document'") <1>
+    public void registerCustomEvaluationContext( BuildDynamicDocumentFormulaEvaluationContext document ) {
+        StandardEvaluationContext ec = BuildDynamicDocumentFormulaEvaluationContext.createDefaultEvaluationContext();
+        ec.setBeanResolver( new BeanFactoryResolver( beanFactory ) ); <2>
+        document.setEvaluationContext( ec );
+    }
+}
+----
+
+<1> Listen for event of type `BuildDynamicDocumentFormulaEvaluationContext`, but only if it is for a document of the given type (`condition` attribute).
+<2> Set a `BeanResolver` on the evaluation context, allowing direct access to the beans defined in the `BeanFactory`.
+This enables expressions like `@myHelperBean.doSomething($(myField))`.

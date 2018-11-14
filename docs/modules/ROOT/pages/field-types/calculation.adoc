@@ -1,7 +1,7 @@
 = Calculated fields
 
 A calculated field is a field that receives a value based on a given formula.
-The given formula can be specified using the xref:https://docs.spring.io/spring/docs/3.0.x/reference/expressions.html[spring expression language], as well as various helper functions.
+The given formula can be specified as an expression in the link:{spring-framework-docs}#expressions-language-ref[spring expression language (SpEL)], making use of various helper functions.
 
 You turn another base type into a calculated field by supplying the `formula` attribute.
 The actual field value is still stored as the original base type.
@@ -12,7 +12,10 @@ Calculation is supported for the following field types:
 * xref:field-types/string.adoc[`string`]
 * xref:field-types/boolean.adoc[`boolean`]
 
-== Single value calculation
+Field values are only calculated when saving a document.
+See also the section on xref:working-with-documents/using-documents-in-code.adoc[using documents in code].
+
+== Value calculation
 
 A single value type with a formula will be visualised as a read-only control.
 
@@ -40,10 +43,53 @@ document-definition:
 <1> Supply the formula that represents the value of the field.
 In this case, the value is the difference between the `sell-value` and the `buy-value`
 
-== Functions
+== Accessing field values
 
-Various helper functions are defined to define formulas for fields.
-The following table lists all functions that are currently available.
+A `formula` is a SpEL expression that is executed against an `EvaluationContext`.
+The context allows accessing values of the document fields.
+
+Accessing a field value can be done with the using a shorthand `$()` syntax.
+Some examples:
+
+.Accessing the value of a document field:
+
+ $(someField)
+
+.Accessing a fieldset field value:
+
+ $(someField.nestedField)
+
+.Providing a simple default value if the field is empty or missing:
+
+ $(someField.nestedField:0)
+
+.Accessing a single fieldset collection field:
+
+ $(fieldsetCollection[0].someField)
+
+.Getting all the values of a specific fieldset collection field:
+
+ $(fieldsetCollection[].someField)
+
+This can be used to calculate values across all collection fields.
+For example `sum($(orderLines[].items[].count))` would calculate the total of the `count` field of all items across all order lines.
+
+.Accessing a sibling field value, relative to the current fieldset:
+
+ $(.someField)
+
+This is especially useful for calculated fields in fieldsets that are part of a collection.
+
+.Accessing a field value of the parent fieldset:
+
+ $(..someField)
+
+== Available functions
+
+Various helper functions are available for defining your `formula`.
+These functions are implemented in `DynamicDocumentFormulaFunctions`.
+
+The following table lists all functions that are available by default.
 
 [cols="1,2,3"]
 |===
@@ -51,31 +97,64 @@ The following table lists all functions that are currently available.
 
 |`count`
 |Collection of objects
-|Returns how many items are present in the given collection
+|Returns how many items are present in the given collection.
 
 |`countNonNull`
 |Collection of objects
-|Returns how many items are present in the given collection that differ from null.
+|Returns how many items are present in the given collection that differ from `null`.
 
 |`countNull`
 |Collection of objects
-|Returns how many null values are present in the given collection.
+|Returns how many `null` values are present in the given collection.
+
+|`flatten`
+|Collection of objects
+|Flatten an array of objects into a single collection with all `null` values removed.
+Recursively flattens any member that is also an array or collection.
+
+|`flatStream`
+|Collection of objects
+|Flatten an array of objects into a stream.
+Recursively flattens any member that is also an array or collection.
+Unlike `flatten`, this will not remove `null` values.
+
+|`sorted`
+|Collection of objects
+|Sort a collection of objects (in natural order).
+
+|`reverse`
+|Collection of objects
+|Reverse a collection of objects.
+
+|`first`
+|Collection of objects
+|Get the first item from a collection.
+If the collection is empty, `null` will be returned.
+
+|`last`
+|Collection of objects
+|Get the last item from a collection.
+If the collection is empty, `null` will be returned.
 
 |`min`
 |Collection of numeric values
 |Returns the smallest value in the collection.
+Supports nested collections of numeric values and will recurs through them.
 
 |`max`
 |Collection of numeric values
 |Returns the largest value in the collection.
+Supports nested collections of numeric values and will recurs through them.
 
 |`sum`
 |Collection of numeric values
 |Returns the sum of the values in the collection
+Supports nested collections of numeric values and will recurs through them.
 
 |`avg`
 |Collection of numeric values
 |Returns the average of the values in the collection.
+Supports nested collections of numeric values and will recurs through them.
 
 |`isNotEmpty`
 |Collection or array of objects
@@ -102,3 +181,10 @@ The following table lists all functions that are currently available.
 |Returns a single text that joins the provided textual values wit the provided separator.
 
 |===
+
+== Customizing the evaluation context
+
+It is possible to customize the evaluation context for calculated fields on a document level.
+This can be used to add additional helper components or for example to enable direct access to beans.
+
+See the xref:field-types/calculation-context.adoc[separate section] for details.

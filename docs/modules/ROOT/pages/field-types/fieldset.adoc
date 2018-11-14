@@ -16,8 +16,10 @@ document-definition:
   content:
     - id: general # <1>
       type: fieldset
-      fields: # <2>
-        - id: name # <3>
+      attributes:
+        templates: section-h1 <2>
+      fields: # <3>
+        - id: name # <4>
           type: string
         - id: operational
           type: boolean
@@ -29,5 +31,96 @@ document-definition:
 ----
 
 <1> Defines the fieldset field.
-<2> Holds the list of other fields that make up this fieldset (in order).
-<3> The full path for directly accessing the `name` field would be `general.name`.
+<2> The *optional* name of a custom <<fieldset-styling,template>> that should be used for visualizing the fieldset.
+<3> Holds the list of other fields that make up this fieldset (in order).
+<4> The full path for directly accessing the `name` field would be `general.name`.
+
+[[fieldset-collections]]
+== Fieldset collections
+
+It's also possible to create a collection of fieldset, and even to nest collections.
+
+.Example document with fieldset collection
+[source,yaml]
+----
+document-definition:
+  name: fieldset-collection-demo
+  content:
+  - type: fieldset[] <1>
+    id: fieldset-collection
+    messages:
+      addItem: Add an item <2>
+    member: <3>
+      fields:
+      - type: string
+        id: name
+        validators:
+        - required
+      - type: number
+        id: number
+----
+
+<1> Defines a collection of fieldset fields (the internal datatype will be `ArrayList<DynamicDataFieldset>`).
+<2> Add a custom message for the default _add item_ button (see the output below).
+<3> The `member` key holds the definition for the fieldset that makes up a single collection item.
+It supports all default definition keys like `fields`, `messages`, `validators` and `attributes`.
+
+A fieldset collection is visualized using the embedded collection styling of EntityModule.
+The above example would result in the following output:
+
+image::fieldset-collection.png[Example fieldset collection with a single item added.,600]
+
+[[fieldset-styling]]
+== Fieldset styling
+
+By default a fieldset is visualized as a HTML `fieldset` element, with the member fields inside it:
+
+image::fieldset-fieldset.png[,600]
+
+A different rendering template can be specified by providing a `template` attribute value.
+For example:
+
+[source,yaml]
+----
+document-definition:
+  name: company-data
+  content:
+    - id: general
+      type: fieldset
+      attributes:
+        template: panel-default
+      fields:
+        ...
+----
+
+Would visualize as:
+
+image::fieldset-panel.png[,600]
+
+=== Available templates
+
+The following is the list of default templates that are available:
+
+* `fieldset`
+* `fields-only`
+* `panel-danger`
+* `panel-default`
+* `panel-info`
+* `panel-primary`
+* `panel-success`
+* `panel-warning`
+* `section-h1`
+* `section-h2`
+* `section-h3`
+
+These templates correspond with the default `ViewElementFieldset` styling templates.
+See the xref:entity-module:ROOT:property-controls/fieldset.adoc[corresponding EntityModule documentation] for more examples.
+
+NOTE: If no `template` attribute is specified, the default value is `fieldset` for a standalone fieldset, and `fields-only` for a fieldset that is part of a collection.
+
+=== Registering a custom template
+
+Fieldsets are rendered using the EntityModule `ViewElementFieldset` control.
+You can add a custom named template by registering a `Function<ViewElementFieldset,ViewElement>` for that name on the `DynamicDataFieldSetTemplateRegistry`.
+
+This also allows you to replace the default templates.

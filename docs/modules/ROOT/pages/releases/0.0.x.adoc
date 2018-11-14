@@ -1,13 +1,25 @@
 = Releases
 
 [#0-0-2]
-== 0.0.2-SNAPSHOT
+== 0.0.2.RELEASE
 
-* several bugfixes
+* several bugfixes:
+** removed name restrictions on a document definition
+** nested fieldsets are now working correctly
+** a view definition name must now only be unique in the scope of its parent document
+** calculated fields are now correctly supported in fieldsets
 * it's now possible to add xref:definitions/creating-a-document-definition.adoc#translations[translations] inside a document definition
+* minor layout improvements have been made to the edit definition content page, providing a cleaner view to edit the YAML configuration of a definition
+* field type updates:
+** fieldsets support a `template` attribute for xref:field-types/fieldset.adoc#fieldset-styling[basic styling]
+** addition of a `file` type for uploading files
+*** uses the `FileReference` entity as the actual field type
+*** only available if link:{url-FileManagerModule}[FileManagerModule] is present
+** xref:field-types/fieldset.adoc#fieldset-collections[collections of fieldsets] are now supported, as well as xref:field-types/calculation.adoc[calculations across the fields of such a collection]
+* it's now possible to add an expandable summary view to a document list view
 
 [#0-0-1]
-== 0.0.1
+== 0.0.1.RELEASE
 
 The following features are available in the first release:
 
