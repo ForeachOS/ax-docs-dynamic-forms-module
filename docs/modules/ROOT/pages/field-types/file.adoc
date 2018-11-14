@@ -1,3 +1,53 @@
 = Files
 
-tbd
+WARNING: To make use of the `file` field type you must activate link:{url-FileManagerModule}[FileManagerModule] in your application.
+
+== Defining a file attachment
+
+A `file` field type stores its value as a `FileReference`.
+
+Whenever a `file` field is present, the default file upload control will be rendered and files will be uploaded using multipart form submit.
+In readonly mode a link to the uploaded file will be rendered, from where it can be downloaded again.
+
+.Example file field
+[source,yaml]
+----
+document-definition:
+  name: post
+  content:
+    - id: attachment
+      type: file <1>
+    - id: files
+      type: file[] <2>
+      attributes:
+        file-repository: s3-files <3>
+----
+
+<1> Defines a single file attachment (`FileReference` value) that should be stored in the default file repository.
+<2> Defines a multiple file attachment (`List<FileReference>` value).
+<3> Specifies that the files should be <<storage-location,stored>> in the file repository with id `s3-files`.
+
+For all general information on `FileReference` please refer to the xref:file-manager-module::file-reference/file-reference.adoc[corresponding reference documentation].
+
+[[storage-location]]
+== Specifying a storage location
+
+By default all files are stored in the default `FileRepository` specified on the `MultipartFileToFileReferenceConverter`.
+You can specify a different target repository by providing a `file-repository` attribute.
+
+.Example specifying a target file repository
+[source,yaml]
+----
+document-definition:
+  name: post
+  content:
+    - id: attachment
+      attributes:
+        file-repository: s3-files
+----
+
+The value of `file-repository` must be the id under which the repository can be found in the `FileRepositoryRegistry`.
+
+WARNING: Even when specifying a target repository, files will still be uploaded to the default repository temporarily.
+They will only be moved when the document is actually saved.
+See the xref:file-manager-module::index.adoc[FileManagerModule documentation] for more background information on `FileReference` uploads.

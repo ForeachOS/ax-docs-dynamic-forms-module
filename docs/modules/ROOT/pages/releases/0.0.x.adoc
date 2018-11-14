@@ -12,7 +12,7 @@
 * minor layout improvements have been made to the edit definition content page, providing a cleaner view to edit the YAML configuration of a definition
 * field type updates:
 ** fieldsets support a `template` attribute for xref:field-types/fieldset.adoc#fieldset-styling[basic styling]
-** addition of a `file` type for uploading files
+** addition of a `file` type for xref:field-types/file.adoc[uploading files]
 *** uses the `FileReference` entity as the actual field type
 *** only available if link:{url-FileManagerModule}[FileManagerModule] is present
 ** xref:field-types/fieldset.adoc#fieldset-collections[collections of fieldsets] are now supported, as well as xref:field-types/calculation.adoc[calculations across the fields of such a collection]

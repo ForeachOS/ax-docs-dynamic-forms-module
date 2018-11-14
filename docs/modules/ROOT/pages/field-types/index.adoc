@@ -158,6 +158,13 @@ The following type keys (for use in `type` or `base-type`) are available:
 |xref:field-types/linked-document.adoc[Linked document]
 | References a `DynamicDocument` for a definition `user` with version `2` in the `hr` dataset.
 
+| `file`
+|xref:field-types/file.adoc[File]
+|Represents a file attachment, which can be up- and downloaded.
+Internally represented as a `FileReference`.
+
+Only available if link:{url-FileManagerModule}[FileManagerModule] is present.
+
 |===
 
 == Enumerations
