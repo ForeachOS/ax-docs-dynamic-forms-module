@@ -1,0 +1,39 @@
+= Defining views
+
+The default administration UI for documents configures a number of CRUD pages per document type:
+
+* an overview page (list) of all documents of that type
+* forms for creating, updating and deleting a document of that type
+
+These pages are built using xref:entity-module::building-views/index.adoc[EntityModule views], and some can be customized by providing a view definition.
+
+== View definition
+
+A dynamic view consist of a number of properties that should be rendered on a specific view.
+A dynamic view is registered for a specific xref:definitions/creating-a-document-definition.adoc[dynamic document] through a parent-child relationship, where the document definition is the parent of the view definition.
+Depending on the view type, additional configuration options may be available, for example on a xref:definitions/list-view.adoc[list view], filter controls may be defined.
+
+A single definition requires at least
+
+a name ::
+The `name` defines on which view the definition will be applied.
+E.g. a definition with name `my-custom-view` would be applied on a view with name `my-custom-view`.
+
+a type ::
+ The `type` defines on views of which type the definition will be applied.
+ E.g. a definition with type `list` would be applied only on list view configurations.
+
+a list of properties ::
+ The list of properties is a listing of the properties of the parent document that should be rendered on the view.
+
+a parent document definition ::
+ A view definition always configures views for a specific document.
+
+The combination of `name` and `type` must be unique in the scope of its parent, as only one view configuration can be applied to a specific view.
+
+== View types
+
+The following views can be configured in the default administration UI:
+
+* xref:definitions/list-view.adoc[list view]
+* xref:definitions/list-summary-view.adoc[list summary view]

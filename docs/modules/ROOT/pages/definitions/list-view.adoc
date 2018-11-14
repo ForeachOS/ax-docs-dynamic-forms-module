@@ -1,34 +1,13 @@
-= Creating a view definition
-
-== Defining views
-
-A dynamic view consist of a number of properties that should be rendered on a specific view.
-A dynamic view is registered for a specific xref:definitions/creating-a-document-definition.adoc[dynamic document] through a parent-child relationship, where the document definition is the parent of the view definition.
-Depending on the view type, additional configuration options may be available, for example on a <<defining-list-views,list view>>, filter controls may be defined.
-
-A single definition requires at least
-
-a name ::
-The `name` defines on which view the definition will be applied.
-E.g. a definition with name `my-custom-view` would be applied on a view with name `my-custom-view`.
-
-a type ::
- The `type` defines on views of which type the definition will be applied.
- E.g. a definition with type `list` would be applied only on list view configurations.
-
-a list of properties ::
- The list of properties is a listing of the properties of the parent document that should be rendered on the view.
-
-a parent document definition ::
- A view definition always configures views for a specific document.
-
-The combination of `name` and `type` must be unique in the scope of its parent, as only one view configuration can be applied to a specific view.
-
 [[defining-list-views]]
-=== Defining list views
+= Document list view
 
-To configure a xref:entity-module::building-views/list-view.adoc[list view] for a document, a view definition will be created with the type `list`.
-Specifically on a list view, xref:entity-module::entity-query/filtering-list-views.adoc[filter controls] can be configured.
+A list view configures the list overview page of a document type.
+This builds on top of the xref:entity-module::building-views/list-view.adoc[EntityModule list view].
+
+A list view for a document type can be configured by adding a view definition with type `list` and the name `listView`.
+On a list view, properties to render as well as xref:entity-module::entity-query/filtering-list-views.adoc[filter controls] can be configured.
+
+== General configuration
 
 .Example list view definition
 [source,yaml]
@@ -91,6 +70,9 @@ Listed fields must always specify an `id` and can override the `selector` and `o
 
 |===
 
-=== Defining form views
+== List summary view
 
-//TODO
+If a view definition called `listSummaryView` is present, the list view will also provide a summary view.
+The interface will be adjusted to allow expanding of a row and seeing the result of the summary view.
+
+See the xref:definitions/list-summary-view.adoc[separate section] for more details.

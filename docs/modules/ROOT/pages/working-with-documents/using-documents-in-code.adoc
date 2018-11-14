@@ -235,7 +235,7 @@ for ( DynamicDocumentVersion document : documents ) {
 
 == Performing bulk operations on documents
 
-`DynamicDocumentWorkspace` s are always created through the `DynamicDocumentService`.
+`DynamicDocumentWorkspaces` are always created through the `DynamicDocumentService`.
 These workspaces have their own definition cache, so that if a workspace is reused for various documents, a performance boost may occur for documents that use the same definition.
 When performing bulk operations on documents, sequential processing will become insufficient and using more than one workspace will require additional fetching and conversion of the same definitions.
 

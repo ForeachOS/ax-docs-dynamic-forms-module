@@ -154,5 +154,5 @@ view-definition: # root key
         operand: in
 ----
 
-See the xref:definitions/creating-a-view-definition.adoc[reference documentation] for more information on configuring a view definition:
+See the xref:definitions/defining-views.adoc[reference documentation] for more information on configuring a view definition:
 

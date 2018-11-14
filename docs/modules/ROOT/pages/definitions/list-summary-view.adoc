@@ -1,0 +1,23 @@
+= Document list summary view
+
+The list summary view is an inline preview of a document that can be displayed on a list view.
+If a list summary view is defined, every table row in the list view can be expanded to see the preview represented by the summary view definition.
+
+The list summary view for a document type is the view definition named `listSummaryView` with the document definition as parent.
+
+.Example definition for a summary view
+[source,yaml]
+----
+view-definition:
+  name: listSummaryView <1>
+  type: view <2>
+  properties: <3>
+  - documentName
+  - field:customer
+  - field:technology
+  - document.lastModified
+----
+
+<1> Name of the view must be listSummaryView.
+<2> A summary view is a regular document view.
+<3> List the properties that should be rendered on the view.
