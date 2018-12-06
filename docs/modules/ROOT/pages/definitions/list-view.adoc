@@ -23,6 +23,8 @@ view-definition: # <1>
       advanced: true
     fields: # <7>
       - id: field:name
+      - id: field:status
+        selector: MULTI <8>
 ----
 
 <1> View definitions always start with the root path `view-definition`.
@@ -34,6 +36,7 @@ Document definition properties must be prefixed with `field:`.
 <5> A filter configuration is defined.
 <6> The filter control modes are defined.
 <7> A field is specified for which a filter control should be rendered.
+<8> Allow multiple values to be selected in the filter control
 
 .Listing of available properties on a filter configuration
 [cols="1,1,2", options="header"]
