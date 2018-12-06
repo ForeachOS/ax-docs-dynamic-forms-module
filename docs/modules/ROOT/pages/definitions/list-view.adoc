@@ -70,7 +70,8 @@ The provided query is an xref:entity-module::entity-query/eql.adoc[EQL statement
 |optional
 |Defines for which fields an xref:entity-module::entity-query/filtering-list-views.adoc[EQL filter control] should be rendered.
 Listed fields must always specify an `id` and can override the `selector` and `operand` that should be used.
-
+The `selector` property can be set to `SINGLE` or `MULTI` (`SINGLE` by default).
+For the `operand` options refer to the javadoc of `EntityQueryOps`.
 |===
 
 == List summary view
