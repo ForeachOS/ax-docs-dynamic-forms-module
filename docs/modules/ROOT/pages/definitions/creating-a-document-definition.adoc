@@ -34,6 +34,79 @@ document-definition:
 <3> fieldset member with id `street` has path `address.street`
 <4> fieldset member with id `number` has path `address.number`
 
+== Provide default values and formula's
+
+A default value or formula can be set on a field by specifying it on the dynamic document definition.
+Default values specified on content will always override the default values specified on a type.
+
+Setting a default value in combination with a default formula on the same field is not allowed.
+
+.Extensive example of default values on a field
+[source,yaml]
+----
+document-definition:
+  name: workspace-test
+  types:
+  - base-type: number
+    id: age-field
+    default:
+      value: 1
+  content:
+  - type: number
+    id: telephone
+    default:
+      value: 123456789 # <1>
+  - type: number
+    id: prize4
+    formula: "1+4"
+    default: ~ # <2>
+  - type: fieldset
+    id: address-and-city
+    fields:
+    - type: string
+      id: city
+      default:
+        value: city
+  - type: age-field
+    id: age
+    default:
+      value: 50 # <3>
+  - type: age-field
+    id: age2 # <4>
+----
+
+<1> field has a default value of 123456789
+<2> field has no default value or formula
+<3> field has a default value of 50
+<4> field has a default value of 1
+
+When specifying a formula on a field it will automatically use that formula as the default value for that field.
+You can explicitly reset the default value by setting it to null (`~` in yaml).
+
+.Extensive example of default formula's on a field
+[source,yaml]
+----
+document-definition:
+  name: workspace-test
+  content:
+  - type: number
+    id: prize1
+    default:
+      formula: "1+4" # <1>
+  - type: number
+    id: prize2
+    formula: "1+4" # <2>
+  - type: number
+    id: prize3
+    formula: "1+4"
+    default:
+      formula: ~ # <3>
+----
+
+<1> field has a default value of 5
+<2> field has a default value of 5
+<3> field has no default value
+
 == Add field validators
 
 A document field can have any number of validators attached to it.

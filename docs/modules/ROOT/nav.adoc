@@ -1,5 +1,6 @@
 * xref:quick-start.adoc[Quick start]
 * xref:releases/0.0.x.adoc[Releases]
+** xref:releases/0.0.x.adoc#0-0-2[0.0.3]
 ** xref:releases/0.0.x.adoc#0-0-2[0.0.2]
 ** xref:releases/0.0.x.adoc#0-0-1[0.0.1]
 * xref:document-definitions.adoc[Designing a document]
