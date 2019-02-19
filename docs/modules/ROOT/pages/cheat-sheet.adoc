@@ -21,6 +21,10 @@ document-definition:
         type: number
     - id: zip-code
       type: number(short)
+  - base-type: number
+    id: age-field
+    default:
+      value: 1
   content:
     - id: active
       type: boolean
@@ -31,6 +35,8 @@ document-definition:
       - required
     - id: motivation
       type: text
+      default:
+        value: "Motivational text"
     - id: hobbies
       type: string[]
       possible-values:
@@ -78,7 +84,8 @@ document-definition:
 
     - id: mentors
       type: '@user[]'
-      options-query: 'deleted = false'
+      attributes:
+        options-query: 'deleted = false'
       validators:
       - required
       messages:
@@ -99,12 +106,20 @@ document-definition:
         type: string
       - id: amount-of-employees
         type: number
+        default:
+          formula: "50+1"
         formula: count($(employees)
       - id: phone-number
         type: string
 
     - id: application
       type: document(hr:applications)
+
+    - type: age-field
+      id: age
+      default: null
+    - type: age-field
+      id: first-age
 ----
 
 See the reference documentation for more information on configuring a document definition:

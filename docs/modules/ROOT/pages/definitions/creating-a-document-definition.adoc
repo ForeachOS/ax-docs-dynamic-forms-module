@@ -34,7 +34,8 @@ document-definition:
 <3> fieldset member with id `street` has path `address.street`
 <4> fieldset member with id `number` has path `address.number`
 
-== Provide default values and formula's
+[[default-values]]
+== Provide default values and formulas
 
 A default value or formula can be set on a field by specifying it on the dynamic document definition.
 Default values specified on content will always override the default values specified on a type.
@@ -80,10 +81,10 @@ document-definition:
 <3> field has a default value of 50
 <4> field has a default value of 1
 
-When specifying a formula on a field it will automatically use that formula as the default value for that field.
-You can explicitly reset the default value by setting it to null (`~` in yaml).
+When specifying a formula on a field it will automatically use that formula as the default for that field.
+You can explicitly reset the default by setting it to null (`~` in yaml).
 
-.Extensive example of default formula's on a field
+.Extensive example of default formulas on a field
 [source,yaml]
 ----
 document-definition:
@@ -105,7 +106,7 @@ document-definition:
 
 <1> field has a default value of 5
 <2> field has a default value of 5
-<3> field has no default value
+<3> field has no default set
 
 == Add field validators
 

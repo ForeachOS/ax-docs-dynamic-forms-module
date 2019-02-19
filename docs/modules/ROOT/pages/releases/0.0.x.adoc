@@ -3,7 +3,7 @@
 [#0-0-3]
 == 0.0.3.RELEASE
 
-* default values and formulas can be specified on fields in a dynamic documents
+* xref:definitions/creating-a-document-definition#default-values[default values and formulas] can be specified on fields in a dynamic documents
 
 [#0-0-2]
 == 0.0.2.RELEASE
