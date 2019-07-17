@@ -35,11 +35,12 @@ document-definition:
 <4> fieldset member with id `number` has path `address.number`
 
 [[default-values]]
-== Provide default values and formulas
+== Default field values
 
 A default value or formula can be set on a field by specifying it on the dynamic document definition.
 Default values specified on content will always override the default values specified on a type.
 
+A default formula behaves much the same as the formula on a xref:field-types/calculation.adoc[calculated field].
 Setting a default value in combination with a default formula on the same field is not allowed.
 
 .Extensive example of default values on a field
@@ -79,34 +80,13 @@ document-definition:
 <1> field has a default value of 123456789
 <2> field has no default value or formula
 <3> field has a default value of 50
-<4> field has a default value of 1
+<4> field has a default value of 1 (attached to the `age-field` type)
 
 When specifying a formula on a field it will automatically use that formula as the default for that field.
 You can explicitly reset the default by setting it to null (`~` in yaml).
 
-.Extensive example of default formulas on a field
-[source,yaml]
-----
-document-definition:
-  name: workspace-test
-  content:
-  - type: number
-    id: prize1
-    default:
-      formula: "1+4" # <1>
-  - type: number
-    id: prize2
-    formula: "1+4" # <2>
-  - type: number
-    id: prize3
-    formula: "1+4"
-    default:
-      value: ~ # <3>
-----
-
-<1> field has a default value of 5
-<2> field has a default value of 5
-<3> field has no default set
+WARNING: The current version only supports default values and formulas on top-level fields.
+Support for fieldset fields is more limited and default values in collection items are not yet supported.
 
 == Add field validators
 

@@ -1,0 +1,41 @@
+= DynamicFormsModule releases
+
+[[module-artifact]]
+== Artifact
+
+[source,xml]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.foreach.across.modules</groupId>
+        <artifactId>dynamic-forms-module</artifactId>
+    </dependency>
+</dependencies>
+----
+
+== Release notes
+
+DynamicFormsModule follows a https://semver.org[semantic versioning] scheme.
+
+* xref:releases/0.0.x.adoc#0-0-7[0.0.7]
+
+[[module-dependencies]]
+== Module dependencies
+
+[options="header",cols="1,1,4"]
+|===
+|Module |Type |Description
+
+|{url-AcrossHibernateModule}[AcrossHibernateJpaModule]
+|required
+|Required for the JPA domain model.
+
+|{url-EntityModule}[EntityModule]
+|optional
+|In combination with `AdminWebModule` this enables the management forms in the administration UI.
+
+|{url-AdminWebModule}[AdminWebModule]
+|optional
+|In combination with `EntityModule` this enables the management forms in the administration UI.
+
+|===
