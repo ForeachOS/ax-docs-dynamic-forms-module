@@ -5,7 +5,7 @@ Steven Gentens, Arne Vandamme, Marc Vanbrabant
 :module-name: DynamicFormsModule
 :module-artifact: dynamic-forms-module
 :module-url: https://across.dev/modules/DynamicFormsModule
-:module-javadoc-url: https://across-docs.foreach.be/across-standard-modules/DynamicsFormsModule/0.0.2.RELEASE/javadoc
+:module-javadoc-url: https://docs.across.dev/across-standard-modules/DynamicsFormsModule/0.0.2.RELEASE/javadoc
 
 
 :!sectnums:
