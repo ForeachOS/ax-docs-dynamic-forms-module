@@ -1,5 +1,6 @@
 * xref:quick-start.adoc[Quick start]
 * xref:releases/index.adoc[Releases]
+** xref:releases/0.1.x.adoc#0-1-x[0.1.x]
 ** xref:releases/0.0.x.adoc#0-0-x[0.0.x]
 * xref:document-definitions.adoc[Designing a document]
 ** xref:definitions/creating-a-dataset.adoc[Creating a definition dataset]
