@@ -3,5 +3,7 @@
 [#0-1-0]
 == 0.1.0.RELEASE
 * *Requires Across 5.0.0.*
+* Spring upgrade related changes
+* `DynamicFormsModuleIcons` configures the used icons in DynamicFormModule
 
 
